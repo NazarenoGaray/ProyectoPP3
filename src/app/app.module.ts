@@ -14,6 +14,7 @@ import { EditarUsuariosComponent } from './componentes/editar-usuarios/editar-us
 import { EstablecimientoComponent } from './componentes/establecimiento/establecimiento.component';
 import { AltaEstablecimientosComponent } from './componentes/alta-establecimientos/alta-establecimientos.component';
 import { EditarEstablecimientosComponent } from './componentes/editar-establecimientos/editar-establecimientos.component';
+import { Error404Component } from './componentes/error404/error404.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { EditarEstablecimientosComponent } from './componentes/editar-establecim
     EditarUsuariosComponent,
     EstablecimientoComponent,
     AltaEstablecimientosComponent,
-    EditarEstablecimientosComponent
+    EditarEstablecimientosComponent,
+    Error404Component
   ],
   imports: [
     BrowserModule,

@@ -8,6 +8,7 @@ import { EditarUsuariosComponent } from './componentes/editar-usuarios/editar-us
 import { BienvenidoComponent } from './componentes/bienvenido/bienvenido.component';
 import { AltaEstablecimientosComponent } from './componentes/alta-establecimientos/alta-establecimientos.component';
 import { EditarEstablecimientosComponent } from './componentes/editar-establecimientos/editar-establecimientos.component';
+import { Error404Component } from './componentes/error404/error404.component';
 
 const routes: Routes = [
   { path: '', component: InicioSesionComponent },
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'alta-establecimiento', component: AltaEstablecimientosComponent},
   { path: 'listar-establecimientos', component : ListarEstablecimientosComponent},
   { path: 'editar-establecimiento', component : EditarEstablecimientosComponent},
+  { path: '**', component : Error404Component},
 ];
 
 @NgModule({

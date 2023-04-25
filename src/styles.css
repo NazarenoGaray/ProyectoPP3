@@ -294,3 +294,7 @@ input[type=email]:placeholder {
 .form-floating{
     padding: 0.1rem;
 }
+.error{
+    display: flex;
+    justify-content: center;
+}
