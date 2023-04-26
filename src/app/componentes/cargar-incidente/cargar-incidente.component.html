@@ -1,0 +1,63 @@
+<app-nav-bar></app-nav-bar>
+
+<div class="card container-fluid" id="content-alta">
+    <div class="card-header">
+        <label class="h2" for="">Cargar incidente</label>
+    </div>
+    <div class="container-hijo" >
+        <form  class="row" >
+            <div class=" mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                <label class="label" >Establecimiento:</label>
+                <select class="form-select" id="establecimiento"  formControlName="establecimiento" >
+                    <option >  </option> <!--  [value]="rol" *ngFor="let establecimiento of establecimientos"-->
+                </select>
+            </div>
+            <div class=" mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                <label class="label" >Sector:</label>
+                <select class="form-select" id="sector"  formControlName="sector" >
+                    <option >  </option> <!--  [value]="rol" *ngFor="sector rol of sectores"-->
+                </select>
+            </div>
+            <div class=" mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                <label class="label" >Tipo inciente:</label>
+                <select class="form-select" id="tipo"  formControlName="tipo" >
+                    <option >  </option> <!--  [value]="rol" *ngFor="let rol of roles"-->
+                </select>
+            </div>
+            <div class=" mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                <label class="label" >Sub Tipo inciente:</label>
+                <select class="form-select" id="subtipo"  formControlName="subtipo" >
+                    <option >  </option> <!--  [value]="rol" *ngFor="let rol of roles"-->
+                </select>
+            </div>
+            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                <input required type="text" class="form-control" id="floatingInput" formControlName="equipoafectado" placeholder=" ">
+                <label for="floatingInput">Equipo afectado: </label>
+            </div>
+            
+            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                <input required type="text" class="form-control" id="floatingInput" formControlName="usuarioasignado" placeholder=" ">
+                <label for="floatingInput">Usuario Asignado: </label>
+            </div>
+            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                <textarea class="form-control" id="floatingInput" formControlName="descripcion" rows="3" placeholder=" "></textarea>
+                <label for="floatingInput">Descripcion: </label>
+            </div>
+            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                <input required type="date" class="form-control " id="floatingInput" formControlName="fechacarga"placeholder="Marcos">
+                <label for="floatingInput">Fecha de Cargar: </label>
+            </div>
+            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                <input required type="date" class="form-control " id="floatingInput" formControlName="fechavisita"placeholder="">
+                <label for="floatingInput">Fecha de visita: </label>
+            </div>
+            
+            <div class="btn-group btn-primary" role="group" aria-label="Button group name">
+                <button type="submit" class="btn btn-success">Cargar</button>
+                <button type="button" routerLink="/listar-incidentes/" class="btn btn-danger">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<app-pie></app-pie>

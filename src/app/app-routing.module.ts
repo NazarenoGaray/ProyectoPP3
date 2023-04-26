@@ -9,6 +9,9 @@ import { BienvenidoComponent } from './componentes/bienvenido/bienvenido.compone
 import { AltaEstablecimientosComponent } from './componentes/alta-establecimientos/alta-establecimientos.component';
 import { EditarEstablecimientosComponent } from './componentes/editar-establecimientos/editar-establecimientos.component';
 import { Error404Component } from './componentes/error404/error404.component';
+import { CargarIncidenteComponent } from './componentes/cargar-incidente/cargar-incidente.component';
+import { ListarIncidentesComponent } from './componentes/listar-incidentes/listar-incidentes.component';
+import { IncidenteComponent } from './componentes/incidente/incidente.component';
 
 const routes: Routes = [
   { path: '', component: InicioSesionComponent },
@@ -19,6 +22,9 @@ const routes: Routes = [
   { path: 'alta-establecimiento', component: AltaEstablecimientosComponent},
   { path: 'listar-establecimientos', component : ListarEstablecimientosComponent},
   { path: 'editar-establecimiento', component : EditarEstablecimientosComponent},
+  { path: 'cargar-incidente', component: CargarIncidenteComponent},
+  { path: 'incidente', component: IncidenteComponent},
+  { path: 'listar-incidentes', component: ListarIncidentesComponent},
   { path: '**', component : Error404Component},
 ];
 

@@ -15,6 +15,9 @@ import { EstablecimientoComponent } from './componentes/establecimiento/establec
 import { AltaEstablecimientosComponent } from './componentes/alta-establecimientos/alta-establecimientos.component';
 import { EditarEstablecimientosComponent } from './componentes/editar-establecimientos/editar-establecimientos.component';
 import { Error404Component } from './componentes/error404/error404.component';
+import { IncidenteComponent } from './componentes/incidente/incidente.component';
+import { CargarIncidenteComponent } from './componentes/cargar-incidente/cargar-incidente.component';
+import { ListarIncidentesComponent } from './componentes/listar-incidentes/listar-incidentes.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,10 @@ import { Error404Component } from './componentes/error404/error404.component';
     EstablecimientoComponent,
     AltaEstablecimientosComponent,
     EditarEstablecimientosComponent,
-    Error404Component
+    Error404Component,
+    IncidenteComponent,
+    CargarIncidenteComponent,
+    ListarIncidentesComponent
   ],
   imports: [
     BrowserModule,

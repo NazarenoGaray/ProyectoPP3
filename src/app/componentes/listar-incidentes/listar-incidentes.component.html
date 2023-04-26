@@ -1,0 +1,35 @@
+<app-nav-bar></app-nav-bar>
+<div class="card container-fluid"  id="content-lista">
+    <div class="card-header">
+        <label class="h2" for=""> Lista incidentes</label>
+    </div>
+    
+        <div class="table-responsive ">
+            <table class="table">
+                <thead>
+                    <tr >
+                        <th scope="col" >ID</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--Usuarios es una lista de usuarios en json -->
+                    <tr  >
+                        <!-- <th scope="row"> {{ incidente.id}} </th>
+                        <td>{{ incidente.nombre }}</td>-->
+                     
+                        <td>
+                            <a class="btn btn-info" routerLink="/editar-incidente"> Actualizar </a> |
+                            <a class="btn btn-danger" 
+                                role="button">Borrar</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+                <a class="btn btn-success" routerLink="/cargar-incidente/"> Agregar Nuevo Incidente </a>
+            </div>
+        </div>
+</div>
+<app-pie></app-pie>
