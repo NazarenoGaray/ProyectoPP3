@@ -1,0 +1,76 @@
+<div class="card container-fluid">
+  <div class="card-header lg-center">
+    <label class="h2" for="">Editar Usuario</label>
+  </div>
+  <div class="container-hijo">
+    <form [formGroup]="usuarioForm" class="row" (ngSubmit)="actualizarUsuario()">
+      <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+        <input required type="text" class="form-control" id="nombre" formControlName="nombre" placeholder="Marcos">
+        <label for="nombre">Nombre</label>
+      </div>
+      <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+        <input required type="text" class="form-control" id="apellido" formControlName="apellido" placeholder="Lopez">
+        <label for="apellido">Apellido</label>
+      </div>
+      <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+        <input required type="text" class="form-control" id="telefono" formControlName="telefono"
+          placeholder="1560603333">
+        <label for="telefono">Telefono</label>
+      </div>
+      <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+        <input required type="email" class="form-control" id="correo" formControlName="correo"
+          placeholder="Escribe tu correo">
+        <label for="correo">Correo</label>
+      </div>
+      <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+        <input required type="text" class="form-control" id="direccion" formControlName="direccion" placeholder="">
+        <label for="direccion">Dirección</label>
+      </div>
+      <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+        <input required type="text" class="form-control" id="nombreusuario" formControlName="usuario"
+          placeholder="m.lopez">
+        <label for="nombreusuario">Usuario: </label>
+      </div>
+      <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+        <input required type="password" class="form-control" id="contrasena" formControlName="contrasena"
+          placeholder=" ">
+        <label for="contrasena">Contraseña: </label>
+      </div>
+      <div class="form-floating mb-3 col-2">
+        <select required class="form-select" id="floatingSelectLocalidad" aria-label="Floating label select example"
+          formControlName="IDLocalidad">
+          <option value="1">Abasto</option>
+          <option value="2">Agronomia</option>
+          <option value="3">Almagro</option>
+        </select>
+        <label for="floatingSelectLocalidad">Localidad</label>
+      </div>
+      <div class="form-floating mb-3 col-2">
+        <select required class="form-select" id="floatingSelect" aria-label="Floating label select example"
+          formControlName="id_rol">
+          <option value="">Seleccionar rol</option>
+          <option *ngFor="let rol of roles" [value]="rol.id_rol">{{ rol.rol }}</option>
+        </select>
+        <label for="floatingSelect">Rol</label>
+      </div>
+
+      <div class="form-floating mb-3 col-2">
+        <select required class="form-select" id="floatingSelectEstados" aria-label="Floating label select example"
+          formControlName="id_estado_usuario">
+          <option value="1">Habilitado</option>
+          <option value="2">Deshabilitado</option>
+          <option value="3">Suspendido</option>
+          <option value="4">Baja Temporal</option>
+        </select>
+        <label for="floatingSelectEstados">Estado</label>
+      </div>
+
+
+      <div class="form-group">
+        <button type="submit" class="btn btn-success">Guardar</button>
+        <a class="btn btn-danger" [routerLink]="['/listar-usuarios']">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</div>
+<app-pie></app-pie>

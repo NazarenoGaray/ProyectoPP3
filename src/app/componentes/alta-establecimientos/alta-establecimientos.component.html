@@ -1,0 +1,45 @@
+<app-nav-bar></app-nav-bar>
+<div class="card container-fluid" id="content-registrar">
+    <div class="card-header">
+        <label class="h2" for="">Agregar Establecimiento</label>
+    </div>
+    <div class="container-hijo" >
+        <form  class="row" >
+            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                <input required type="text" class="form-control " id="floatingInput" formControlName="nombre"placeholder="Los Pepes">
+                <label for="form-label">Nombre: </label>
+            </div>
+            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                <input required type="text" class="form-control" id="floatingInput" formControlName="direccion" placeholder="Av. maipu 123">
+                <label for="form-label">Direccion: </label>
+            </div>
+            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                <input required type="text" class="form-control" id="floatingInput" formControlName="Razon Social" placeholder="Establecimiento S.A">
+                <label for="form-label">Razon Social: </label>
+            </div>
+            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                <input required type="number" class="form-control" id="floatingInput" formControlName="telefono" placeholder="1560603333">
+                <label for="form-label">Telefono: </label>
+            </div>
+            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                <input required type="text" class="form-control" id="floatingInput" formControlName="nombreusuario" placeholder="m.lopez">
+                <label for="form-label">Nombre de Usuario: </label>
+            </div>
+            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                <input required type="email" class="form-control" formControlName="correo" placeholder="correo de contacto">
+                <label for="form-label">Correo: </label>
+            </div>   
+            <div class="mb-3 col-5">
+                <label class="label" >Tipo establecimiento:</label>
+                <select class="form-select" id="rol"  formControlName="tipo" >
+                    <option >  </option> <!--  [value]="tipo" *ngFor="let tipo of tipos"-->
+                </select>
+            </div>       
+            <div class="btn-group btn-primary" role="group" aria-label="Button group name">
+                <button type="submit" class="btn btn-success">Agregar</button>
+                <button type="button" routerLink="/listar-establecimientos/" class="btn btn-danger">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+<app-pie></app-pie>

@@ -1,0 +1,86 @@
+<app-nav-bar></app-nav-bar>
+
+<div class="container-fluid border">
+    <div class="card-header titulo">
+        <label class="h3" for="">Cargar incidente</label>
+    </div>
+    <div class="contenedor-hijo scroll">
+        <form class="row ">
+            <div class="datosEstablecimiento">
+                <div class="centrar mb-3 col-4">
+                    <label class="label">Establecimiento:</label>
+                    <select class="form-select" id="establecimiento" formControlName="establecimiento">
+                        <option> </option> <!--  [value]="rol" *ngFor="let establecimiento of establecimientos"-->
+                    </select>
+                </div>
+                <div class="centrar mb-3 col-6">
+                    <label class="label">Sector establecimiento:</label>
+                    <select class="form-select" id="sector" formControlName="sector">
+                        <option> </option> <!--  [value]="rol" *ngFor="sector rol of sectores"-->
+                    </select>
+                </div>
+            </div>
+            <div class="datosIncidentes">
+                <div class="centrar mb-3 col-4">
+                    <div class="mb-3 ">
+                        <label class="label">Tipo inciente:</label>
+                        <select class="form-select" id="tipo" formControlName="tipo">
+                            <option> </option> <!--  [value]="rol" *ngFor="let rol of roles"-->
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="label">Sub Tipo inciente:</label>
+                        <select class="form-select" id="subtipo" formControlName="subtipo">
+                            <option> </option> <!--  [value]="rol" *ngFor="let rol of roles"-->
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="label">Equipo afectado:</label>
+                        <select class="form-select" id="equipoafectado" formControlName="equipoafectado">
+                            <option> </option> <!--  [value]="equipo" *ngFor="let equipo of equipos"-->
+                        </select>
+                    </div>
+                </div>
+                <div class="centrar mb-3 col-6">
+                    <div class="mb-3">
+                        <label class="label">Descripcion: </label>
+                        <textarea class="form-control" id="textarea" formControlName="descripcion"
+                            placeholder=" "></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="datosIncidentes">
+                <div class="centrar mb-3 col-6 row">
+                    <div class="mb-3 col-6"><!-- col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6-->
+                        <label for="floatingInput">Fecha de Cargar: </label>
+                        <input required type="date" class="form-control " id="fechacarga" formControlName="fechacarga"
+                            placeholder="">
+                    </div>
+                    <div class="mb-3 col-6"><!-- col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6-->
+                        <label for="floatingInput">Fecha de visita: </label>
+                        <input required type="date" class="form-control " id="fechavisita" formControlName="fechavisita"
+                            placeholder="">
+                    </div>
+                </div>
+
+                <div class="centrar mb-3 col-4">
+                    <label class="label">Usuario Asignado:</label>
+                    <select class="form-select" id="usuarioasignado" formControlName="usuarioasignado">
+                        <option> </option> <!--  [value]="usuario" *ngFor="let usuario of usuarios"-->
+                    </select>
+                </div>
+            </div>
+            <div class="btn-group btn-primary" role="group" aria-label="Button group name">
+                <button type="submit" class="btn btn-success">Cargar</button>
+                <button type="button" routerLink="/listar-incidentes/" class="btn btn-danger">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<app-pie></app-pie>
+
+
+
+
+

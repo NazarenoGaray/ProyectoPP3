@@ -1,0 +1,24 @@
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+      <!-- Tabs Titles -->
+  
+      <!-- Icon -->
+      <div class="fadeIn first">
+        <!-- <img src="http://danielzawadzki.com/codepen/01/icon.svg" id="icon" alt="User Icon" /> -->
+      </div>
+  
+      <!-- Login Form -->
+      <form>
+        <input type="text" id="login" class="fadeIn second" name="login" [(ngModel)]="usuario" placeholder="login">
+        <input type="text" id="password" class="fadeIn third" name="contrasena" [(ngModel)]="contrasena" placeholder="password">
+        <button type="button" class="fadeIn fourth" (click)="onSubmit()">Iniciar sesión</button>
+      </form>
+      
+  
+      <!-- Remind Passowrd -->
+      <div id="formFooter">
+        <a class="underlineHover" href="/bienvenido">Olvidaste la contraseña?</a>
+      </div>
+  
+    </div>
+  </div>

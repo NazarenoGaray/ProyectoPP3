@@ -1,0 +1,40 @@
+<app-nav-bar></app-nav-bar>
+
+<div class="card container-fluid" id="content-lista">
+  <div class="container">
+    <div class="card-header">
+      <label class="h2" for=""> Lista de usuarios</label>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Email</th>
+            <th>Rol</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let usuario of usuarios">
+            <td>{{ usuario.id_usuario }}</td>
+            <td>{{ usuario.nombre }}</td>
+            <td>{{ usuario.apellido }}</td>
+            <td>{{ usuario.correo }}</td>
+            <td>{{ obtenerNombreRol(usuario.id_rol) }}</td>
+            <td>{{ obtenerNombreEstado(usuario.id_estado_usuario) }}</td>
+            <td>
+              <a [routerLink]="['/editar-usuarios', usuario.id_usuario]" class="btn btn-sm btn-primary mr-2">Editar</a>
+              <button (click)="eliminarUsuario(usuario.id_usuario)" class="btn btn-sm btn-danger">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<app-pie></app-pie>
