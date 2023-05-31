@@ -1,19 +1,28 @@
 <app-nav-bar></app-nav-bar>
-<div class="row">
 
-    <div class="container">
-        <div class="row">
-            <div class="col-sm col-xs-12">
-                <div class="row">
-                    <!-- *ngFor="let establecimiento of this.listaEstablecimiento " -->
-                    <div    class="col-4">
-                        <!-- <app-establecimiento [nombredeotravariable]="establecimiento" (eliminar)="quitar(establecimiento)"></app-establecimiento> -->
-                        <app-establecimiento></app-establecimiento>
-
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="card container-fluid" id="content-lista">
+  <div class="container">
+    <div class="card-header">
+      <label class="h2" for="">Lista de Establecimientos</label>
     </div>
+    <div class="row">
+      <div class="col-sm col-xs-12">
+        <div class="row">
+          <div class="col-4" *ngFor="let establecimiento of listaEstablecimiento">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">{{ establecimiento.nombreEstablecimiento }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ establecimiento.nombrePais }}</h6>
+                <p class="card-text">{{ establecimiento.nombreProvincia }} - {{ establecimiento.nombreLocalidad }}</p>
+                <p class="card-text">{{ establecimiento.calle }} {{ establecimiento.altura }}</p>
+                <a [routerLink]="['/establecimiento', establecimiento.id_establecimiento]">Ver detalles</a>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 <app-pie></app-pie>

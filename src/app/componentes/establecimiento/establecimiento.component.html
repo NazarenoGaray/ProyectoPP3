@@ -1,15 +1,60 @@
-<div class="card">
-    <img class="card-img-top" [src]="" alt="sin imagen">
-    <div class="card-body">
-        <h5 class="card-title">nombre de establecimiento</h5>
-        <label for="">direccion</label>
-        <p class="card-text"></p>
-        <label for="">Cant. Equipos:</label>
-        <p class="card-text"> </p>
-        <label for="">Mas:</label>
-        <p class="card-text"></p>
-        <a class="btn btn-success" routerLink="/ver"> Ver </a> |
-        <a class="btn btn-info" routerLink="/editar-establecimiento"> Editar </a> |
-        <a class="btn btn-danger" role="button">Borrar</a>
+<app-nav-bar></app-nav-bar>
+
+<div class="card container-fluid" id="content-establecimiento">
+    <div class="container">
+        <div class="card-header">
+            <h2 class="h2">{{ establecimiento?.nombreEstablecimiento }}</h2>
+        </div>
+        <div class="row">
+            <div class="col-sm col-xs-12">
+                <div class="card-columns">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="detail">
+                                <label class="card-subtitle mb-2 text-muted">País:</label>
+                                <span class="card-text">{{ establecimiento?.nombrePais }}</span>
+                            </div>
+                            <div class="detail">
+                                <label class="card-subtitle mb-2 text-muted">Provincia:</label>
+                                <span class="card-text">{{ establecimiento?.nombreProvincia }}</span>
+                            </div>
+                            <div class="detail">
+                                <label class="card-subtitle mb-2 text-muted">Localidad:</label>
+                                <span class="card-text">{{ establecimiento?.nombreLocalidad }}</span>
+                            </div>
+                            <div class="detail">
+                                <label class="card-subtitle mb-2 text-muted">Dirección:</label>
+                                <span class="card-text">{{ establecimiento?.calle }} {{ establecimiento?.altura
+                                    }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="detail">
+                                <label class="card-subtitle mb-2 text-muted">Horarios de:</label>
+                                <span class="card-text">{{ establecimiento?.horario_entrada }}</span>
+                                <label class="card-subtitle mb-2 text-muted"> Hasta:</label>
+                                <span class="card-text">{{ establecimiento?.horario_salida }}</span>
+                            </div>
+                            <div class="detail">
+                                <label class="card-subtitle mb-2 text-muted">Telefono:</label>
+                                <span class="card-text">{{ establecimiento?.telefono }}</span>
+                            </div>
+                            <div class="detail">
+                                <label class="card-subtitle mb-2 text-muted">Correo:</label>
+                                <span class="card-text">{{ establecimiento?.correo }}</span>
+                            </div>
+                            <div *ngFor="let sector of sectores">
+                                <h3>{{ sector.nombre }}</h3>
+                                <!-- Otros detalles del sector que deseas mostrar -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<app-pie></app-pie>

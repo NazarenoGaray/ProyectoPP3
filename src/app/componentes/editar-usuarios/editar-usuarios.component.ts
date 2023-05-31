@@ -6,6 +6,9 @@ import { UsuarioService } from '../../../app/servicios/usuario.service';
 import { switchMap, take } from 'rxjs/operators';
 import { Rol } from '../../servicios/roles.model';
 import { RolService } from '../../servicios/roles.service';
+import { UbicacionService } from 'src/app/servicios/ubicacion.service';
+import { EstadoUsuariosService } from 'src/app/servicios/estado-usuarios.service';
+import { estado_usuarios } from '../model/estado_usuarios.model';
 
 
 @Component({
@@ -19,6 +22,10 @@ export class EditarUsuariosComponent implements OnInit {
   usuario!: Usuario;
   id_usuario!: number;
   roles: Rol[] = [];
+  estados: estado_usuarios[] = [];
+  paises: any[] = [];
+  provincias: any[] = [];
+  localidades: any[] = [];
 
 
   constructor(
@@ -27,7 +34,8 @@ export class EditarUsuariosComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private rolService: RolService,
-
+    private estadoService: EstadoUsuariosService,
+    private ubicacionService: UbicacionService,
   ) { }
 
   ngOnInit(): void {
@@ -37,11 +45,12 @@ export class EditarUsuariosComponent implements OnInit {
       direccion: ['', Validators.required],
       telefono: ['', Validators.required],
       correo: ['', [Validators.required, Validators.email, this.validateCorreo]],
-      domicilio: ['', Validators.required],
       usuario: ['', Validators.required],
       contrasena: ['', Validators.required],
-      id_rol: [1, Validators.required],
-      IDLocalidad: ['', Validators.required],
+      id_rol: ['', Validators.required],
+      pais: [{ value: '', disabled: false }, Validators.required],
+      provincia: [{ value: '', disabled: true }, Validators.required],
+      localidad: [{ value: '', disabled: true }, Validators.required],
       id_estado_usuario: ['', Validators.required]
     });
     // Obtenemos los roles para cargarlos en el select
@@ -53,6 +62,20 @@ export class EditarUsuariosComponent implements OnInit {
         console.log(`Error al obtener los roles: ${err.message}`);
       }
     );
+    ///////////////////////////////////////////////
+    this.estadoService.obtenerEstadosUsuarios().subscribe(
+      (res: estado_usuarios[]) => {
+        this.estados = res;
+      },
+      (err: any) => {
+        console.log(`Error al obtener los estados: ${err.message}`);
+      }
+    );
+    ////////////////////////////////////////////////////////
+    this.ubicacionService.getPaises().subscribe((data: any[]) => {
+      this.paises = data;
+    });
+    ////////////////////////////////////////////////////////
     this.route.params.pipe(
       take(1),
       switchMap(params => this.usuarioService.obtenerUsuarioPorId(params['id']))
@@ -95,5 +118,34 @@ export class EditarUsuariosComponent implements OnInit {
       }
     );
   }
+  //////////////////////////////////////////////////////////////////////////////////////////
+  onPaisSelected() {
+    const paisId = this.usuarioForm.value.pais;
+    this.usuarioForm.get('provincia')?.setValue('');
+    this.usuarioForm.get('provincia')?.disable();
+    this.usuarioForm.get('localidad')?.setValue('');
+    this.usuarioForm.get('localidad')?.disable();
+    this.provincias = [];
 
+    if (paisId) {
+      this.ubicacionService.getProvincias(paisId).subscribe((data: any[]) => {
+        this.provincias = data;
+        this.usuarioForm.get('provincia')?.enable();
+      });
+    }
+  }
+
+  onProvinciaSelected() {
+    const provinciaId = this.usuarioForm.value.provincia;
+    this.usuarioForm.get('localidad')?.setValue('');
+    this.usuarioForm.get('localidad')?.disable();
+    this.localidades = [];
+
+    if (provinciaId) {
+      this.ubicacionService.getLocalidades(provinciaId).subscribe((data: any[]) => {
+        this.localidades = data;
+        this.usuarioForm.get('localidad')?.enable();
+      });
+    }
+  }
 }

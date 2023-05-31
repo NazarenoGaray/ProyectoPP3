@@ -6,40 +6,143 @@
     <div class="container-hijo" >
         <form  class="row" >
             <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                <input required type="text" class="form-control " id="floatingInput" formControlName="nombre"placeholder="Los Pepes">
+                <input required type="text" class="form-control " id="floatingInput"placeholder="Los Pepes">
+                <!-- formControlName="nombre" -->
                 <label for="form-label">Nombre: </label>
             </div>
             <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                <input required type="text" class="form-control" id="floatingInput" formControlName="direccion" placeholder="Av. maipu 123">
+                <input required type="text" class="form-control" id="floatingInput"  placeholder="Av. maipu 123">
+                <!-- formControlName="direccion" -->
                 <label for="form-label">Direccion: </label>
             </div>
             <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                <input required type="text" class="form-control" id="floatingInput" formControlName="Razon Social" placeholder="Establecimiento S.A">
+                <input required type="text" class="form-control" id="floatingInput" placeholder="Establecimiento S.A">
+                <!-- formControlName="Razon Social" -->
                 <label for="form-label">Razon Social: </label>
             </div>
             <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                <input required type="number" class="form-control" id="floatingInput" formControlName="telefono" placeholder="1560603333">
+                <input required type="number" class="form-control" id="floatingInput" placeholder="1560603333">
+                <!-- formControlName="telefono" -->
                 <label for="form-label">Telefono: </label>
             </div>
             <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                <input required type="text" class="form-control" id="floatingInput" formControlName="nombreusuario" placeholder="m.lopez">
+                <input required type="text" class="form-control" id="floatingInput" placeholder="m.lopez">
+                <!-- formControlName="nombreusuario" -->
                 <label for="form-label">Nombre de Usuario: </label>
             </div>
             <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                <input required type="email" class="form-control" formControlName="correo" placeholder="correo de contacto">
+                <input required type="email" class="form-control"  placeholder="correo de contacto">
+                <!-- formControlName="correo" -->
                 <label for="form-label">Correo: </label>
             </div>   
             <div class="mb-3 col-5">
                 <label class="label" >Tipo establecimiento:</label>
-                <select class="form-select" id="rol"  formControlName="tipo" >
+                <select class="form-select" id="rol"  >
+                    <!-- formControlName="tipo"  -->
                     <option >  </option> <!--  [value]="tipo" *ngFor="let tipo of tipos"-->
                 </select>
             </div>       
-            <div class="btn-group btn-primary" role="group" aria-label="Button group name">
-                <button type="submit" class="btn btn-success">Agregar</button>
-                <button type="button" routerLink="/listar-establecimientos/" class="btn btn-danger">Cancelar</button>
-            </div>
+            <div class="btn-group ">
+                <button type="submit" class="btn btn-success">Crear</button>
+                <a class="btn btn-danger" [routerLink]="['/listar-establecimientos']">Cancelar</a>
+              </div>
         </form>
-    </div>
+    </div><div class="booking-form">
+        <div class="form-header">
+        <h1>Book a car</h1>
+        </div>
+        <form>
+        <div class="row">
+        <div class="col-sm-6">
+        <div class="form-group">
+        <span class="form-label">Name</span>
+        <input class="form-control" type="text" placeholder="Enter your name">
+        </div>
+        </div>
+        <div class="col-sm-6">
+        <div class="form-group">
+        <span class="form-label">Email</span>
+        <input class="form-control" type="email" placeholder="Enter your email">
+        </div>
+        </div>
+        </div>
+        <div class="form-group">
+        <span class="form-label">Phone</span>
+        <input class="form-control" type="tel" placeholder="Enter your phone number">
+        </div>
+        <div class="form-group">
+        <span class="form-label">Pickup Location</span>
+        <input class="form-control" type="text" placeholder="Enter ZIP/Location">
+        </div>
+        <div class="form-group">
+        <span class="form-label">Destination</span>
+        <input class="form-control" type="text" placeholder="Enter ZIP/Location">
+        </div>
+        <div class="row">
+        <div class="col-sm-5">
+        <div class="form-group">
+        <span class="form-label">Pickup Date</span>
+        <input class="form-control" type="date" required="">
+        </div>
+        </div>
+        <div class="col-sm-7">
+        <div class="row">
+        <div class="col-sm-4">
+        <div class="form-group">
+        <span class="form-label">Hour</span>
+        <select class="form-control">
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+        <option>6</option>
+        <option>7</option>
+        <option>8</option>
+        <option>9</option>
+        <option>10</option>
+        <option>11</option>
+        <option>12</option>
+        </select>
+        <span class="select-arrow"></span>
+        </div>
+        </div>
+        <div class="col-sm-4">
+        <div class="form-group">
+        <span class="form-label">Min</span>
+        <select class="form-control">
+        <option>05</option>
+        <option>10</option>
+        <option>15</option>
+        <option>20</option>
+        <option>25</option>
+        <option>30</option>
+        <option>35</option>
+        <option>40</option>
+        <option>45</option>
+        <option>50</option>
+        <option>55</option>
+        </select>
+        <span class="select-arrow"></span>
+        </div>
+        </div>
+        <div class="col-sm-4">
+        <div class="form-group"> 
+        <span class="form-label">AM/PM</span>
+        <select class="form-control">
+        <option>AM</option>
+        <option>PM</option>
+        </select>
+        <span class="select-arrow"></span>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        <div class="form-btn">
+        <button class="submit-btn">Book Now</button>
+        </div>
+        </form>
+        </div>
 </div>
 <app-pie></app-pie>

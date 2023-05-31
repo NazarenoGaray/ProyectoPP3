@@ -4,7 +4,6 @@ import { Observable, forkJoin, of, throwError } from 'rxjs';
 import { Usuario } from './usuario.model';
 import { tap, switchMap, map, catchError } from 'rxjs/operators';
 import { take } from 'rxjs/operators';
-import { Rol } from './roles.model';
 
 
 
@@ -45,6 +44,8 @@ export class UsuarioService {
           usuario.usuario,
           usuario.contrasena,
           usuario.id_rol,
+          usuario.IDPais,
+          usuario.IDProvincia,
           usuario.IDLocalidad,
           usuario.id_estado_usuario
         ));
@@ -104,7 +105,7 @@ export class UsuarioService {
     );
   }
 
-  }
+}
 
 
 

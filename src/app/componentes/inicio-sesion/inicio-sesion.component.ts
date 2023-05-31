@@ -10,20 +10,23 @@ import { LoginService } from 'src/app/servicios/login.service';
 export class InicioSesionComponent{
   usuario!: string;
   contrasena!: string;
-
+  token!: any;
   constructor(
     private loginService: LoginService,
     private router: Router) { }
   
 
   onSubmit() {
+
     this.loginService.validarCredencial(this.usuario, this.contrasena).subscribe(
       (res: any) => {
         console.log(`Sesión creada con éxito`);
 
         // Guarda el token de sesión en localStorage
-        localStorage.setItem('token', res.token);
-
+        this.token=JSON.stringify(res.token);
+        //localStorage.setItem('TOKEN',this.token);
+        sessionStorage.setItem('TOKEN',this.token);// se guarda en sesion storage
+        // se lee con:
         this.router.navigate(['/bienvenido']);
       },
       (err: any) => {

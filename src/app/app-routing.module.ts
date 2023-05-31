@@ -12,20 +12,27 @@ import { Error404Component } from './componentes/error404/error404.component';
 import { CargarIncidenteComponent } from './componentes/cargar-incidente/cargar-incidente.component';
 import { ListarIncidentesComponent } from './componentes/listar-incidentes/listar-incidentes.component';
 import { IncidenteComponent } from './componentes/incidente/incidente.component';
+import { EstablecimientoComponent } from './componentes/establecimiento/establecimiento.component';
+import { ContactoComponent } from './componentes/contacto/contacto.component';
+import { SobreNosotrosComponent } from './componentes/sobre-nosotros/sobre-nosotros.component';
 
 const routes: Routes = [
-  { path: '', component: InicioSesionComponent },
+  { path: '', component: BienvenidoComponent },
   { path: 'bienvenido', component: BienvenidoComponent },
-  { path: 'alta-usuario', component : AltaUsuariosComponent},
-  { path: 'listar-usuarios', component : ListarUsuariosComponent},
-  { path: 'editar-usuarios/:id', component : EditarUsuariosComponent},
-  { path: 'alta-establecimiento', component: AltaEstablecimientosComponent},
-  { path: 'listar-establecimientos', component : ListarEstablecimientosComponent},
-  { path: 'editar-establecimiento', component : EditarEstablecimientosComponent},
-  { path: 'cargar-incidente', component: CargarIncidenteComponent},
-  { path: 'incidente', component: IncidenteComponent},
-  { path: 'listar-incidentes', component: ListarIncidentesComponent},
-  { path: '**', component : Error404Component},
+  { path: 'contacto', component: ContactoComponent },
+  { path: 'sobreNosotros', component: SobreNosotrosComponent },
+  { path: 'inicio-sesion', component: InicioSesionComponent },
+  { path: 'alta-usuario', component: AltaUsuariosComponent },
+  { path: 'listar-usuarios', component: ListarUsuariosComponent },
+  { path: 'editar-usuarios/:id', component: EditarUsuariosComponent },
+  { path: 'alta-establecimiento', component: AltaEstablecimientosComponent },
+  { path: 'listar-establecimientos', component: ListarEstablecimientosComponent },
+  { path: 'editar-establecimiento', component: EditarEstablecimientosComponent },
+  { path: 'cargar-incidente', component: CargarIncidenteComponent },
+  { path: 'incidente', component: IncidenteComponent },
+  { path: 'listar-incidentes', component: ListarIncidentesComponent },
+  { path: 'establecimiento/:id', component: EstablecimientoComponent },
+  { path: '**', component: Error404Component },
 ];
 
 @NgModule({

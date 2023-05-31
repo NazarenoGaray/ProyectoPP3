@@ -9,6 +9,8 @@ export class Usuario {
     public usuario: string,
     public contrasena: string,
     public id_rol: number,
+    public IDPais: number,
+    public IDProvincia: number,
     public IDLocalidad: number,
     public id_estado_usuario: number,
 

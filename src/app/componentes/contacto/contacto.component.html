@@ -1,0 +1,73 @@
+<app-nav-bar></app-nav-bar>
+
+ 
+ <!-- ======= Contact Section ======= -->
+ <section id="contact" class="contact  containerContact">
+    <div class="container" data-aos="fade-up">
+
+      <div class="section-title">
+        <h2>Contacto</h2>
+        <p>En caso de necesitar un usuario y/o alguna otro consulta, no dude en enviarnos un correo o contactarse por algun medio mensionado.</p>
+      </div>
+
+      <div class="row" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="col-lg-6">
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="info-box">
+                <i class='coloIco bx bx-map ' ></i>
+                <h3>Direccion</h3>
+                <p>Av. Manuel Belgrano 1191, Avellaneda, Buenos Aires</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="info-box mt-4">
+                <i class='coloIco bx bx-envelope ' ></i>
+                <h3>Correos</h3>
+                <p>info@example.com<br>contact@example.com</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="info-box mt-4">
+                <i class='coloIco bx bx-phone-call ' ></i>
+                <h3>Telefonos</h3>
+                <p>+54 11121314 1516  <br>+54 11212224 2526</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-lg-6">
+          <form action="forms/contact.php" method="post" role="form" class="php-email-form">
+            <div class="row">
+              <div class="col form-group">
+                <input type="text" name="name" class="form-control" id="name" placeholder="Ingrese nombre" required>
+              </div>
+              <div class="col form-group">
+                <input type="email" class="form-control" name="email" id="email" placeholder="Ingrese Correo" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" name="subject" id="subject" placeholder="Tema" required>
+            </div>
+            <div class="form-group">
+              <textarea class="form-control" name="message" rows="5" placeholder="Ingrese mensaje" required></textarea>
+            </div>
+            <div class="my-3">
+              <div class="loading">Loading</div>
+              <div class="error-message"></div>
+              <div class="sent-message">Your message has been sent. Thank you!</div>
+            </div>
+            <div class="text-center"><button class="btn btn-primary py-2 fs-6  me-2"  type="submit">Enviar Mensaje</button></div>
+          </form>
+        </div>
+
+      </div>
+
+    </div>
+  </section><!-- End Contact Section -->
+
+  <app-pie></app-pie>

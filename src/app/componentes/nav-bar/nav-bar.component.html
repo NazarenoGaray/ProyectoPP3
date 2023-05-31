@@ -1,50 +1,83 @@
 <nav class="navbar bg-primary navbar-expand-lg" data-bs-theme="dark">
-   
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/bienvenido">Service IT</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
-            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Usuarios
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" routerLink="/alta-usuario">Alta usuario</a></li>
-                    <li><a class="dropdown-item" routerLink="/listar-usuarios">Listar usuarios</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                  </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Establecimientos
-                    </a>
-                    <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" routerLink="/alta-establecimiento">Alta establecimiento</a></li>
-                      <li><a class="dropdown-item" routerLink="/listar-establecimientos">Listar establecimientos</a></li>
-                      <li><hr class="dropdown-divider"></li>
-                    </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Incidentes
-                    </a>
-                    <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" routerLink="/cargar-incidente">Cargar incidente</a></li>
-                      <li><a class="dropdown-item" routerLink="/listar-incidentes">Listar incidentes</a></li>
-                      <li><hr class="dropdown-divider"></li>
-  
-                    </ul>
-                </li>
+
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/bienvenido">Service IT</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+      aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <ng-container *ngIf="isLoggedIn()">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Usuarios
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" routerLink="/alta-usuario">Alta usuario</a></li>
+              <li><a class="dropdown-item" routerLink="/listar-usuarios">Listar usuarios</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
             </ul>
-            <ul class="navbar-nav me-left mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/">Cerrar Sesion</a>
-                </li>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Establecimientos
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" routerLink="/alta-establecimiento">Alta establecimiento</a></li>
+              <li><a class="dropdown-item" routerLink="/listar-establecimientos">Listar establecimientos</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
             </ul>
-        </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Incidentes
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" routerLink="/cargar-incidente">Cargar incidente</a></li>
+              <li><a class="dropdown-item" routerLink="/listar-incidentes">Listar incidentes</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+
+            </ul>
+          </li>
+        </ng-container>
+        <ng-container *ngIf="!isLoggedIn()">
+          <li class="nav-item  ">
+            <a class="nav-link  px-4  " routerLink="/bienvenido" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Inicio
+            </a>
+          </li>
+
+          <li class="nav-item ">
+            <a class="nav-link  px-4 " routerLink="/sobreNosotros" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Nosotros
+            </a>
+          </li>
+          <li class="nav-item  ">
+            <a class="nav-link  px-4 " routerLink="/contacto" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Contacto
+            </a>
+
+          </li>
+        </ng-container>
+      </ul>
+      <ul class="navbar-nav me-left mb-2 mb-lg-0">
+        <ng-container *ngIf="!isLoggedIn()">
+          <button class="btn btn-outline-primary" routerLink="/sesion">Iniciar Sesión</button>
+        </ng-container>
+        <ng-container *ngIf="isLoggedIn()">
+          <button class="btn btn-outline-danger" (click)="cerrarSesion()">Cerrar Sesión</button>
+        </ng-container>
+      </ul>
     </div>
+  </div>
 </nav>

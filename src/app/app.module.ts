@@ -20,6 +20,9 @@ import { Error404Component } from './componentes/error404/error404.component';
 import { IncidenteComponent } from './componentes/incidente/incidente.component';
 import { CargarIncidenteComponent } from './componentes/cargar-incidente/cargar-incidente.component';
 import { ListarIncidentesComponent } from './componentes/listar-incidentes/listar-incidentes.component';
+import { SobreNosotrosComponent } from './componentes/sobre-nosotros/sobre-nosotros.component';
+import { ContactoComponent } from './componentes/contacto/contacto.component';
+
 
 @NgModule({
   declarations: [
@@ -38,7 +41,9 @@ import { ListarIncidentesComponent } from './componentes/listar-incidentes/lista
     Error404Component,
     IncidenteComponent,
     CargarIncidenteComponent,
-    ListarIncidentesComponent
+    ListarIncidentesComponent,
+    SobreNosotrosComponent,
+    ContactoComponent,
   ],
   imports: [
     BrowserModule,
