@@ -72,13 +72,14 @@ export class ListarUsuariosComponent implements OnInit {
     return estado ? estado.estado : '';
   }
 
-  eliminarUsuario(id_usuario: number) {
-    console.log(`Eliminar usuario con ID ${id_usuario}`);
-    if (confirm('¿Está seguro de que desea eliminar este usuario?')) {
-      this.usuarioService.eliminarUsuario(id_usuario).subscribe(() => {
-        console.log(`Usuario con ID ${id_usuario} eliminado`);
-        this.obtenerUsuarios();
-      });
-    }
+  detallesUsuario(id_usuario: number) {
+    this.router.navigate(['/listar-usuarios',id_usuario]);
+    // console.log(`Eliminar usuario con ID ${id_usuario}`);
+    // if (confirm('¿Está seguro de que desea eliminar este usuario?')) {
+    //   this.usuarioService.eliminarUsuario(id_usuario).subscribe(() => {
+    //     console.log(`Usuario con ID ${id_usuario} eliminado`);
+    //     this.obtenerUsuarios();
+    //   });
+    // }
   }
 }

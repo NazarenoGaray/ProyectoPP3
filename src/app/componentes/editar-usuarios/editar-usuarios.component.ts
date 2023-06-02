@@ -20,13 +20,14 @@ export class EditarUsuariosComponent implements OnInit {
 
   usuarioForm!: FormGroup;
   usuario!: Usuario;
+  usuarioOriginal!: Usuario;
   id_usuario!: number;
   roles: Rol[] = [];
   estados: estado_usuarios[] = [];
   paises: any[] = [];
   provincias: any[] = [];
   localidades: any[] = [];
-
+  hayCambios: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -86,6 +87,7 @@ export class EditarUsuariosComponent implements OnInit {
           this.usuarioForm.patchValue(usuario);
           this.id_usuario = usuario.id_usuario;
           this.usuario = usuario;
+          this.usuarioOriginal = { ...usuario };// cuardamos una copia del usuario
         } else {
           console.log("Usuario no encontrado");
         }
@@ -94,7 +96,11 @@ export class EditarUsuariosComponent implements OnInit {
         console.log(error);
       }
     );
-
+    ////////////////////////////////////////////////////////////////verificando cambios
+    this.usuarioForm.valueChanges.subscribe(() => {
+      this.detectarCambios();
+    });
+    
   }
   validateCorreo(control: AbstractControl): { [key: string]: any } | null {
     if (control.value && control.value.length < 5) {
@@ -117,6 +123,7 @@ export class EditarUsuariosComponent implements OnInit {
         console.log(`Error al actualizar usuario: ${err.message}`);
       }
     );
+    this.detectarCambios();
   }
   //////////////////////////////////////////////////////////////////////////////////////////
   onPaisSelected() {
@@ -148,4 +155,14 @@ export class EditarUsuariosComponent implements OnInit {
       });
     }
   }
+  detectarCambios() {
+    this.usuarioForm.valueChanges.subscribe((value) => {
+      this.hayCambios = !this.sonDatosIguales(value, this.usuarioOriginal);
+    });
+  }
+  sonDatosIguales(datosA: any, datosB: any): boolean {
+    return true;
+    
+  }
+    
 }

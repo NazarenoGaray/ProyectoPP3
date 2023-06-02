@@ -24,7 +24,7 @@ const routes: Routes = [
   { path: 'inicio-sesion', component: InicioSesionComponent },
   { path: 'alta-usuario', component: AltaUsuariosComponent },
   { path: 'listar-usuarios', component: ListarUsuariosComponent },
-  { path: 'editar-usuarios/:id', component: EditarUsuariosComponent },
+  { path: 'editar-usuario/:id', component: EditarUsuariosComponent },
   { path: 'alta-establecimiento', component: AltaEstablecimientosComponent },
   { path: 'listar-establecimientos', component: ListarEstablecimientosComponent },
   { path: 'editar-establecimiento', component: EditarEstablecimientosComponent },

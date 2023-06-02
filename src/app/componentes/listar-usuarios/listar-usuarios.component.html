@@ -27,8 +27,8 @@
             <td>{{ obtenerNombreRol(usuario.id_rol) }}</td>
             <td>{{ obtenerNombreEstado(usuario.id_estado_usuario) }}</td>
             <td>
-              <a [routerLink]="['/editar-usuarios', usuario.id_usuario]" class="btn btn-sm btn-primary mr-2">Editar</a>
-              <button (click)="eliminarUsuario(usuario.id_usuario)" class="btn btn-sm btn-danger">Eliminar</button>
+              <a [routerLink]="['/editar-usuario', usuario.id_usuario]" class="btn btn-sm btn-primary mr-2">Editar</a>
+              <button (click)="detallesUsuario(usuario.id_usuario)" class="btn btn-sm btn-danger">Detalles</button>
             </td>
           </tr>
         </tbody>
