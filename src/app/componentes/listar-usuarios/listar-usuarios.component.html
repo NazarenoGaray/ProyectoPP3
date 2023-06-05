@@ -4,6 +4,7 @@
   <div class="container">
     <div class="card-header">
       <label class="h2" for=""> Lista de usuarios</label>
+      <a class="btn btn-secondary" [routerLink]="['/']">Atras</a>
     </div>
     <div class="table-responsive">
       <table class="table table-striped">
@@ -31,6 +32,7 @@
               <button (click)="detallesUsuario(usuario.id_usuario)" class="btn btn-sm btn-info">Detalles</button>
             </td>
           </tr>
+          
         </tbody>
       </table>
     </div>

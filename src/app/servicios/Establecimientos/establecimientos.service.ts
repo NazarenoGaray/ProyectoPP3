@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Pais } from 'src/app/componentes/model/pais.model';
-import { Provincia } from 'src/app/componentes/model/provincia.model';
-import { Localidad } from 'src/app/componentes/model/localidad.model';
+import { Pais } from 'src/app/model/pais.model';
+import { Provincia } from 'src/app/model/provincia.model';
+import { Localidad } from 'src/app/model/localidad.model';
 
 
 @Injectable({

@@ -3,7 +3,7 @@
 <div class="card container-fluid" id="content-establecimiento">
     <div class="container">
         <div class="card-header">
-            <h2 class="h2">{{ usuario.nombre }}</h2>
+            <h2 class="h2">{{ usuario.nombre }} {{ usuario.apellido }}</h2>
         </div>
         <div class="row">
             <div class="col-sm col-xs-12">
@@ -51,6 +51,7 @@
             </div>
         </div>
     </div>
+    <a class="btn btn-secondary" [routerLink]="['/listar-usuarios']">Atras</a>
 </div>
 
 <app-pie></app-pie>

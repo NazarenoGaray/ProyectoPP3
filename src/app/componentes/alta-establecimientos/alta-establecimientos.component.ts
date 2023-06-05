@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Establecimiento } from '../model/establecimientos.model';
-import { Pais } from '../model/pais.model';
-import { Provincia } from '../model/provincia.model';
-import { Localidad } from '../model/localidad.model';
-import { UbicacionService } from 'src/app/servicios/ubicacion.service';
+import { Establecimiento } from '../../model/establecimientos.model';
+import { Pais } from '../../model/pais.model';
+import { Provincia } from '../../model/provincia.model';
+import { Localidad } from '../../model/localidad.model';
+import { UbicacionService } from 'src/app/servicios/ubicacion/ubicacion.service';
 import { EstablecimientosService } from 'src/app/servicios/Establecimientos/establecimientos.service';
 
 @Component({

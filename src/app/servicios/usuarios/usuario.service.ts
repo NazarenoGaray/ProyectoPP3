@@ -4,7 +4,7 @@ import { Observable, forkJoin, of, throwError } from 'rxjs';
 
 import { tap, switchMap, map, catchError } from 'rxjs/operators';
 import { take } from 'rxjs/operators';
-import { Usuario } from 'src/app/componentes/model/usuario.model';
+import { Usuario } from 'src/app/model/usuario.model';
 
 
 

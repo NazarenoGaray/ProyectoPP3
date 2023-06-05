@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Sector } from '../model/sectore.model';
-import { Puesto } from '../model/puesto.model';
-import { Equipo } from '../model/equipo.model';
+import { Sector } from '../../model/sectore.model';
+import { Puesto } from '../../model/puesto.model';
+import { Equipo } from '../../model/equipo.model';
 import { EquiposService } from 'src/app/servicios/equipos/equipos.service';
 
 

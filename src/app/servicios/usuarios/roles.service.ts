@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators'; // Agrega esta importación
-import { Rol } from '../../componentes/model/roles.model';
+import { Rol } from '../../model/roles.model';
 
 const API_URL = 'http://localhost/probando/roles.php';
 

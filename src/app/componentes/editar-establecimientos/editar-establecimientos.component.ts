@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
-import { Establecimiento } from '../model/establecimientos.model';
+import { Establecimiento } from '../../model/establecimientos.model';
 import { EstablecimientosService } from 'src/app/servicios/Establecimientos/establecimientos.service';
 
 @Component({

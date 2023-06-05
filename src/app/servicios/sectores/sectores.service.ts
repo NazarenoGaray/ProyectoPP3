@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { Sector } from 'src/app/componentes/model/sectore.model';
-import { Puesto } from 'src/app/componentes/model/puesto.model';
-import { Equipo } from 'src/app/componentes/model/equipo.model';
+import { Sector } from 'src/app/model/sectore.model';
+import { Puesto } from 'src/app/model/puesto.model';
+import { Equipo } from 'src/app/model/equipo.model';
 
 
 @Injectable({
