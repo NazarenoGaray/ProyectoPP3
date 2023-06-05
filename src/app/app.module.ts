@@ -22,6 +22,7 @@ import { CargarIncidenteComponent } from './componentes/cargar-incidente/cargar-
 import { ListarIncidentesComponent } from './componentes/listar-incidentes/listar-incidentes.component';
 import { SobreNosotrosComponent } from './componentes/sobre-nosotros/sobre-nosotros.component';
 import { ContactoComponent } from './componentes/contacto/contacto.component';
+import { DetalleUsuarioComponent } from './componentes/detalle-usuario/detalle-usuario.component';
 
 
 @NgModule({
@@ -44,6 +45,7 @@ import { ContactoComponent } from './componentes/contacto/contacto.component';
     ListarIncidentesComponent,
     SobreNosotrosComponent,
     ContactoComponent,
+    DetalleUsuarioComponent,
   ],
   imports: [
     BrowserModule,

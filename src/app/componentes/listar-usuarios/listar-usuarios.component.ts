@@ -73,7 +73,7 @@ export class ListarUsuariosComponent implements OnInit {
   }
 
   detallesUsuario(id_usuario: number) {
-    this.router.navigate(['/listar-usuarios',id_usuario]);
+    this.router.navigate(['/detalle-usuario',id_usuario]);
     // console.log(`Eliminar usuario con ID ${id_usuario}`);
     // if (confirm('¿Está seguro de que desea eliminar este usuario?')) {
     //   this.usuarioService.eliminarUsuario(id_usuario).subscribe(() => {

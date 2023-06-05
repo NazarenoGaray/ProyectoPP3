@@ -15,6 +15,7 @@ import { IncidenteComponent } from './componentes/incidente/incidente.component'
 import { EstablecimientoComponent } from './componentes/establecimiento/establecimiento.component';
 import { ContactoComponent } from './componentes/contacto/contacto.component';
 import { SobreNosotrosComponent } from './componentes/sobre-nosotros/sobre-nosotros.component';
+import { DetalleUsuarioComponent } from './componentes/detalle-usuario/detalle-usuario.component';
 
 const routes: Routes = [
   { path: '', component: BienvenidoComponent },
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: 'alta-usuario', component: AltaUsuariosComponent },
   { path: 'listar-usuarios', component: ListarUsuariosComponent },
   { path: 'editar-usuario/:id', component: EditarUsuariosComponent },
+  { path: 'detalle-usuario/:id', component: DetalleUsuarioComponent },
   { path: 'alta-establecimiento', component: AltaEstablecimientosComponent },
   { path: 'listar-establecimientos', component: ListarEstablecimientosComponent },
   { path: 'editar-establecimiento', component: EditarEstablecimientosComponent },
