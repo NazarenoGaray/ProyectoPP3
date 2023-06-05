@@ -20,9 +20,12 @@ import { Error404Component } from './componentes/error404/error404.component';
 import { IncidenteComponent } from './componentes/incidente/incidente.component';
 import { CargarIncidenteComponent } from './componentes/cargar-incidente/cargar-incidente.component';
 import { ListarIncidentesComponent } from './componentes/listar-incidentes/listar-incidentes.component';
-import { SobreNosotrosComponent } from './componentes/sobre-nosotros/sobre-nosotros.component';
+import { SobreNosotrosComponent } from './componentes/nosotros/sobre-nosotros.component';
 import { ContactoComponent } from './componentes/contacto/contacto.component';
-import { DetalleUsuarioComponent } from './componentes/detalle-usuario/detalle-usuario.component';
+import { UsuarioComponent } from './componentes/usuario/usuario.component';
+import { PuestoComponent } from './componentes/puesto/puesto.component';
+import { SectorComponent } from './componentes/sector/sector.component';
+import { EquipoComponent } from './componentes/equipo/equipo.component';
 
 
 @NgModule({
@@ -45,7 +48,10 @@ import { DetalleUsuarioComponent } from './componentes/detalle-usuario/detalle-u
     ListarIncidentesComponent,
     SobreNosotrosComponent,
     ContactoComponent,
-    DetalleUsuarioComponent,
+    UsuarioComponent,
+    PuestoComponent,
+    EquipoComponent,
+    SectorComponent,
   ],
   imports: [
     BrowserModule,

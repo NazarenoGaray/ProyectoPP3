@@ -14,26 +14,30 @@ import { ListarIncidentesComponent } from './componentes/listar-incidentes/lista
 import { IncidenteComponent } from './componentes/incidente/incidente.component';
 import { EstablecimientoComponent } from './componentes/establecimiento/establecimiento.component';
 import { ContactoComponent } from './componentes/contacto/contacto.component';
-import { SobreNosotrosComponent } from './componentes/sobre-nosotros/sobre-nosotros.component';
-import { DetalleUsuarioComponent } from './componentes/detalle-usuario/detalle-usuario.component';
+import { SobreNosotrosComponent } from './componentes/nosotros/sobre-nosotros.component';
+import { UsuarioComponent } from './componentes/usuario/usuario.component';
+import { SectorComponent } from './componentes/sector/sector.component';
+import { EquipoComponent } from './componentes/equipo/equipo.component';
 
 const routes: Routes = [
   { path: '', component: BienvenidoComponent },
   { path: 'bienvenido', component: BienvenidoComponent },
   { path: 'contacto', component: ContactoComponent },
-  { path: 'sobreNosotros', component: SobreNosotrosComponent },
+  { path: 'nosotros', component: SobreNosotrosComponent },
   { path: 'inicio-sesion', component: InicioSesionComponent },
   { path: 'alta-usuario', component: AltaUsuariosComponent },
   { path: 'listar-usuarios', component: ListarUsuariosComponent },
   { path: 'editar-usuario/:id', component: EditarUsuariosComponent },
-  { path: 'detalle-usuario/:id', component: DetalleUsuarioComponent },
+  { path: 'usuario/:id', component: UsuarioComponent },
   { path: 'alta-establecimiento', component: AltaEstablecimientosComponent },
   { path: 'listar-establecimientos', component: ListarEstablecimientosComponent },
   { path: 'editar-establecimiento', component: EditarEstablecimientosComponent },
-  { path: 'cargar-incidente', component: CargarIncidenteComponent },
-  { path: 'incidente', component: IncidenteComponent },
-  { path: 'listar-incidentes', component: ListarIncidentesComponent },
   { path: 'establecimiento/:id', component: EstablecimientoComponent },
+  { path: 'sector/:id', component: SectorComponent },
+  { path: 'equipo/:id', component: EquipoComponent},
+  { path: 'cargar-incidente', component: CargarIncidenteComponent },
+  { path: 'listar-incidentes', component: ListarIncidentesComponent },
+  { path: 'incidente/:id', component: IncidenteComponent },
   { path: '**', component: Error404Component },
 ];
 

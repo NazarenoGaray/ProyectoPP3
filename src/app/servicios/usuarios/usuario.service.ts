@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, forkJoin, of, throwError } from 'rxjs';
-import { Usuario } from './usuario.model';
+
 import { tap, switchMap, map, catchError } from 'rxjs/operators';
 import { take } from 'rxjs/operators';
+import { Usuario } from 'src/app/componentes/model/usuario.model';
 
 
 

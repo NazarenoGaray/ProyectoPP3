@@ -1,0 +1,16 @@
+.sectores-container {
+  display: flex;
+  align-items: center;
+}
+
+.sectores-title {
+  margin-right: 0px;
+}
+
+.sector-item {
+  margin-right: 5px;
+}
+
+.separator {
+  margin: 0 5px;
+}

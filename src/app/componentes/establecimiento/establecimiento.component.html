@@ -3,13 +3,14 @@
 <div class="card container-fluid" id="content-establecimiento">
     <div class="container">
         <div class="card-header">
-            <h2 class="h2">{{ establecimiento?.nombreEstablecimiento }}</h2>
-        </div>
+            <div class="h2">{{ establecimiento?.nombreEstablecimiento }}</div>
+        </div><br>
         <div class="row">
             <div class="col-sm col-xs-12">
                 <div class="card-columns">
                     <div class="card">
                         <div class="card-body">
+                            <h5>Ubicación</h5>
                             <div class="detail">
                                 <label class="card-subtitle mb-2 text-muted">País:</label>
                                 <span class="card-text">{{ establecimiento?.nombrePais }}</span>
@@ -29,12 +30,16 @@
                             </div>
                         </div>
                     </div>
+                    <br>
                     <div class="card">
                         <div class="card-body">
+                            <h5>Contacto</h5>
                             <div class="detail">
                                 <label class="card-subtitle mb-2 text-muted">Horarios de:</label>
                                 <span class="card-text">{{ establecimiento?.horario_entrada }}</span>
-                                <label class="card-subtitle mb-2 text-muted"> Hasta:</label>
+                                <span class="separator">-</span>
+
+                                <label class="card-subtitle mb-2 text-muted">Hasta:</label>
                                 <span class="card-text">{{ establecimiento?.horario_salida }}</span>
                             </div>
                             <div class="detail">
@@ -45,13 +50,34 @@
                                 <label class="card-subtitle mb-2 text-muted">Correo:</label>
                                 <span class="card-text">{{ establecimiento?.correo }}</span>
                             </div>
-                            <div *ngFor="let sector of sectores">
-                                <h3>{{ sector.nombre }}</h3>
-                                <!-- Otros detalles del sector que deseas mostrar -->
+                        </div>
+                    </div>
+                    <br>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5>Incidentes</h5>
+                            <div class="sectores-container">
+                                <div class="sectores-title">Sectores:</div>
+                                <ng-container *ngFor="let sector of sectores">
+                                    <span class="separator">|</span>
+                                    <div class="sector-item">
+                                        <a [routerLink]="['/sector', sector.id_sector]">{{ sector.nombre }}</a>
+                                    </div>
+                                    <span class="separator">|</span>
+                                </ng-container>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <a class="btn btn-primary"
+                    [routerLink]="['/editar-establecimiento', establecimiento.id_establecimiento ]">Editar </a>
             </div>
         </div>
     </div>

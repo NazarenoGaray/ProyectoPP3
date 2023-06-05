@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { EstablecimientosService } from 'src/app/servicios/establecimientos.service';
-import { SectoresService } from 'src/app/servicios/sectores.service';
-import { Sector } from '../model/sectores.model';
+import { SectoresService } from 'src/app/servicios/sectores/sectores.service';
+import { Sector } from '../model/sectore.model';
+import { EstablecimientosService } from 'src/app/servicios/Establecimientos/establecimientos.service';
 
 @Component({
   selector: 'app-establecimiento',
@@ -11,31 +11,36 @@ import { Sector } from '../model/sectores.model';
 })
 export class EstablecimientoComponent implements OnInit {
   establecimiento: any = {};
-  sectores: any[] = [];
-  nombreSectorSeleccionado: string | undefined;
-
+  sectores: Sector[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private establecimientosService: EstablecimientosService,
-    private sectoresService: SectoresService
-  ) { }
-
-  ngOnInit() {
-    this.obtenerDetallesEstablecimiento();
-    this.obtenerSectoresPorEstablecimiento();
+    private sectoresService: SectoresService,
+  ) {
+    this.route.params.subscribe(params => {
+      const id = params['id']; // Obtener el valor del parámetro "id"
+    });
   }
 
-  // la respuesta del servicio obtenerEstablecimientoPorId() devuelve un array con un solo elemento en lugar de un objeto directo.
-  obtenerDetallesEstablecimiento() {
-    const idEstablecimiento = this.route.snapshot.params['id'];
+
+  ngOnInit() {
+    this.route.paramMap.subscribe(params => {
+      const idEstablecimiento = Number(params.get('id')); // Convertir el ID a número
+      if (!isNaN(idEstablecimiento)) { // Verificar si el ID es un número válido
+        this.obtenerDetallesEstablecimiento(idEstablecimiento);
+        this.obtenerSectoresPorEstablecimiento(idEstablecimiento);
+      }
+    });
+  }
+
+  obtenerDetallesEstablecimiento(idEstablecimiento: number) { // Cambiar el tipo del parámetro a "number"
     this.establecimientosService.obtenerEstablecimientoPorId(idEstablecimiento).subscribe(
       (data: any[]) => {
-        // Verificar si el array contiene al menos un elemento
         if (data.length > 0) {
-          this.establecimiento = data[0]; // Acceder al primer elemento del array
+          this.establecimiento = data[0];
         } else {
-          console.log('No se encontró el establecimiento');
+          console.log('No se encontraron sectores en el establecimiento');
         }
       },
       error => {
@@ -44,32 +49,15 @@ export class EstablecimientoComponent implements OnInit {
     );
   }
 
-  obtenerSectoresPorEstablecimiento() {
-    const idEstablecimiento = this.route.snapshot.params['id'];
+  obtenerSectoresPorEstablecimiento(idEstablecimiento: number) { // Cambiar el tipo del parámetro a "number"
     this.sectoresService.obtenerSectoresPorEstablecimiento(idEstablecimiento).subscribe(
       response => {
-        console.log('Sectores obtenidos:', response);
-        // Resto del código para manejar la respuesta y asignar los valores correspondientes
+        this.sectores = response;
       },
       error => {
         console.error('Error al obtener los sectores:', error);
       }
     );
-
   }
-  trackById(index: number, sector: any) {
-    return sector.id; // Reemplaza 'id' con la propiedad única del sector
-  }
-
-  mostrarSector(sector: Sector) {
-    console.log('Haz clic en el sector:', sector);
-    console.log('Detalles del sector:');
-    console.log('Nombre: ' + sector.nombre);
-
-    this.nombreSectorSeleccionado = sector.nombre; // Asignar el nombre del sector a la nueva propiedad
-  }
-
-
-
 
 }

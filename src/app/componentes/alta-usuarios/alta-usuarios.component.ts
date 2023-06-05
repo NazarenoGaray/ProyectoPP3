@@ -1,16 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Usuario } from '../../servicios/usuario.model';
-import { UsuarioService } from '../../../app/servicios/usuario.service';
-import { Rol } from '../../servicios/roles.model';
-import { RolService } from '../../servicios/roles.service';
+
 import { UbicacionService } from 'src/app/servicios/ubicacion.service';
-import { EstadoUsuariosService } from 'src/app/servicios/estado-usuarios.service';
+
 import { estado_usuarios } from '../model/estado_usuarios.model';
 import { Pais } from '../model/pais.model';
 import { Provincia } from '../model/provincia.model';
 import { Localidad } from '../model/localidad.model';
+import { Usuario } from '../model/usuario.model';
+import { Rol } from '../model/roles.model';
+import { UsuarioService } from 'src/app/servicios/usuarios/usuario.service';
+import { RolService } from 'src/app/servicios/usuarios/roles.service';
+import { EstadoUsuariosService } from 'src/app/servicios/usuarios/estado-usuarios.service';
 
 @Component({
   selector: 'app-alta-usuarios',

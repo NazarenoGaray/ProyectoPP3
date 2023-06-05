@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { EstablecimientosService } from 'src/app/servicios/establecimientos.service';
+
 import { Router } from '@angular/router';
+import { EstablecimientosService } from 'src/app/servicios/Establecimientos/establecimientos.service';
 
 @Component({
   selector: 'app-listar-establecimientos',
