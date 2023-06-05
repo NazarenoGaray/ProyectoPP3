@@ -9,6 +9,9 @@ import { RolService } from '../../servicios/roles.service';
 import { UbicacionService } from 'src/app/servicios/ubicacion.service';
 import { EstadoUsuariosService } from 'src/app/servicios/estado-usuarios.service';
 import { estado_usuarios } from '../model/estado_usuarios.model';
+import { Pais } from '../model/pais.model';
+import { Provincia } from '../model/provincia.model';
+import { Localidad } from '../model/localidad.model';
 
 
 @Component({
@@ -24,9 +27,9 @@ export class EditarUsuariosComponent implements OnInit {
   id_usuario!: number;
   roles: Rol[] = [];
   estados: estado_usuarios[] = [];
-  paises: any[] = [];
-  provincias: any[] = [];
-  localidades: any[] = [];
+  paises: Pais[] = [];
+  provincias: Provincia[] = [];
+  localidades: Localidad[] = [];
   hayCambios: boolean = false;
 
   constructor(
@@ -41,6 +44,7 @@ export class EditarUsuariosComponent implements OnInit {
 
   ngOnInit(): void {
     this.usuarioForm = this.formBuilder.group({
+      id_usuario: ['', Validators.required],
       nombre: ['', Validators.required],
       apellido: ['', Validators.required],
       direccion: ['', Validators.required],
@@ -49,11 +53,18 @@ export class EditarUsuariosComponent implements OnInit {
       usuario: ['', Validators.required],
       contrasena: ['', Validators.required],
       id_rol: ['', Validators.required],
-      pais: [{ value: '', disabled: false }, Validators.required],
-      provincia: [{ value: '', disabled: true }, Validators.required],
-      localidad: [{ value: '', disabled: true }, Validators.required],
+      IDPais: [{ value: '', disabled: false }, Validators.required],
+      IDProvincia: [{ value: '', disabled: false }, Validators.required],
+      IDLocalidad: [{ value: '', disabled: false }, Validators.required],
       id_estado_usuario: ['', Validators.required]
     });
+
+    console.log('formulario:', JSON.stringify({
+      ...this.usuarioForm.value,
+      IDProvincia: this.usuarioForm.get('IDProvincia')?.value,
+      IDLocalidad: this.usuarioForm.get('IDLocalidad')?.value,
+      id_usuario: this.usuarioForm.get('id_usuario')?.value
+    }));
     // Obtenemos los roles para cargarlos en el select
     this.rolService.obtenerRoles().subscribe(
       (res: Rol[]) => {
@@ -84,10 +95,35 @@ export class EditarUsuariosComponent implements OnInit {
       (usuario: Usuario | null) => {
         if (usuario) {
           console.log("Data obtenida: ", usuario);
+          
           this.usuarioForm.patchValue(usuario);
           this.id_usuario = usuario.id_usuario;
           this.usuario = usuario;
           this.usuarioOriginal = { ...usuario };// cuardamos una copia del usuario
+          this.usuario.IDPais = usuario.IDPais;
+          this.usuario.IDProvincia = usuario.IDProvincia;
+          this.usuario.IDLocalidad = usuario.IDLocalidad;
+          // Obtener el país del usuario seleccionado
+          if (usuario.IDPais) {
+            this.usuarioForm.get('IDPais')?.setValue(usuario.IDPais);
+          }
+          // Obtener la provincia según el país seleccionado
+          if (usuario.IDPais) {
+            this.ubicacionService.getProvincias(usuario.IDPais).subscribe((provincias: Provincia[]) => {
+              this.provincias = provincias;
+              this.usuarioForm.get('IDProvincia')?.enable();
+              this.usuarioForm.get('IDProvincia')?.setValue(usuario.IDProvincia);
+            });
+          }
+    
+          // Obtener la localidad según la provincia seleccionada
+          if (usuario.IDProvincia) {
+            this.ubicacionService.getLocalidades(usuario.IDProvincia).subscribe((localidades: Localidad[]) => {
+              this.localidades = localidades;
+              this.usuarioForm.get('IDLocalidad')?.enable();
+              this.usuarioForm.get('IDLocalidad')?.setValue(usuario.IDLocalidad);
+            });
+          }
         } else {
           console.log("Usuario no encontrado");
         }
@@ -96,6 +132,7 @@ export class EditarUsuariosComponent implements OnInit {
         console.log(error);
       }
     );
+      
     ////////////////////////////////////////////////////////////////verificando cambios
     this.usuarioForm.valueChanges.subscribe(() => {
       this.detectarCambios();
@@ -124,45 +161,51 @@ export class EditarUsuariosComponent implements OnInit {
       }
     );
     this.detectarCambios();
+    this.hayCambios = false;
   }
   //////////////////////////////////////////////////////////////////////////////////////////
   onPaisSelected() {
-    const paisId = this.usuarioForm.value.pais;
-    this.usuarioForm.get('provincia')?.setValue('');
-    this.usuarioForm.get('provincia')?.disable();
-    this.usuarioForm.get('localidad')?.setValue('');
-    this.usuarioForm.get('localidad')?.disable();
+    const paisId = this.usuarioForm.value.IDPais;
+    this.usuarioForm.get('IDProvincia')?.setValue('');
+    this.usuarioForm.get('IDProvincia')?.enable();
+    this.usuarioForm.get('IDLocalidad')?.setValue('');
+    this.usuarioForm.get('IDLocalidad')?.disable();
+    
     this.provincias = [];
 
     if (paisId) {
       this.ubicacionService.getProvincias(paisId).subscribe((data: any[]) => {
         this.provincias = data;
-        this.usuarioForm.get('provincia')?.enable();
-      });
+        this.usuarioForm.get('IDLocalidad')?.disable();
+      }); 
     }
   }
 
   onProvinciaSelected() {
-    const provinciaId = this.usuarioForm.value.provincia;
-    this.usuarioForm.get('localidad')?.setValue('');
-    this.usuarioForm.get('localidad')?.disable();
+    const provinciaId = this.usuarioForm.value.IDProvincia;
+    this.usuarioForm.get('IDLocalidad')?.setValue('');
+    this.usuarioForm.get('IDLocalidad')?.disable();
     this.localidades = [];
 
     if (provinciaId) {
       this.ubicacionService.getLocalidades(provinciaId).subscribe((data: any[]) => {
         this.localidades = data;
-        this.usuarioForm.get('localidad')?.enable();
+        this.usuarioForm.get('IDLocalidad')?.enable();
       });
     }
   }
-  detectarCambios() {
-    this.usuarioForm.valueChanges.subscribe((value) => {
-      this.hayCambios = !this.sonDatosIguales(value, this.usuarioOriginal);
-    });
+  detectarCambios(): void {
+    this.hayCambios = !this.sonDatosIguales();
   }
-  sonDatosIguales(datosA: any, datosB: any): boolean {
-    return true;
-    
+  
+  sonDatosIguales(): boolean {
+    // Obtener los valores actuales del formulario
+    const formularioActual = this.usuarioForm.value;
+    //console.log('formularioActual:', JSON.stringify(this.usuarioForm.value));
+    //console.log('usuarioOriginal:', JSON.stringify(this.usuarioOriginal));
+    // Comparar los valores actuales con los valores originales
+    return JSON.stringify(formularioActual) === JSON.stringify(this.usuarioOriginal);
   }
+  
     
 }

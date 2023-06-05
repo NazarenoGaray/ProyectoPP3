@@ -39,7 +39,7 @@
       </div>
       <div class="form-floating mb-3 col-2">
         <select required class="form-select" id="floatingSelectPais" aria-label="Floating label select example"
-          formControlName="pais" (change)="onPaisSelected()" (ngModelChange)="detectarCambios()">
+          formControlName="IDPais" (change)="onPaisSelected()" (ngModelChange)="detectarCambios()">
           <option value="">Seleccionar país</option>
           <option *ngFor="let pais of paises" [value]="pais.IDPais">{{ pais.Descripcion }}</option>
         </select>
@@ -48,18 +48,18 @@
 
       <div class="form-floating mb-3 col-2">
         <select required class="form-select" id="floatingSelectProvincia" aria-label="Floating label select example"
-          formControlName="provincia" (change)="onProvinciaSelected()" (ngModelChange)="detectarCambios()">
+          formControlName="IDProvincia" (change)="onProvinciaSelected()" (ngModelChange)="detectarCambios()">
           <option value="">Seleccionar provincia</option>
-          <option *ngFor="let provincia of provincias" [value]="provincia.IDProvincia">{{ provincia.Descripcion_Provincia }}</option>
+          <option *ngFor="let provincia of provincias" [value]="provincia.IDProvincia">{{ provincia.Descripcion }}</option>
         </select>
         <label for="floatingSelectProvincia">Provincia</label>
       </div>
 
       <div class="form-floating mb-3 col-2">
         <select required class="form-select" id="floatingSelectLocalidad" aria-label="Floating label select example"
-        formControlName="localidad" (ngModelChange)="detectarCambios()">
+        formControlName="IDLocalidad" (ngModelChange)="detectarCambios()">
           <option value="">Seleccionar localidad</option>
-          <option *ngFor="let localidad of localidades" [value]="localidad.IDLocalidad">{{ localidad.Descripcion_Localidades }}</option>
+          <option *ngFor="let localidad of localidades" [value]="localidad.IDLocalidad">{{ localidad.Descripcion }}</option>
         </select>
         <label for="floatingSelectLocalidad">Localidad</label>
       </div>
@@ -82,7 +82,7 @@
       </div>
 
       <div class="form-group">
-        <button type="submit" class="btn btn-success" [disabled]="!hayCambios">Guardar</button>
+        <button type="submit" class="btn btn-success" [disabled]="!hayCambios || usuarioForm.invalid">Guardar</button>
         <a class="btn btn-danger" [routerLink]="['/listar-usuarios']">Cancelar</a>
       </div>
     </form>
