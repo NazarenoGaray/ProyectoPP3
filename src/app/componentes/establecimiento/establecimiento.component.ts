@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SectoresService } from 'src/app/servicios/sectores/sectores.service';
-import { Sector } from '../../model/sectore.model';
+
 import { EstablecimientosService } from 'src/app/servicios/Establecimientos/establecimientos.service';
+import { Sector } from 'src/app/model/sectore.model';
 
 @Component({
   selector: 'app-establecimiento',

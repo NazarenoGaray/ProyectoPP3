@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TokenService } from 'src/app/token/token.service';
+import { TokenService } from 'src/app/servicios/token/token.service';
 
 @Component({
   selector: 'app-bienvenido',

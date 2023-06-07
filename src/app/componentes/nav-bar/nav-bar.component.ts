@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { TokenService } from 'src/app/token/token.service';
+import { TokenService } from 'src/app/servicios/token/token.service';
 
 @Component({
   selector: 'app-nav-bar',

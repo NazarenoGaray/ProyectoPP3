@@ -76,6 +76,7 @@ export class AltaUsuariosComponent implements OnInit {
     ////////////////////////////////////////////////////////////////////////
     this.ubicacionService.getPaises().subscribe((data: any[]) => {
       this.paises = data;
+      console.log('paisdata:',data);
     });
     //this.getPaises();
   }
@@ -96,8 +97,12 @@ export class AltaUsuariosComponent implements OnInit {
 
     if (paisId) {
       this.ubicacionService.getProvincias(paisId).subscribe((data: any[]) => {
+        console.log('provinciadata:',data);
         this.provincias = data;
         this.usuarioForm.get('provincia')?.enable();
+      },
+      (err: any) => {
+        console.log(`Error al agregar el usuario: ${err.message}`);
       });
     }
   }

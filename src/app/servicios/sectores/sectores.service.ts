@@ -11,7 +11,7 @@ import { Equipo } from 'src/app/model/equipo.model';
 })
 export class SectoresService {
   private baseUrl = 'http://localhost/probando';
-  public sectores: any[] = [];
+  public sectores: Sector[] = [];
 
   constructor(private http: HttpClient) { }
 
@@ -21,7 +21,7 @@ export class SectoresService {
     return this.http.get<any>(url).pipe(
       tap((response) => {
         this.sectores = response;
-        console.log('Sectores.service.ts:', this.sectores);
+        console.log('Sectores.service sector por establecimiento:', this.sectores);
       })
     );
   }

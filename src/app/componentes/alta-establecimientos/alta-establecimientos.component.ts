@@ -60,6 +60,7 @@ export class AltaEstablecimientosComponent implements OnInit {
     if (paisId) {
       this.ubicacionService.getProvincias(paisId).subscribe((data: any[]) => {
         this.provincias = data;
+        
         this.establecimientoForm.get('provincia')?.enable();
       });
     }

@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { EstadoUsuariosService } from './estado-usuarios.service';
 
 describe('EstadoUsuariosService', () => {

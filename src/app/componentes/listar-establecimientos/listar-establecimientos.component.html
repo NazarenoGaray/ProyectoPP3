@@ -13,9 +13,9 @@
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">{{ establecimiento.nombreEstablecimiento }}</h5>
-                <h6 class="card-subtitle mb-2 text-muted">{{ establecimiento.nombrePais }}</h6>
-                <p class="card-text">{{ establecimiento.nombreProvincia }} - {{ establecimiento.nombreLocalidad }}</p>
                 <p class="card-text">{{ establecimiento.calle }} {{ establecimiento.altura }}</p>
+                <p class="card-text">{{ establecimiento.nombreProvincia }} - {{ establecimiento.nombreLocalidad }}</p>
+                <h6 class="card-subtitle mb-2 text-muted">{{ establecimiento.nombrePais }}</h6>
                 <a [routerLink]="['/establecimiento', establecimiento.id_establecimiento]">Ver detalles</a>
 
               </div>

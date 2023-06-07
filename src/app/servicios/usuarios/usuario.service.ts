@@ -16,10 +16,8 @@ que se encarga de manejar la lógica de negocio de la aplicación y comunicarse 
   providedIn: 'root'
 })
 export class UsuarioService {
-
-  // URL de la API
-  apiURL = 'http://localhost/probando/api.php';
-
+  apiURL = 'http://localhost/probando/usuarios.php';
+  usuario!: Usuario;
   // Lista de usuarios
   usuarios = [];
 
@@ -68,7 +66,18 @@ export class UsuarioService {
       })
     );
   }
-
+  obtenerDetallesUsuarioPorId(id_usuario: number,detalles: boolean) {
+    return this.http.get(`${this.apiURL}?id_usuario=${id_usuario}&detalles=${detalles}`).pipe(
+      take(1),
+      tap((data: any) => {
+        this.usuarioSeleccionado = data;
+      }),
+      catchError(err => {
+        console.log(`Error al obtener usuario por ID: ${err.message}`);
+        return throwError(err);
+      })
+    );
+  }
 
   // Función para crear un nuevo usuario
   crearUsuario(usuario: Usuario) {
