@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SectoresService } from 'src/app/servicios/sectores/sectores.service';
-import { Sector } from '../../model/sectore.model';
+
 import { Puesto } from '../../model/puesto.model';
 import { Equipo } from '../../model/equipo.model';
+import { Sector } from 'src/app/model/sectore.model';
 
 @Component({
   selector: 'app-sector',
@@ -11,8 +12,9 @@ import { Equipo } from '../../model/equipo.model';
   styleUrls: ['./sector.component.css']
 })
 export class SectorComponent implements OnInit {
-  laboratorioSeleccionado: string | undefined; // Variable para almacenar el laboratorio seleccionado
-  sectores: Sector[] = [];
+  sectorSeleccionado: string | undefined; // Variable para almacenar el sector seleccionado
+  id_sector!: number;
+  sector!: Sector;
   puestos: Puesto[] = [];
   equipos: Equipo[] = [];
 
@@ -25,10 +27,10 @@ export class SectorComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      const idLaboratorio = params.get('id'); // Obtener el ID del laboratorio desde la URL
-      if (idLaboratorio) {
-        this.laboratorioSeleccionado = idLaboratorio; // Almacenar el laboratorio seleccionado en la variable
-        this.obtenerSectorConPuestos(Number(idLaboratorio));
+      const idSector = params.get('id'); // Obtener el ID del sector desde la URL
+      if (idSector) {
+        this.sectorSeleccionado = idSector; // Almacenar el sector seleccionado en la variable
+        this.obtenerSectorConPuestos(Number(idSector));
       }
     });
   }
@@ -36,8 +38,8 @@ export class SectorComponent implements OnInit {
   obtenerSectorConPuestos(idSector: number) {
     this.sectoresService.obtenerSectorPorId(idSector).subscribe(
       sector => {
-        this.sectores = [sector]; // Almacenar el sector en un array
-        console.log(this.sectores);
+        this.sector = sector; // Almacenar el sector en un array
+        console.log(this.sector);
       },
       error => {
         console.error('Error al obtener el sector:', error);

@@ -37,9 +37,9 @@ export class EditarUsuariosComponent implements OnInit {
     private usuarioService: UsuarioService,
     private router: Router,
     private route: ActivatedRoute,
+    private ubicacionService: UbicacionService,
     private rolService: RolService,
     private estadoService: EstadoUsuariosService,
-    private ubicacionService: UbicacionService,
   ) { }
 
   ngOnInit(): void {
@@ -47,24 +47,24 @@ export class EditarUsuariosComponent implements OnInit {
       id_usuario: ['', Validators.required],
       nombre: ['', Validators.required],
       apellido: ['', Validators.required],
-      direccion: ['', Validators.required],
       telefono: ['', Validators.required],
       correo: ['', [Validators.required, Validators.email, this.validateCorreo]],
       usuario: ['', Validators.required],
       contrasena: ['', Validators.required],
-      id_rol: ['', Validators.required],
-      IDPais: [{ value: '', disabled: false }, Validators.required],
-      IDProvincia: [{ value: '', disabled: false }, Validators.required],
+      direccion: ['', Validators.required],
       IDLocalidad: [{ value: '', disabled: false }, Validators.required],
-      id_estado_usuario: ['', Validators.required]
+      IDProvincia: [{ value: '', disabled: false }, Validators.required],
+      IDPais: [{ value: '', disabled: false }, Validators.required],
+      id_rol: ['', Validators.required],
+      id_estado_usuario: ['', Validators.required],
     });
 
-    console.log('formulario:', JSON.stringify({
-      ...this.usuarioForm.value,
-      IDProvincia: this.usuarioForm.get('IDProvincia')?.value,
-      IDLocalidad: this.usuarioForm.get('IDLocalidad')?.value,
-      id_usuario: this.usuarioForm.get('id_usuario')?.value
-    }));
+    // console.log('formulario:', JSON.stringify({
+    //   ...this.usuarioForm.value,
+    //   IDProvincia: this.usuarioForm.get('IDProvincia')?.value,
+    //   IDLocalidad: this.usuarioForm.get('IDLocalidad')?.value,
+    //   id_usuario: this.usuarioForm.get('id_usuario')?.value
+    // }));
     // Obtenemos los roles para cargarlos en el select
     this.rolService.obtenerRoles().subscribe(
       (res: Rol[]) => {
@@ -201,8 +201,8 @@ export class EditarUsuariosComponent implements OnInit {
   sonDatosIguales(): boolean {
     // Obtener los valores actuales del formulario
     const formularioActual = this.usuarioForm.value;
-    //console.log('formularioActual:', JSON.stringify(this.usuarioForm.value));
-    //console.log('usuarioOriginal:', JSON.stringify(this.usuarioOriginal));
+    console.log('formularioActual:', JSON.stringify(this.usuarioForm.value));
+    console.log('usuarioOriginal:', JSON.stringify(this.usuarioOriginal));
     // Comparar los valores actuales con los valores originales
     return JSON.stringify(formularioActual) === JSON.stringify(this.usuarioOriginal);
   }

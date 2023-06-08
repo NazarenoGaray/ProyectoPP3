@@ -27,7 +27,6 @@
         <input required type="text" class="form-control" id="direccion" formControlName="direccion" placeholder=" ">
         <label for="direccion">Dirección </label>
       </div>
-
       <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
         <input required type="text" class="form-control" id="nombreusuario" formControlName="usuario"
           placeholder="m.lopez">
@@ -46,7 +45,6 @@
         </select>
         <label for="floatingSelectPais">País</label>
       </div>
- 
       <div class="form-floating mb-3 col-2">
         <select required class="form-select" id="floatingSelectProvincia" aria-label="Floating label select example"
           formControlName="provincia" (change)="onProvinciaSelected()">
@@ -55,7 +53,6 @@
         </select>
         <label for="floatingSelectProvincia">Provincia</label>
       </div>
-
       <div class="form-floating mb-3 col-2">
         <select required class="form-select" id="floatingSelectLocalidad" aria-label="Floating label select example"
         formControlName="localidad" >
@@ -72,8 +69,6 @@
         </select>
         <label for="floatingSelectRol">Rol</label>
       </div>
-
-
       <div class="form-floating mb-3 col-2">
         <select required class="form-select" id="floatingSelectEstados" aria-label="Floating label select example"
           formControlName="id_estado_usuario">
@@ -82,7 +77,6 @@
         </select>
         <label for="floatingSelectEstados">Estado</label>
       </div>
-
       <div class="form-group">
         <button type="submit" class="btn btn-success">Crear</button>
         <a class="btn btn-danger" [routerLink]="['/bienvenido']">Cancelar</a>
