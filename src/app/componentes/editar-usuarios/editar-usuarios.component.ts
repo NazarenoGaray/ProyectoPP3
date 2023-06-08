@@ -59,12 +59,12 @@ export class EditarUsuariosComponent implements OnInit {
       id_estado_usuario: ['', Validators.required]
     });
 
-    console.log('formulario:', JSON.stringify({
-      ...this.usuarioForm.value,
-      IDProvincia: this.usuarioForm.get('IDProvincia')?.value,
-      IDLocalidad: this.usuarioForm.get('IDLocalidad')?.value,
-      id_usuario: this.usuarioForm.get('id_usuario')?.value
-    }));
+    // console.log('formulario:', JSON.stringify({
+    //   ...this.usuarioForm.value,
+    //   IDProvincia: this.usuarioForm.get('IDProvincia')?.value,
+    //   IDLocalidad: this.usuarioForm.get('IDLocalidad')?.value,
+    //   id_usuario: this.usuarioForm.get('id_usuario')?.value
+    // }));
     // Obtenemos los roles para cargarlos en el select
     this.rolService.obtenerRoles().subscribe(
       (res: Rol[]) => {

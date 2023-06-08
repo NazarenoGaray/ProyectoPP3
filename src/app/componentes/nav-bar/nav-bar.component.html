@@ -72,10 +72,10 @@
       </ul>
       <ul class="navbar-nav me-left mb-2 mb-lg-0">
         <ng-container *ngIf="!isLoggedIn()">
-          <button class="btn btn-outline-secondary" routerLink="/inicio-sesion">Iniciar Sesión</button>
+          <a class="btn btn-secondary btn-lg "routerLink="/inicio-sesion">Iniciar Sesión</a>
         </ng-container>
         <ng-container *ngIf="isLoggedIn()">
-          <button class="btn btn-outline-danger" (click)="cerrarSesion()">Cerrar Sesión</button>
+          <button class="btn btn-danger btn-lg" (click)="cerrarSesion()">Cerrar Sesión</button>
         </ng-container>
       </ul>
     </div>

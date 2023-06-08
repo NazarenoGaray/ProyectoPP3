@@ -26,9 +26,7 @@ export class UsuarioComponent implements OnInit {
     private estadoService: EstadoUsuariosService,
     private ubicacionoService: UbicacionService,
 
-  ) {
-
-  }
+  ) { }
 
 
   ngOnInit() {

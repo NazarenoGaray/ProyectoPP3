@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SectoresService } from 'src/app/servicios/sectores/sectores.service';
-
 import { EstablecimientosService } from 'src/app/servicios/Establecimientos/establecimientos.service';
 import { Sector } from 'src/app/model/sectore.model';
 
@@ -18,25 +17,23 @@ export class EstablecimientoComponent implements OnInit {
     private route: ActivatedRoute,
     private establecimientosService: EstablecimientosService,
     private sectoresService: SectoresService,
-  ) {
-    this.route.params.subscribe(params => {
-      const id = params['id']; // Obtener el valor del parámetro "id"
-    });
-  }
+  ) { }
 
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const idEstablecimiento = Number(params.get('id')); // Convertir el ID a número
-      if (!isNaN(idEstablecimiento)) { // Verificar si el ID es un número válido
+      if ((idEstablecimiento)) { // Verificar si el ID es un número válido
         this.obtenerDetallesEstablecimiento(idEstablecimiento);
         this.obtenerSectoresPorEstablecimiento(idEstablecimiento);
+      }else{
+        console.log("*****NO SEENCONTRO EL ESTABLECIMIENTO*****");
       }
     });
   }
 
   obtenerDetallesEstablecimiento(idEstablecimiento: number) { // Cambiar el tipo del parámetro a "number"
-    this.establecimientosService.obtenerEstablecimientoPorId(idEstablecimiento).subscribe(
+    this.establecimientosService.obtenerDetalleEstablecimientoPorId(idEstablecimiento).subscribe(
       (data: any[]) => {
         if (data.length > 0) {
           this.establecimiento = data[0];

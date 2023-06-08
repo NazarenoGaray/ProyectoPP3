@@ -31,7 +31,7 @@ const routes: Routes = [
   { path: 'usuario/:id', component: UsuarioComponent },
   { path: 'alta-establecimiento', component: AltaEstablecimientosComponent },
   { path: 'listar-establecimientos', component: ListarEstablecimientosComponent },
-  { path: 'editar-establecimiento', component: EditarEstablecimientosComponent },
+  { path: 'editar-establecimiento/:id', component: EditarEstablecimientosComponent },
   { path: 'establecimiento/:id', component: EstablecimientoComponent },
   { path: 'sector/:id', component: SectorComponent },
   { path: 'equipo/:id', component: EquipoComponent},

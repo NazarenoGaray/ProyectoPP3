@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Router } from '@angular/router';
+import { estado_usuarios } from 'src/app/model/estado_usuarios.model';
+import { Rol } from 'src/app/model/roles.model';
+import { Usuario } from 'src/app/model/usuario.model';
 import { EstadoUsuariosService } from 'src/app/servicios/usuarios/estado-usuarios.service';
 import { RolService } from 'src/app/servicios/usuarios/roles.service';
 import { UsuarioService } from 'src/app/servicios/usuarios/usuario.service';
@@ -12,9 +15,9 @@ import { UsuarioService } from 'src/app/servicios/usuarios/usuario.service';
 })
 export class ListarUsuariosComponent implements OnInit {
 
-  usuarios: any[] = [];
-  roles: any[] = [];
-  estados: any[] = [];
+  usuarios: Usuario[] = [];
+  roles: Rol[] = [];
+  estados: estado_usuarios[] = [];
 
   constructor(
     private usuarioService: UsuarioService,

@@ -48,9 +48,9 @@ export class AltaUsuariosComponent implements OnInit {
       usuario: ['', Validators.required],
       contrasena: ['', Validators.required],
       id_rol: ['', Validators.required],
-      pais: new FormControl({ value: '', disabled: false }, Validators.required),
-      provincia: new FormControl({ value: '', disabled: true }, Validators.required),
-      localidad: new FormControl({ value: '', disabled: true }, Validators.required),
+      IDPais: new FormControl({ value: '', disabled: false }, Validators.required),
+      IDProvincia: new FormControl({ value: '', disabled: true }, Validators.required),
+      IDLocalidad: new FormControl({ value: '', disabled: true }, Validators.required),
       id_estado_usuario: ['', Validators.required]
       
     });
@@ -88,18 +88,18 @@ export class AltaUsuariosComponent implements OnInit {
     return null;
   }
   onPaisSelected() {
-    const paisId = this.usuarioForm.value.pais;
-    this.usuarioForm.get('provincia')?.setValue('');
-    this.usuarioForm.get('provincia')?.disable();
-    this.usuarioForm.get('localidad')?.setValue('');
-    this.usuarioForm.get('localidad')?.disable();
+    const paisId = this.usuarioForm.value.IDPais;
+    this.usuarioForm.get('IDProvincia')?.setValue('');
+    this.usuarioForm.get('IDProvincia')?.disable();
+    this.usuarioForm.get('IDLocalidad')?.setValue('');
+    this.usuarioForm.get('IDLocalidad')?.disable();
     this.provincias = [];
 
     if (paisId) {
       this.ubicacionService.getProvincias(paisId).subscribe((data: any[]) => {
         console.log('provinciadata:',data);
         this.provincias = data;
-        this.usuarioForm.get('provincia')?.enable();
+        this.usuarioForm.get('IDProvincia')?.enable();
       },
       (err: any) => {
         console.log(`Error al agregar el usuario: ${err.message}`);
@@ -108,15 +108,15 @@ export class AltaUsuariosComponent implements OnInit {
   }
 
   onProvinciaSelected() {
-    const provinciaId = this.usuarioForm.value.provincia;
-    this.usuarioForm.get('localidad')?.setValue('');
-    this.usuarioForm.get('localidad')?.disable();
+    const provinciaId = this.usuarioForm.value.IDProvincia;
+    this.usuarioForm.get('IDLocalidad')?.setValue('');
+    this.usuarioForm.get('IDLocalidad')?.disable();
     this.localidades = [];
 
     if (provinciaId) {
       this.ubicacionService.getLocalidades(provinciaId).subscribe((data: any[]) => {
         this.localidades = data;
-        this.usuarioForm.get('localidad')?.enable();
+        this.usuarioForm.get('IDLocalidad')?.enable();
       });
     }
   }

@@ -35,7 +35,7 @@ export class UbicacionService {
     return this.http.get(url);
   }
   getLocalidadPorID(id: number): Observable<any> {
-    const url = `${this.baseUrl}/localidades.php?idLocalidad=${id}`;
+    const url = `${this.baseUrl}/localidades.php?IDLocalidad=${id}`;
     return this.http.get(url);
   }
 }
