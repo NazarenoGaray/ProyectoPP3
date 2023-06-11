@@ -18,6 +18,5 @@ export class Usuario {
     public provincia: string,
     public localidad: string,
     public estado: string,
-
   ) {}
 }

@@ -173,4 +173,3 @@ export class EditarEstablecimientosComponent implements OnInit {
   getId(){
     return this.idEstablecimiento;
   }
-}

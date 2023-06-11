@@ -96,5 +96,5 @@ export class AltaEstablecimientosComponent implements OnInit {
       }
     );
   }
-
+  
 }
