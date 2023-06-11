@@ -3,7 +3,7 @@
 <div class="card container-fluid" id="content-establecimiento">
     <div class="container">
         <div class="card-header">
-            <h2 class="h2"><span class="card-text">{{ usuario?.nombre }} {{ usuario?.apellido }}</span></h2>
+            <h2 class="h2"><span class="card-text">{{ usuario.nombre }} {{ usuario.apellido }}</span></h2>
         </div>
         <div class="row">
             <div class="col-sm col-xs-12">
@@ -12,23 +12,27 @@
                         <div class="card-body">
                             <div class="detail">
                                 <label class="card-subtitle mb-2 text-muted">País:</label>
-                                <span class="card-text">{{ usuario?.pais }}</span>
+                                <span class="card-text">{{ usuario.pais }}</span>
                             </div>
                             <div class="detail">
                                 <label class="card-subtitle mb-2 text-muted">Provincia:</label>
-                                <span class="card-text">{{ usuario?.provincia }}</span>
+                                <span class="card-text">{{ usuario.provincia }}</span>
                             </div>
                             <div class="detail">
                                 <label class="card-subtitle mb-2 text-muted">Localidad:</label>
-                                <span class="card-text">{{ usuario?.localidad}}</span>
+                                <span class="card-text">{{ usuario.localidad}}</span>
                             </div>
                             <div class="detail">
                                 <label class="card-subtitle mb-2 text-muted">Dirección:</label>
-                                <span class="card-text"> {{usuario?.direccion}} </span>
+                                <span class="card-text"> {{usuario.direccion}} </span>
                             </div>
                             <div class="detail">
                                 <label class="card-subtitle mb-2 text-muted">Estado:</label>
-                                <span class="card-text">{{ usuario?.estado }}</span>
+                                <span class="card-text">{{ usuario.estado }}</span>
+                            </div>
+                            <div class="detail">
+                                <label class="card-subtitle mb-2 text-muted">Rol:</label>
+                                <span class="card-text">{{ usuario.rol }}</span>
                             </div>
                         </div>
                     </div>
@@ -43,11 +47,11 @@
                             </div>
                             <div class="detail">
                                 <label class="card-subtitle mb-2 text-muted">Telefono:</label>
-                                <span class="card-text">{{ usuario?.telefono }}</span>
+                                <span class="card-text">{{ usuario.telefono }}</span>
                             </div>
                             <div class="detail">
                                 <label class="card-subtitle mb-2 text-muted">Correo:</label>
-                                <span class="card-text">{{ usuario?.correo }}</span>
+                                <span class="card-text">{{ usuario.correo }}</span>
                             </div>
                             
                         </div>

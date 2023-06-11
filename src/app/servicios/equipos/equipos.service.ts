@@ -14,7 +14,7 @@ export class EquiposService {
 
   //php - Obtener informacion de un equipo en especifico
   obtenerEquipo(idEquipo: number): Observable<Equipo> {
-    const url = `${this.baseUrl}/equipos.php?id_equipo=${idEquipo}`;
+    const url = `${this.baseUrl}/equipos.php?idEquipo=${idEquipo}`;
     return this.http.get<Equipo>(url);
   }
 

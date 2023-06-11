@@ -1,5 +1,5 @@
 export interface Provincia {
-    IDProvincia: number;
+    idProvincia: number;
     Descripcion: string;
     // Otras propiedades del modelo
   }

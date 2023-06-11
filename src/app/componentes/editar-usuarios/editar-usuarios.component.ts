@@ -24,7 +24,7 @@ export class EditarUsuariosComponent implements OnInit {
   usuarioForm!: FormGroup;
   usuario!: Usuario;
   usuarioOriginal!: Usuario;
-  id_usuario!: number;
+  idUsuario!: number;
   roles: Rol[] = [];
   estados: estado_usuarios[] = [];
   paises: Pais[] = [];
@@ -44,7 +44,7 @@ export class EditarUsuariosComponent implements OnInit {
 
   ngOnInit(): void {
     this.usuarioForm = this.formBuilder.group({
-      id_usuario: ['', Validators.required],
+      idUsuario: ['', Validators.required],
       nombre: ['', Validators.required],
       apellido: ['', Validators.required],
       direccion: ['', Validators.required],
@@ -52,18 +52,18 @@ export class EditarUsuariosComponent implements OnInit {
       correo: ['', [Validators.required, Validators.email, this.validateCorreo]],
       usuario: ['', Validators.required],
       contrasena: ['', Validators.required],
-      id_rol: ['', Validators.required],
-      IDPais: [{ value: '', disabled: false }, Validators.required],
-      IDProvincia: [{ value: '', disabled: false }, Validators.required],
-      IDLocalidad: [{ value: '', disabled: false }, Validators.required],
-      id_estado_usuario: ['', Validators.required]
+      idRol: ['', Validators.required],
+      idPais: [{ value: '', disabled: false }, Validators.required],
+      idProvincia: [{ value: '', disabled: false }, Validators.required],
+      idLocalidad: [{ value: '', disabled: false }, Validators.required],
+      idEstadoUsuario: ['', Validators.required]
     });
 
     // console.log('formulario:', JSON.stringify({
     //   ...this.usuarioForm.value,
-    //   IDProvincia: this.usuarioForm.get('IDProvincia')?.value,
-    //   IDLocalidad: this.usuarioForm.get('IDLocalidad')?.value,
-    //   id_usuario: this.usuarioForm.get('id_usuario')?.value
+    //   idProvincia: this.usuarioForm.get('idProvincia')?.value,
+    //   idLocalidad: this.usuarioForm.get('idLocalidad')?.value,
+    //   idUsuario: this.usuarioForm.get('idUsuario')?.value
     // }));
     // Obtenemos los roles para cargarlos en el select
     this.rolService.obtenerRoles().subscribe(
@@ -90,38 +90,38 @@ export class EditarUsuariosComponent implements OnInit {
     ////////////////////////////////////////////////////////
     this.route.params.pipe(
       take(1),
-      switchMap(params => this.usuarioService.obtenerUsuarioPorId(params['id']))
+      switchMap(params => this.usuarioService.obtenerUsuarioPorId(params['idEstablecimiento']))
     ).subscribe(
       (usuario: Usuario | null) => {
         if (usuario) {
           console.log("Data obtenida: ", usuario);
           
           this.usuarioForm.patchValue(usuario);
-          this.id_usuario = usuario.id_usuario;
+          this.idUsuario = usuario.idUsuario;
           this.usuario = usuario;
           this.usuarioOriginal = { ...usuario };// cuardamos una copia del usuario
-          this.usuario.IDPais = usuario.IDPais;
-          this.usuario.IDProvincia = usuario.IDProvincia;
-          this.usuario.IDLocalidad = usuario.IDLocalidad;
+          this.usuario.idPais = usuario.idPais;
+          this.usuario.idProvincia = usuario.idProvincia;
+          this.usuario.idLocalidad = usuario.idLocalidad;
           // Obtener el país del usuario seleccionado
-          if (usuario.IDPais) {
-            this.usuarioForm.get('IDPais')?.setValue(usuario.IDPais);
+          if (usuario.idPais) {
+            this.usuarioForm.get('idPais')?.setValue(usuario.idPais);
           }
           // Obtener la provincia según el país seleccionado
-          if (usuario.IDPais) {
-            this.ubicacionService.getProvincias(usuario.IDPais).subscribe((provincias: Provincia[]) => {
+          if (usuario.idPais) {
+            this.ubicacionService.getProvincias(usuario.idPais).subscribe((provincias: Provincia[]) => {
               this.provincias = provincias;
-              this.usuarioForm.get('IDProvincia')?.enable();
-              this.usuarioForm.get('IDProvincia')?.setValue(usuario.IDProvincia);
+              this.usuarioForm.get('idProvincia')?.enable();
+              this.usuarioForm.get('idProvincia')?.setValue(usuario.idProvincia);
             });
           }
     
           // Obtener la localidad según la provincia seleccionada
-          if (usuario.IDProvincia) {
-            this.ubicacionService.getLocalidades(usuario.IDProvincia).subscribe((localidades: Localidad[]) => {
+          if (usuario.idProvincia) {
+            this.ubicacionService.getLocalidades(usuario.idProvincia).subscribe((localidades: Localidad[]) => {
               this.localidades = localidades;
-              this.usuarioForm.get('IDLocalidad')?.enable();
-              this.usuarioForm.get('IDLocalidad')?.setValue(usuario.IDLocalidad);
+              this.usuarioForm.get('idLocalidad')?.enable();
+              this.usuarioForm.get('idLocalidad')?.setValue(usuario.idLocalidad);
             });
           }
         } else {
@@ -149,11 +149,11 @@ export class EditarUsuariosComponent implements OnInit {
     const usuarioFormulario = this.usuarioForm.value;
     this.usuario = {
       ...usuarioFormulario,
-      id_usuario: this.id_usuario
+      idUsuario: this.idUsuario
     };
-    this.usuarioService.actualizarUsuario(this.id_usuario, this.usuario).subscribe(
+    this.usuarioService.actualizarUsuario(this.idUsuario, this.usuario).subscribe(
       (res: any) => {
-        console.log(`Usuario con ID ${this.id_usuario} actualizado`);
+        console.log(`Usuario con ID ${this.idUsuario} actualizado`);
         this.router.navigate(['/listar-usuarios']);
       },
       (err: any) => {
@@ -165,32 +165,32 @@ export class EditarUsuariosComponent implements OnInit {
   }
   //////////////////////////////////////////////////////////////////////////////////////////
   onPaisSelected() {
-    const paisId = this.usuarioForm.value.IDPais;
-    this.usuarioForm.get('IDProvincia')?.setValue('');
-    this.usuarioForm.get('IDProvincia')?.enable();
-    this.usuarioForm.get('IDLocalidad')?.setValue('');
-    this.usuarioForm.get('IDLocalidad')?.disable();
+    const paisId = this.usuarioForm.value.idPais;
+    this.usuarioForm.get('idProvincia')?.setValue('');
+    this.usuarioForm.get('idProvincia')?.enable();
+    this.usuarioForm.get('idLocalidad')?.setValue('');
+    this.usuarioForm.get('idLocalidad')?.disable();
     
     this.provincias = [];
 
     if (paisId) {
       this.ubicacionService.getProvincias(paisId).subscribe((data: any[]) => {
         this.provincias = data;
-        this.usuarioForm.get('IDLocalidad')?.disable();
+        this.usuarioForm.get('idLocalidad')?.disable();
       }); 
     }
   }
 
   onProvinciaSelected() {
-    const provinciaId = this.usuarioForm.value.IDProvincia;
-    this.usuarioForm.get('IDLocalidad')?.setValue('');
-    this.usuarioForm.get('IDLocalidad')?.disable();
+    const provinciaId = this.usuarioForm.value.idProvincia;
+    this.usuarioForm.get('idLocalidad')?.setValue('');
+    this.usuarioForm.get('idLocalidad')?.disable();
     this.localidades = [];
 
     if (provinciaId) {
       this.ubicacionService.getLocalidades(provinciaId).subscribe((data: any[]) => {
         this.localidades = data;
-        this.usuarioForm.get('IDLocalidad')?.enable();
+        this.usuarioForm.get('idLocalidad')?.enable();
       });
     }
   }

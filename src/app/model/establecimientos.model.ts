@@ -1,15 +1,22 @@
 import { Time } from "@angular/common";
+import { Sector } from "./sector.model";
 
 export interface Establecimiento {
   idEstablecimiento: number;
-  nombreEstablecimiento: string;
-  IDPais: number;
-  IDProvincia: number;
-  IDLocalidad: number;
+  nombre: string;
   calle: string;
   altura: string;
-  horario_entrada: Time;
-  horario_salida: Time;
+  idLocalidad: number;
+  idProvincia: number;
+  idPais: number;
+  horaEntrada: Time;
+  horaSalida: Time;
   correo: string;
   telefono: string;
+
+  nombreEstablecimiento: string;
+  localidad: string;
+  provincia: string;
+  pais: string;
+  sectores: Sector[];
 }

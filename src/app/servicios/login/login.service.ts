@@ -6,7 +6,7 @@ import { catchError, map, tap, throwError} from 'rxjs';
   providedIn: 'root'
 })
 export class LoginService {
-  apiUrl = 'http://localhost/probando/ApiLogin.php';
+  apiUrl = 'http://localhost/probando/login.php';
 
   constructor(private http: HttpClient) { }
 

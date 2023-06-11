@@ -1,6 +1,6 @@
 export class estado_usuarios {
     constructor(
-      public id_estado_usuario: number,
+      public idEstadoUsuario: number,
       public estado: string
     ) {}
   }

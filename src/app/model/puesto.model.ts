@@ -1,7 +1,7 @@
 export interface Puesto {
-    id_puesto: number;
-    puesto_red: number;
+    idPuesto: number;
+    puestoRed: number;
     telefono: string;
     descripcion: string;
-    id_sector: number;
+    idSector: number;
 }

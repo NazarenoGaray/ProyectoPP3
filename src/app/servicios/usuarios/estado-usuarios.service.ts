@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class EstadoUsuariosService {
-  private apiUrl = 'http://localhost/probando/estado_usuarios.php';
+  private apiUrl = 'http://localhost/probando/estadoUsuarios.php';
 
   constructor(private http: HttpClient) { }
 

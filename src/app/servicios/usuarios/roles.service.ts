@@ -26,7 +26,7 @@ export class RolService {
     return this.http.post<Rol>(API_URL, rol);
   }
   actualizarRol(rol: Rol): Observable<any> {
-    const url = `${API_URL}/${rol.id_rol}`;
+    const url = `${API_URL}/${rol.idRol}`;
     return this.http.put(url, rol);
   }
   eliminarRol(id: number): Observable<any> {
@@ -34,9 +34,9 @@ export class RolService {
     return this.http.delete(url);
   }
 
-  obtenerNombreRol(id_rol: number): Observable<string> {
-    return this.obtenerRolPorId(id_rol).pipe(
-      map((rol: Rol) => rol.rol)
+  obtenerNombreRol(idRol: number): Observable<string> {
+    return this.obtenerRolPorId(idRol).pipe(
+      map((rol: Rol) => rol.nombre)
     );
   }
 }

@@ -1,5 +1,5 @@
 export interface Localidad {
-    IDLocalidad: number;
+    idLocalidad: number;
     Descripcion: string;
     // Otras propiedades del modelo
   }

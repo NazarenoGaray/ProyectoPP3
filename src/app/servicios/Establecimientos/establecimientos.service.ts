@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
-import { Pais } from 'src/app/model/pais.model';
-import { Provincia } from 'src/app/model/provincia.model';
-import { Localidad } from 'src/app/model/localidad.model';
 import { Establecimiento } from 'src/app/model/establecimientos.model';
 
 
@@ -18,39 +15,35 @@ export class EstablecimientosService {
 
   obtenerEstablecimientos(): Observable<any> {
     const url = `${this.apiURL}`;
-    return this.http.get<any>(url);
+    return this.http.get<Establecimiento>(url);
   }
-  obtenerDetalleEstablecimientoPorId(idEstablecimiento: number): Observable<any> {
-    const url = `${this.apiURL}?id_establecimiento=${idEstablecimiento}`;
-    return this.http.get<any>(url);
-  }
-  obtenerEstablecimientoPorId(idEstablecimiento: number): Observable<any> {
-    const url = `${this.apiURL}?id_establecimientoEditar=${idEstablecimiento}`;
-    return this.http.get<any>(url);
+  obtenerDetalleEstablecimientoPorId(idEstablecimiento: number): Observable<Establecimiento[]> {
+    const url = `${this.apiURL}?idEstablecimiento=${idEstablecimiento}`;
+    return this.http.get<Establecimiento[]>(url);
   }
 
-  crearEstablecimiento(establecimiento: any): Observable<any> {
-    const url = `${this.apiURL}`;
-    return this.http.post<any>(url, establecimiento);
+    obtenerEstablecimientoPorId(idEstablecimiento: number): Observable < any > {
+      const url = `${this.apiURL}?idEstablecimientoEditar=${idEstablecimiento}`;
+      return this.http.get<any>(url);
+    }
+
+    crearEstablecimiento(establecimiento: any): Observable < any > {
+      const url = `${this.apiURL}`;
+      console.log(establecimiento);
+      return this.http.post<any>(url, establecimiento);
+    }
+
+    actualizarEstablecimiento(idEstablecimiento: number, establecimiento: Establecimiento): Observable < any > {
+      return this.http.put(`${this.apiURL}?idEstablecimiento=${idEstablecimiento}`, establecimiento).pipe(
+        catchError(err => {
+          console.log(`Error al actualizar establecimiento: ${err.message}`);
+          return throwError(err);
+        })
+      );
+    }
+    eliminarEstablecimiento(idEstablecimiento: number): Observable < any > {
+      const url = `${this.apiURL}`;
+      return this.http.delete<any>(url, { body: { idEstablecimiento } });
+    }
+
   }
-
-  actualizarEstablecimiento(id_establecimiento: number, establecimiento: Establecimiento): Observable<any> {
-    return this.http.put(`${this.apiURL}?id_establecimiento=${id_establecimiento}`, establecimiento).pipe(
-      catchError(err => {
-        console.log(`Error al actualizar establecimiento: ${err.message}`);
-        return throwError(err);
-      })
-    );
-  }
-  eliminarEstablecimiento(idEstablecimiento: number): Observable<any> {
-    const url = `${this.apiURL}`;
-    return this.http.delete<any>(url, { body: { idEstablecimiento } });
-  }
-
-  obtenerSectoresPorEstablecimiento(idEstablecimiento: number): Observable<any[]> {
-    const url = `${this.apiURL}/sectores.php?idEstablecimiento=${idEstablecimiento}`;
-    return this.http.get<any[]>(url);
-
-
-}
-}

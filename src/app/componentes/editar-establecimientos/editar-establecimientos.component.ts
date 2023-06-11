@@ -3,12 +3,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Establecimiento } from '../../model/establecimientos.model';
-import { EstablecimientosService } from 'src/app/servicios/Establecimientos/establecimientos.service';
 import { Pais } from 'src/app/model/pais.model';
 import { Provincia } from 'src/app/model/provincia.model';
 import { Localidad } from 'src/app/model/localidad.model';
 import { UbicacionService } from 'src/app/servicios/ubicacion/ubicacion.service';
 import { switchMap, take } from 'rxjs';
+import { EstablecimientosService } from 'src/app/servicios/establecimientos/establecimientos.service';
 
 @Component({
   selector: 'app-editar-establecimientos',
@@ -35,16 +35,16 @@ export class EditarEstablecimientosComponent implements OnInit {
 
   ngOnInit() {
     this.establecimientoForm = this.formBuilder.group({
-      nombreEstablecimiento: ['', Validators.required],
+      nombre: ['', Validators.required],
       calle: ['', Validators.required],
       altura: ['', Validators.required],
+      idPais: [{ value: '', disabled: false }, Validators.required],
+      idProvincia: [{ value: '', disabled: false }, Validators.required],
+      idLocalidad: [{ value: '', disabled: false }, Validators.required],
       telefono: ['', Validators.required],
       correo: ['', [Validators.required, Validators.email]],
-      horario_entrada: ['', Validators.required],
-      horario_salida: ['', Validators.required],
-      IDPais: [{ value: '', disabled: false }, Validators.required],
-      IDProvincia: [{ value: '', disabled: false }, Validators.required],
-      IDLocalidad: [{ value: '', disabled: false }, Validators.required],
+      horaEntrada: ['', Validators.required],
+      horaSalida: ['', Validators.required],
     });
      
     ////////////////////////////////////////////////////////
@@ -54,39 +54,38 @@ export class EditarEstablecimientosComponent implements OnInit {
     ////////////////////////////////////////////////////////
     this.route.params.pipe(
       take(1),
-      switchMap(params => this.establecimientoService.obtenerEstablecimientoPorId(params['id']))
+      switchMap(params => this.establecimientoService.obtenerEstablecimientoPorId(params['idEstablecimiento']))
     ).subscribe(
       (establecimiento: Establecimiento | null) => {
         if (establecimiento) {
           console.log("Data esta obtenida: ", establecimiento);
-
           this.establecimientoForm.patchValue(establecimiento);
-          this.idEstablecimiento = establecimiento.idEstablecimiento;
           this.establecimiento = establecimiento;
-          this.establecimientoOriginal = { ...establecimiento };// cuardamos una copia del establecimiento
-          this.establecimiento.IDPais = establecimiento.IDPais;
-          this.establecimiento.IDProvincia = establecimiento.IDProvincia;
-          this.establecimiento.IDLocalidad = establecimiento.IDLocalidad;
+          this.establecimientoOriginal = establecimiento;// cuardamos una copia del establecimiento
+          this.idEstablecimiento = establecimiento.idEstablecimiento;
+          this.establecimiento.idPais = establecimiento.idPais;
+          this.establecimiento.idProvincia = establecimiento.idProvincia;
+          this.establecimiento.idLocalidad = establecimiento.idLocalidad;
+         
           // Obtener el país del establecimiento seleccionado
-          if (establecimiento.IDPais) {
-            this.establecimientoForm.get('IDPais')?.setValue(establecimiento.IDPais);
+          if (establecimiento.idPais) {
+            this.establecimientoForm.get('idPais')?.setValue(establecimiento.idPais);
           }
           // Obtener la provincia según el país seleccionado
-          if (establecimiento.IDPais) {
-            this.ubicacionService.getProvincias(establecimiento.IDPais).subscribe((provincias: Provincia[]) => {
+          if (establecimiento.idPais) {
+            this.ubicacionService.getProvincias(establecimiento.idPais).subscribe((provincias: Provincia[]) => {
               this.provincias = provincias;
-              this.establecimientoForm.get('IDProvincia')?.enable();
-              this.establecimientoForm.get('IDProvincia')?.setValue(establecimiento.IDProvincia);
+              this.establecimientoForm.get('idProvincia')?.enable();
+              this.establecimientoForm.get('idProvincia')?.setValue(establecimiento.idProvincia);
             });
           }
 
           // Obtener la localidad según la provincia seleccionada
-          if (establecimiento.IDProvincia) {
-            this.ubicacionService.getLocalidades(establecimiento.IDProvincia).subscribe((localidades: Localidad[]) => {
+          if (establecimiento.idProvincia) {
+            this.ubicacionService.getLocalidades(establecimiento.idProvincia).subscribe((localidades: Localidad[]) => {
               this.localidades = localidades;
-              this.establecimientoForm.get('IDLocalidad')?.enable();
-              console.log("esto tiene IDLocalidad:",this.establecimientoForm.value);
-              this.establecimientoForm.get('IDLocalidad')?.setValue(establecimiento.IDLocalidad);
+              this.establecimientoForm.get('idLocalidad')?.enable();
+              this.establecimientoForm.get('idLocalidad')?.setValue(establecimiento.idLocalidad);
             });
           }
           
@@ -103,14 +102,14 @@ export class EditarEstablecimientosComponent implements OnInit {
       this.detectarCambios();
     });
     ////////////////////////////////////////////////////////
-
+    
   }
 
   actualizarEstablecimiento() {
     const establecimientoFormulario = this.establecimientoForm.value;
     this.establecimiento = {
       ...establecimientoFormulario,
-      idestablecimiento: this.idEstablecimiento
+      idEstablecimiento: this.idEstablecimiento
     };
     this.establecimientoService.actualizarEstablecimiento(this.idEstablecimiento, this.establecimiento).subscribe(
       (res: any) => {
@@ -121,6 +120,8 @@ export class EditarEstablecimientosComponent implements OnInit {
         console.log(`Error al actualizar establecimiento: ${err.message}`);
       }
     );
+    // console.log("establecimiento original:",this.establecimientoOriginal);
+    // console.log("establecimiento actual:",this.establecimiento);
     this.detectarCambios();
     this.hayCambios = false;
   }
@@ -132,17 +133,17 @@ export class EditarEstablecimientosComponent implements OnInit {
   sonDatosIguales(): boolean {
     // Obtener los valores actuales del formulario
     const formularioActual = this.establecimientoForm.value;
-    //console.log('formularioActual:', JSON.stringify(this.usuarioForm.value));
-    //console.log('usuarioOriginal:', JSON.stringify(this.usuarioOriginal));
-    // Comparar los valores actuales con los valores originales
+    console.log('formularioActual:', JSON.stringify(this.establecimientoForm.value));
+    console.log('usuarioOriginal:', JSON.stringify(this.establecimiento));
+    //Comparar los valores actuales con los valores originales
     return JSON.stringify(formularioActual) === JSON.stringify(this.establecimientoOriginal);
   }
   onPaisSelected() {
     const paisId = this.establecimientoForm.value.pais;
-    this.establecimientoForm.get('provincia')?.setValue('');
-    this.establecimientoForm.get('provincia')?.disable();
-    this.establecimientoForm.get('localidad')?.setValue('');
-    this.establecimientoForm.get('localidad')?.disable();
+    this.establecimientoForm.get('idProvincia')?.setValue('');
+    this.establecimientoForm.get('idProvincia')?.disable();
+    this.establecimientoForm.get('idLocalidad')?.setValue('');
+    this.establecimientoForm.get('idLocalidad')?.disable();
     this.provincias = [];
 
 
@@ -151,22 +152,25 @@ export class EditarEstablecimientosComponent implements OnInit {
       this.ubicacionService.getProvincias(paisId).subscribe((data: any[]) => {
         this.provincias = data;
         
-        this.establecimientoForm.get('provincia')?.enable();
+        this.establecimientoForm.get('idProvincia')?.enable();
       });
     }
   }
 
   onProvinciaSelected() {
     const provinciaId = this.establecimientoForm.value.provincia;
-    this.establecimientoForm.get('localidad')?.setValue('');
-    this.establecimientoForm.get('localidad')?.disable();
+    this.establecimientoForm.get('idLocalidad')?.setValue('');
+    this.establecimientoForm.get('idLocalidad')?.disable();
     this.localidades = [];
 
     if (provinciaId) {
       this.ubicacionService.getLocalidades(provinciaId).subscribe((data: any[]) => {
         this.localidades = data;
-        this.establecimientoForm.get('localidad')?.enable();
+        this.establecimientoForm.get('idLocalidad')?.enable();
       });
     }
+  }
+  getId(){
+    return this.idEstablecimiento;
   }
 }

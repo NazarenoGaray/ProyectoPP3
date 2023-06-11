@@ -47,11 +47,11 @@ export class AltaUsuariosComponent implements OnInit {
       correo: ['', [Validators.required, Validators.email, this.validateCorreo]],
       usuario: ['', Validators.required],
       contrasena: ['', Validators.required],
-      id_rol: ['', Validators.required],
-      IDPais: new FormControl({ value: '', disabled: false }, Validators.required),
-      IDProvincia: new FormControl({ value: '', disabled: true }, Validators.required),
-      IDLocalidad: new FormControl({ value: '', disabled: true }, Validators.required),
-      id_estado_usuario: ['', Validators.required]
+      idRol: ['', Validators.required],
+      idPais: new FormControl({ value: '', disabled: false }, Validators.required),
+      idProvincia: new FormControl({ value: '', disabled: true }, Validators.required),
+      idLocalidad: new FormControl({ value: '', disabled: true }, Validators.required),
+      idEstadoUsuario: ['', Validators.required]
       
     });
     
@@ -88,18 +88,18 @@ export class AltaUsuariosComponent implements OnInit {
     return null;
   }
   onPaisSelected() {
-    const paisId = this.usuarioForm.value.IDPais;
-    this.usuarioForm.get('IDProvincia')?.setValue('');
-    this.usuarioForm.get('IDProvincia')?.disable();
-    this.usuarioForm.get('IDLocalidad')?.setValue('');
-    this.usuarioForm.get('IDLocalidad')?.disable();
+    const paisId = this.usuarioForm.value.idPais;
+    this.usuarioForm.get('idProvincia')?.setValue('');
+    this.usuarioForm.get('idProvincia')?.disable();
+    this.usuarioForm.get('idLocalidad')?.setValue('');
+    this.usuarioForm.get('idLocalidad')?.disable();
     this.provincias = [];
 
     if (paisId) {
       this.ubicacionService.getProvincias(paisId).subscribe((data: any[]) => {
         console.log('provinciadata:',data);
         this.provincias = data;
-        this.usuarioForm.get('IDProvincia')?.enable();
+        this.usuarioForm.get('idProvincia')?.enable();
       },
       (err: any) => {
         console.log(`Error al agregar el usuario: ${err.message}`);
@@ -108,15 +108,15 @@ export class AltaUsuariosComponent implements OnInit {
   }
 
   onProvinciaSelected() {
-    const provinciaId = this.usuarioForm.value.IDProvincia;
-    this.usuarioForm.get('IDLocalidad')?.setValue('');
-    this.usuarioForm.get('IDLocalidad')?.disable();
+    const provinciaId = this.usuarioForm.value.idProvincia;
+    this.usuarioForm.get('idLocalidad')?.setValue('');
+    this.usuarioForm.get('idLocalidad')?.disable();
     this.localidades = [];
 
     if (provinciaId) {
       this.ubicacionService.getLocalidades(provinciaId).subscribe((data: any[]) => {
         this.localidades = data;
-        this.usuarioForm.get('IDLocalidad')?.enable();
+        this.usuarioForm.get('idLocalidad')?.enable();
       });
     }
   }

@@ -1,70 +1,44 @@
 <app-nav-bar></app-nav-bar>
 
-<div class="card container-fluid" id="content-establecimiento">
+<div class="card container-fluid" id="content-establecimiento" *ngIf="sector">
   <div class="container">
     <div class="card-header">
-      <div class="h2" *ngIf="equipos.length > 0">{{ equipos[0].nombreEstablecimiento }}</div>
-    </div><br>
+      <div class="h2">{{ sector.nombreEstablecimiento}}
+      </div>
+      <div class="h5">
+        {{ sector.nombreSector }} - {{ sector.ubicacion }}
+      </div>
+    </div>
     <div class="row">
       <div class="col-sm col-xs-12">
         <br>
         <div class="card">
           <div class="card-body">
-            <h5>Sector</h5>
-            <table>
-              <thead>
-                <tr>
-                  <th>Nombre</th>
-                  <th>Ubicación</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let sector of sectores">
-                  <td>{{ sector.nombre }}</td>
-                  <td>{{ sector.ubicacion }}</td>
-                </tr>
-              </tbody>
-            </table>
-            <br>
             <h5>Equipos</h5>
-
             <table>
               <thead>
                 <tr>
-                  <th>ID Equipo</th>
-                  <th>Nombre Equipo</th>
-                  <!-- <th>Descripción</th> -->
-                  <th>Marca</th>
-                  <th>Modelo</th>
-                  <th>Número de Serie</th>
-                  <!-- <th>Fecha de Alta</th>
-                  <th>Fecha de Baja</th> -->
-                  <th>Estado Equipo</th>
-                  <th>Puesto</th>
-                  <!-- <th>Descripción Puesto</th> -->
-                  <!-- <th>Teléfono</th> -->
-                  <th>Tipo</th>
+                  <th style="width: 40px">ID</th>
+                  <th style="width: 120px">Nombre</th>
+                  <th style="width: 80px">Marca</th>
+                  <th style="width: 100px">Modelo</th>
+                  <th style="width: 80px">Estado</th>
+                  <th style="width: 80px">Puesto</th>
+                  <th style="width: 120px">Tipo</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let equipo of equipos">
-                  <td>{{ equipo.id_equipo }}</td>
-                  <td>{{ equipo.nombre_equipo }}</td>
-                  <!-- <td>{{ equipo.descripcion }}</td> -->
+                  <td>{{ equipo.idEquipo }}</td>
+                  <td>{{ equipo.nombreEquipo }}</td>
                   <td>{{ equipo.marca }}</td>
                   <td>{{ equipo.modelo }}</td>
-                  <td>{{ equipo.num_serie }}</td>
-                  <!-- <td>{{ equipo.fecha_alta }}</td>
-                  <td>{{ equipo.fecha_baja }}</td> -->
-                  <td>{{ equipo.estado_equipo }}</td>
-                  <td>{{ equipo.puesto_red }}</td>
-                  <!-- <td>{{ equipo.descripcion_puesto }}</td> -->
-                  <!-- <td>{{ equipo.telefono }}</td> -->
-                  <td>{{ equipo.tipo_equipo }}</td>
+                  <td>{{ equipo.estadoEquipo }}</td>
+                  <td>{{ equipo.puestoEquipo }}</td>
+                  <td>{{ equipo.tipoEquipo }}</td>
                   <td>
                     <button class="btn btn-primary" (click)="verDetallesEquipo(equipo)">Ver más</button>
                   </td>
-
                 </tr>
               </tbody>
             </table>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Sector } from '../../model/sectore.model';
+import { Sector } from '../../model/sector.model';
 import { Puesto } from '../../model/puesto.model';
 import { Equipo } from '../../model/equipo.model';
 import { EquiposService } from 'src/app/servicios/equipos/equipos.service';
@@ -14,8 +14,7 @@ import { EquiposService } from 'src/app/servicios/equipos/equipos.service';
 export class EquipoComponent implements OnInit {
   sectores: Sector[] = [];
   puestos: Puesto[] = [];
-  equipos: Equipo[] = [];
-
+  equipo!: Equipo[];
 
   constructor(
     private route: ActivatedRoute,
@@ -34,14 +33,12 @@ export class EquipoComponent implements OnInit {
   obtenerEquipo(idEquipo: number): void {
     this.equiposService.obtenerEquipo(idEquipo).subscribe(
       (equipo: Equipo) => {
-        this.equipos = [equipo];
-        console.log(this.equipos);
+        this.equipo = [equipo];
+        console.log("Equipo: ", equipo);
       },
       (error: any) => {
         console.error('Error al obtener el equipo:', error);
       }
     );
   }
-
-
 }

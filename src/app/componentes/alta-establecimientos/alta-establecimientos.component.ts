@@ -6,7 +6,7 @@ import { Pais } from '../../model/pais.model';
 import { Provincia } from '../../model/provincia.model';
 import { Localidad } from '../../model/localidad.model';
 import { UbicacionService } from 'src/app/servicios/ubicacion/ubicacion.service';
-import { EstablecimientosService } from 'src/app/servicios/Establecimientos/establecimientos.service';
+import { EstablecimientosService } from 'src/app/servicios/establecimientos/establecimientos.service';
 
 @Component({
   selector: 'app-alta-establecimientos',

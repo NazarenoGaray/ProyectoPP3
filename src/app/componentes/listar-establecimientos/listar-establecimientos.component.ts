@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Router } from '@angular/router';
-import { EstablecimientosService } from 'src/app/servicios/Establecimientos/establecimientos.service';
+import { Establecimiento } from 'src/app/model/establecimientos.model';
+import { EstablecimientosService } from 'src/app/servicios/establecimientos/establecimientos.service';
 
 @Component({
   selector: 'app-listar-establecimientos',
@@ -9,7 +10,7 @@ import { EstablecimientosService } from 'src/app/servicios/Establecimientos/esta
   styleUrls: ['./listar-establecimientos.component.css']
 })
 export class ListarEstablecimientosComponent implements OnInit {
-  listaEstablecimiento: any[] = [];
+  listaEstablecimiento: Establecimiento[] = [];
 
   constructor(private establecimientosService: EstablecimientosService,
     private router: Router) { }
@@ -20,8 +21,9 @@ export class ListarEstablecimientosComponent implements OnInit {
 
   obtenerEstablecimientos() {
     this.establecimientosService.obtenerEstablecimientos().subscribe(
-      (data: any[]) => {
+      (data: Establecimiento[]) => {
         this.listaEstablecimiento = data;
+        console.log(data);
       },
       error => {
         console.log('Error al obtener los establecimientos:', error);

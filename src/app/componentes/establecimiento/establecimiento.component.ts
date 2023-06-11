@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { EstablecimientosService } from 'src/app/servicios/establecimientos/establecimientos.service';
+import { Sector } from 'src/app/model/sector.model';
+import { Establecimiento } from 'src/app/model/establecimientos.model';
 import { SectoresService } from 'src/app/servicios/sectores/sectores.service';
-import { EstablecimientosService } from 'src/app/servicios/Establecimientos/establecimientos.service';
-import { Sector } from 'src/app/model/sectore.model';
 
 @Component({
   selector: 'app-establecimiento',
@@ -10,7 +11,7 @@ import { Sector } from 'src/app/model/sectore.model';
   styleUrls: ['./establecimiento.component.css']
 })
 export class EstablecimientoComponent implements OnInit {
-  establecimiento: any = {};
+  establecimiento!: Establecimiento;
   sectores: Sector[] = [];
 
   constructor(
@@ -19,26 +20,38 @@ export class EstablecimientoComponent implements OnInit {
     private sectoresService: SectoresService,
   ) { }
 
-
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
-      const idEstablecimiento = Number(params.get('id')); // Convertir el ID a número
-      if ((idEstablecimiento)) { // Verificar si el ID es un número válido
+      const idEstablecimiento = Number(params.get('idEstablecimiento'));
+      if (!isNaN(idEstablecimiento)) {
         this.obtenerDetallesEstablecimiento(idEstablecimiento);
-        this.obtenerSectoresPorEstablecimiento(idEstablecimiento);
-      }else{
-        console.log("*****NO SEENCONTRO EL ESTABLECIMIENTO*****");
+      } else {
+        console.log("***** NO SE ENCONTRÓ EL ESTABLECIMIENTO *****");
       }
     });
   }
+  
 
-  obtenerDetallesEstablecimiento(idEstablecimiento: number) { // Cambiar el tipo del parámetro a "number"
+  obtenerDetallesEstablecimiento(idEstablecimiento: number) {
+    this.establecimiento = {} as Establecimiento;
+  
     this.establecimientosService.obtenerDetalleEstablecimientoPorId(idEstablecimiento).subscribe(
-      (data: any[]) => {
+      (data: Establecimiento[]) => {
+        console.log(data);
+        console.log(idEstablecimiento);
         if (data.length > 0) {
           this.establecimiento = data[0];
-        } else {
-          console.log('No se encontraron sectores en el establecimiento');
+  
+          //se debe utilizar el servicio de sectores para recuperar mas de un sector
+          this.sectoresService.obtenerSectoresPorEstablecimiento(idEstablecimiento).subscribe(
+            (sectores: Sector[]) => {
+              this.establecimiento.sectores = sectores; // Asignar los sectores al objeto Establecimiento
+              console.log('Sectores por establecimiento:', this.establecimiento.sectores);
+            },
+            error => {
+              console.log('Error al obtener los sectores por establecimiento:', error);
+            }
+          );
         }
       },
       error => {
@@ -46,16 +59,7 @@ export class EstablecimientoComponent implements OnInit {
       }
     );
   }
+    
 
-  obtenerSectoresPorEstablecimiento(idEstablecimiento: number) { // Cambiar el tipo del parámetro a "number"
-    this.sectoresService.obtenerSectoresPorEstablecimiento(idEstablecimiento).subscribe(
-      response => {
-        this.sectores = response;
-      },
-      error => {
-        console.error('Error al obtener los sectores:', error);
-      }
-    );
-  }
-
+  
 }

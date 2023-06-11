@@ -1,5 +1,5 @@
 export interface Pais {
-    IDPais: number;
+    idPais: number;
     Descripcion: string;
     // Otras propiedades del modelo
   }

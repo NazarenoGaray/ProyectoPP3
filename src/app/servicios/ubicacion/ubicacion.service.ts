@@ -17,12 +17,12 @@ export class UbicacionService {
   }
 
   getProvincias(id: number): Observable<any> {
-    const url = `${this.baseUrl}/provincias.php?IDPais=${id}`;
+    const url = `${this.baseUrl}/provincias.php?idPais=${id}`;
     return this.http.get(url);
   }
 
   getLocalidades(id: number): Observable<any> {
-    const url = `${this.baseUrl}/localidades.php?IDProvincia=${id}`;
+    const url = `${this.baseUrl}/localidades.php?idProvincia=${id}`;
     
     return this.http.get(url);
   }
@@ -31,11 +31,11 @@ export class UbicacionService {
     return this.http.get(url);
   }
   getProvinciaPorID(id: number): Observable<any> {
-    const url = `${this.baseUrl}/provincias.php?IDProvincia=${id}`;
+    const url = `${this.baseUrl}/provincias.php?idProvincia=${id}`;
     return this.http.get(url);
   }
   getLocalidadPorID(id: number): Observable<any> {
-    const url = `${this.baseUrl}/localidades.php?IDLocalidad=${id}`;
+    const url = `${this.baseUrl}/localidades.php?idLocalidad=${id}`;
     return this.http.get(url);
   }
 }

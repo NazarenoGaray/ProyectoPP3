@@ -24,7 +24,7 @@
                 <select required class="form-select" id="floatingSelectPais" aria-label="Floating label select example"
                     formControlName="pais" (change)="onPaisSelected()">
                     <option value="">Seleccionar país</option>
-                    <option *ngFor="let pais of paises" [value]="pais.IDPais">{{ pais.Descripcion }}</option>
+                    <option *ngFor="let pais of paises" [value]="pais.idPais">{{ pais.Descripcion }}</option>
                 </select>
                 <label for="floatingSelectPais">País</label>
             </div>
@@ -34,7 +34,7 @@
                     aria-label="Floating label select example" formControlName="provincia"
                     (change)="onProvinciaSelected()">
                     <option value="">Seleccionar provincia</option>
-                    <option *ngFor="let provincia of provincias" [value]="provincia.IDProvincia">{{
+                    <option *ngFor="let provincia of provincias" [value]="provincia.idProvincia">{{
                         provincia.Descripcion }}</option>
                 </select>
                 <label for="floatingSelectProvincia">Provincia</label>
@@ -44,7 +44,7 @@
                 <select required class="form-select" id="floatingSelectLocalidad"
                     aria-label="Floating label select example" formControlName="localidad">
                     <option value="">Seleccionar localidad</option>
-                    <option *ngFor="let localidad of localidades" [value]="localidad.IDLocalidad">{{
+                    <option *ngFor="let localidad of localidades" [value]="localidad.idLocalidad">{{
                         localidad.Descripcion }}</option>
                 </select>
                 <label for="floatingSelectLocalidad">Localidad</label>

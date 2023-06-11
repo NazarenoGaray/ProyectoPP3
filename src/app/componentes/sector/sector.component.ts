@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SectoresService } from 'src/app/servicios/sectores/sectores.service';
-import { Sector } from '../../model/sectore.model';
+import { Sector } from '../../model/sector.model';
 import { Puesto } from '../../model/puesto.model';
 import { Equipo } from '../../model/equipo.model';
 
@@ -11,8 +11,7 @@ import { Equipo } from '../../model/equipo.model';
   styleUrls: ['./sector.component.css']
 })
 export class SectorComponent implements OnInit {
-  laboratorioSeleccionado: string | undefined; // Variable para almacenar el laboratorio seleccionado
-  sectores: Sector[] = [];
+  sector!: Sector;
   puestos: Puesto[] = [];
   equipos: Equipo[] = [];
 
@@ -25,10 +24,9 @@ export class SectorComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      const idLaboratorio = params.get('id'); // Obtener el ID del laboratorio desde la URL
-      if (idLaboratorio) {
-        this.laboratorioSeleccionado = idLaboratorio; // Almacenar el laboratorio seleccionado en la variable
-        this.obtenerSectorConPuestos(Number(idLaboratorio));
+      const idSector = params.get('id');
+      if (idSector) {
+        this.obtenerSectorConPuestos(Number(idSector));
       }
     });
   }
@@ -36,8 +34,8 @@ export class SectorComponent implements OnInit {
   obtenerSectorConPuestos(idSector: number) {
     this.sectoresService.obtenerSectorPorId(idSector).subscribe(
       sector => {
-        this.sectores = [sector]; // Almacenar el sector en un array
-        console.log(this.sectores);
+        this.sector = sector; // Almacenar el sector en un array
+        console.log("sector seleccionado", this.sector);
       },
       error => {
         console.error('Error al obtener el sector:', error);
@@ -66,7 +64,7 @@ export class SectorComponent implements OnInit {
   }
 
   verDetallesEquipo(equipo: Equipo) {
-    this.router.navigate(['/equipo', equipo.id_equipo]);
+    this.router.navigate(['/equipo', equipo.idEquipo]);
   }
 
 }

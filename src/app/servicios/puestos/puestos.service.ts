@@ -11,7 +11,7 @@ export class PuestosService {
   constructor(private http: HttpClient) { }
 
   obtenerPuestosPorEstablecimiento(idEstablecimiento: number): Observable<any[]> {
-    const url = `${this.baseUrl}/puestos.php?id_establecimiento=${idEstablecimiento}`;
+    const url = `${this.baseUrl}/puestos.php?idEstablecimiento=${idEstablecimiento}`;
     return this.http.get<any[]>(url);
   }
 }

@@ -7,6 +7,7 @@ import { EstadoUsuariosService } from 'src/app/servicios/usuarios/estado-usuario
 import { switchMap, take } from 'rxjs';
 
 import { UbicacionService } from 'src/app/servicios/ubicacion/ubicacion.service';
+import { estado_usuarios } from 'src/app/model/estado_usuarios.model';
 
 
 
@@ -16,9 +17,11 @@ import { UbicacionService } from 'src/app/servicios/ubicacion/ubicacion.service'
   styleUrls: ['./usuario.component.css']
 })
 export class UsuarioComponent implements OnInit {
-  id_usuario!: number;
-  usuario!: any;
+  idUsuario!: number;
+  usuario!: Usuario;
   detalles:boolean=true;
+  estado!:estado_usuarios;
+  
   constructor(
     private route: ActivatedRoute,
     private usuariosService: UsuarioService,
@@ -32,12 +35,12 @@ export class UsuarioComponent implements OnInit {
   ngOnInit() {
     this.route.params.pipe(
       take(1),
-      switchMap(params => this.usuariosService.obtenerDetallesUsuarioPorId(params['id'],this.detalles))
+      switchMap(params => this.usuariosService.obtenerDetallesUsuarioPorId(params['id']))
     ).subscribe(
-      (usuario: any | null) => {
+      (usuario: Usuario | null) => {
         if (usuario) {
           console.log("Data obtenida: ", usuario);
-          this.id_usuario = usuario.id_usuario;
+          this.idUsuario = usuario.idUsuario;
           this.usuario = usuario;
           console.log("Usuario obtenida: ", this.usuario);
           // this.usuario.IDPais = usuario.IDPais;
