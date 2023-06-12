@@ -17,14 +17,14 @@ export class EstablecimientosService {
     const url = `${this.apiURL}`;
     return this.http.get<Establecimiento>(url);
   }
-  obtenerDetalleEstablecimientoPorId(idEstablecimiento: number): Observable<Establecimiento[]> {
+  obtenerDetalleEstablecimientoPorId(idEstablecimiento: number): Observable<Establecimiento> {
     const url = `${this.apiURL}?idEstablecimiento=${idEstablecimiento}`;
-    return this.http.get<Establecimiento[]>(url);
+    return this.http.get<Establecimiento>(url);
   }
 
-    obtenerEstablecimientoPorId(idEstablecimiento: number): Observable < any > {
+    obtenerEstablecimientoPorId(idEstablecimiento: number): Observable < Establecimiento > {
       const url = `${this.apiURL}?idEstablecimientoEditar=${idEstablecimiento}`;
-      return this.http.get<any>(url);
+      return this.http.get<Establecimiento>(url);
     }
 
     crearEstablecimiento(establecimiento: any): Observable < any > {
@@ -34,7 +34,9 @@ export class EstablecimientosService {
     }
 
     actualizarEstablecimiento(idEstablecimiento: number, establecimiento: Establecimiento): Observable < any > {
-      return this.http.put(`${this.apiURL}?idEstablecimiento=${idEstablecimiento}`, establecimiento).pipe(
+      //establecimiento.idEstablecimiento=idEstablecimiento;
+      //console.log("actualizando a...:",establecimiento);
+      return this.http.put(`${this.apiURL}?idEstablecimiento=${idEstablecimiento} `, establecimiento).pipe(
         catchError(err => {
           console.log(`Error al actualizar establecimiento: ${err.message}`);
           return throwError(err);

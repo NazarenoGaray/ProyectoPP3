@@ -27,33 +27,7 @@ export class UsuarioService {
   getDatos() {
     return this.http.get(`${this.apiURL}/datos`);
   }
-  // Función para obtener todos los usuarios
-  /*obtenerUsuarios(): Observable<Usuario[]> {
-    return this.http.get(this.apiURL).pipe(
-      map((data: any) => {
-        return data.map((usuario: any) => new Usuario(
-          usuario.idUsuario,
-          usuario.nombre,
-          usuario.apellido,
-          usuario.direccion,
-          usuario.telefono,
-          usuario.correo,
-          usuario.usuario,
-          usuario.contrasena,
-          usuario.idRol,
-          usuario.idPais,
-          usuario.idProvincia,
-          usuario.idLocalidad,
-          usuario.idEstadoUsuario,
-          usuario.rol,
-          usuario.pais,
-          usuario.provincia,
-          usuario.Localidad,
-          usuario.estado,
-        ));
-      })
-    );
-  }*/
+  
   obtenerUsuarios(): Observable<Usuario> {
     const url = `${this.apiURL}`;
     return this.http.get<Usuario>(url);
@@ -89,7 +63,7 @@ export class UsuarioService {
   // Función para crear un nuevo usuario
   crearUsuario(usuario: Usuario) {
     console.log('Datos del usuario:', usuario);
-    return this.http.post(this.apiURL, usuario).pipe(
+    return this.http.post(`${this.apiURL}`, usuario).pipe(
       tap((data: any) => console.log(`Usuario creado con ID ${data.idUsuario}`)),
       catchError(err => {
         console.log(`Error al crear usuario: ${err.message}`);

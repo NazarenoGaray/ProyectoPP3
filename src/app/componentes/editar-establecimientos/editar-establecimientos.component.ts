@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-
 import { Establecimiento } from '../../model/establecimientos.model';
 import { Pais } from 'src/app/model/pais.model';
 import { Provincia } from 'src/app/model/provincia.model';
@@ -17,9 +16,9 @@ import { EstablecimientosService } from 'src/app/servicios/establecimientos/esta
 })
 export class EditarEstablecimientosComponent implements OnInit {
   establecimientoForm!: FormGroup;
-  idEstablecimiento!: number;
   establecimiento!: Establecimiento;
   establecimientoOriginal!: Establecimiento;
+  idEstablecimiento!: number;
   paises: Pais[] = [];
   provincias: Provincia[] = [];
   localidades: Localidad[] = [];
@@ -35,16 +34,17 @@ export class EditarEstablecimientosComponent implements OnInit {
 
   ngOnInit() {
     this.establecimientoForm = this.formBuilder.group({
+      idEstablecimiento: ['', Validators.required],
       nombre: ['', Validators.required],
       calle: ['', Validators.required],
       altura: ['', Validators.required],
       idPais: [{ value: '', disabled: false }, Validators.required],
       idProvincia: [{ value: '', disabled: false }, Validators.required],
       idLocalidad: [{ value: '', disabled: false }, Validators.required],
-      telefono: ['', Validators.required],
-      correo: ['', [Validators.required, Validators.email]],
       horaEntrada: ['', Validators.required],
       horaSalida: ['', Validators.required],
+      telefono: ['', Validators.required],
+      correo: ['', [Validators.required, Validators.email]],
     });
      
     ////////////////////////////////////////////////////////
@@ -60,12 +60,14 @@ export class EditarEstablecimientosComponent implements OnInit {
         if (establecimiento) {
           console.log("Data esta obtenida: ", establecimiento);
           this.establecimientoForm.patchValue(establecimiento);
-          this.establecimiento = establecimiento;
+          this.establecimiento = this.establecimientoForm.value;
           this.establecimientoOriginal = establecimiento;// cuardamos una copia del establecimiento
           this.idEstablecimiento = establecimiento.idEstablecimiento;
-          this.establecimiento.idPais = establecimiento.idPais;
-          this.establecimiento.idProvincia = establecimiento.idProvincia;
-          this.establecimiento.idLocalidad = establecimiento.idLocalidad;
+          // this.establecimiento.idPais = establecimiento.idPais;
+          // this.establecimiento.idProvincia = establecimiento.idProvincia;
+          // this.establecimiento.idLocalidad = establecimiento.idLocalidad;
+          // console.log('formularioActual:', JSON.stringify(this.establecimientoForm.value));
+          // console.log('EstablecimientoOriginal:', JSON.stringify(this.establecimientoOriginal));
          
           // Obtener el país del establecimiento seleccionado
           if (establecimiento.idPais) {
@@ -111,6 +113,7 @@ export class EditarEstablecimientosComponent implements OnInit {
       ...establecimientoFormulario,
       idEstablecimiento: this.idEstablecimiento
     };
+
     this.establecimientoService.actualizarEstablecimiento(this.idEstablecimiento, this.establecimiento).subscribe(
       (res: any) => {
         console.log(`establecimiento con ID ${this.idEstablecimiento} actualizado`);
@@ -133,8 +136,6 @@ export class EditarEstablecimientosComponent implements OnInit {
   sonDatosIguales(): boolean {
     // Obtener los valores actuales del formulario
     const formularioActual = this.establecimientoForm.value;
-    console.log('formularioActual:', JSON.stringify(this.establecimientoForm.value));
-    console.log('usuarioOriginal:', JSON.stringify(this.establecimiento));
     //Comparar los valores actuales con los valores originales
     return JSON.stringify(formularioActual) === JSON.stringify(this.establecimientoOriginal);
   }
@@ -145,8 +146,6 @@ export class EditarEstablecimientosComponent implements OnInit {
     this.establecimientoForm.get('idLocalidad')?.setValue('');
     this.establecimientoForm.get('idLocalidad')?.disable();
     this.provincias = [];
-
-
 
     if (paisId) {
       this.ubicacionService.getProvincias(paisId).subscribe((data: any[]) => {
@@ -170,6 +169,4 @@ export class EditarEstablecimientosComponent implements OnInit {
       });
     }
   }
-  getId(){
-    return this.idEstablecimiento;
-  }
+}

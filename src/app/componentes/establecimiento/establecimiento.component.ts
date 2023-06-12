@@ -36,11 +36,11 @@ export class EstablecimientoComponent implements OnInit {
     this.establecimiento = {} as Establecimiento;
   
     this.establecimientosService.obtenerDetalleEstablecimientoPorId(idEstablecimiento).subscribe(
-      (data: Establecimiento[]) => {
+      (data: Establecimiento) => {
         console.log(data);
-        console.log(idEstablecimiento);
-        if (data.length > 0) {
-          this.establecimiento = data[0];
+        //console.log(idEstablecimiento);
+        if (data) {
+          this.establecimiento = data;
   
           //se debe utilizar el servicio de sectores para recuperar mas de un sector
           this.sectoresService.obtenerSectoresPorEstablecimiento(idEstablecimiento).subscribe(

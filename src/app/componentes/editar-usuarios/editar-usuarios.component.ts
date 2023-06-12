@@ -20,7 +20,6 @@ import { EstadoUsuariosService } from 'src/app/servicios/usuarios/estado-usuario
   styleUrls: ['./editar-usuarios.component.css']
 })
 export class EditarUsuariosComponent implements OnInit {
-
   usuarioForm!: FormGroup;
   usuario!: Usuario;
   usuarioOriginal!: Usuario;
@@ -58,14 +57,6 @@ export class EditarUsuariosComponent implements OnInit {
       idLocalidad: [{ value: '', disabled: false }, Validators.required],
       idEstadoUsuario: ['', Validators.required]
     });
-
-    // console.log('formulario:', JSON.stringify({
-    //   ...this.usuarioForm.value,
-    //   idProvincia: this.usuarioForm.get('idProvincia')?.value,
-    //   idLocalidad: this.usuarioForm.get('idLocalidad')?.value,
-    //   idUsuario: this.usuarioForm.get('idUsuario')?.value
-    // }));
-    // Obtenemos los roles para cargarlos en el select
     this.rolService.obtenerRoles().subscribe(
       (res: Rol[]) => {
         this.roles = res;
@@ -90,19 +81,19 @@ export class EditarUsuariosComponent implements OnInit {
     ////////////////////////////////////////////////////////
     this.route.params.pipe(
       take(1),
-      switchMap(params => this.usuarioService.obtenerUsuarioPorId(params['idEstablecimiento']))
+      switchMap(params => this.usuarioService.obtenerUsuarioPorId(params['id']))
     ).subscribe(
       (usuario: Usuario | null) => {
         if (usuario) {
           console.log("Data obtenida: ", usuario);
-          
+
           this.usuarioForm.patchValue(usuario);
           this.idUsuario = usuario.idUsuario;
           this.usuario = usuario;
-          this.usuarioOriginal = { ...usuario };// cuardamos una copia del usuario
-          this.usuario.idPais = usuario.idPais;
-          this.usuario.idProvincia = usuario.idProvincia;
-          this.usuario.idLocalidad = usuario.idLocalidad;
+          this.usuarioOriginal = this.usuarioForm.value;
+          console.log('formularioActual:', JSON.stringify(this.usuarioForm.value));
+          console.log('usuarioOriginal:', JSON.stringify(this.usuarioOriginal));
+
           // Obtener el país del usuario seleccionado
           if (usuario.idPais) {
             this.usuarioForm.get('idPais')?.setValue(usuario.idPais);
@@ -115,7 +106,7 @@ export class EditarUsuariosComponent implements OnInit {
               this.usuarioForm.get('idProvincia')?.setValue(usuario.idProvincia);
             });
           }
-    
+
           // Obtener la localidad según la provincia seleccionada
           if (usuario.idProvincia) {
             this.ubicacionService.getLocalidades(usuario.idProvincia).subscribe((localidades: Localidad[]) => {
@@ -132,12 +123,12 @@ export class EditarUsuariosComponent implements OnInit {
         console.log(error);
       }
     );
-      
+
     ////////////////////////////////////////////////////////////////verificando cambios
     this.usuarioForm.valueChanges.subscribe(() => {
       this.detectarCambios();
     });
-    
+
   }
   validateCorreo(control: AbstractControl): { [key: string]: any } | null {
     if (control.value && control.value.length < 5) {
@@ -170,14 +161,14 @@ export class EditarUsuariosComponent implements OnInit {
     this.usuarioForm.get('idProvincia')?.enable();
     this.usuarioForm.get('idLocalidad')?.setValue('');
     this.usuarioForm.get('idLocalidad')?.disable();
-    
+
     this.provincias = [];
 
     if (paisId) {
       this.ubicacionService.getProvincias(paisId).subscribe((data: any[]) => {
         this.provincias = data;
         this.usuarioForm.get('idLocalidad')?.disable();
-      }); 
+      });
     }
   }
 
@@ -197,7 +188,7 @@ export class EditarUsuariosComponent implements OnInit {
   detectarCambios(): void {
     this.hayCambios = !this.sonDatosIguales();
   }
-  
+
   sonDatosIguales(): boolean {
     // Obtener los valores actuales del formulario
     const formularioActual = this.usuarioForm.value;
@@ -206,6 +197,6 @@ export class EditarUsuariosComponent implements OnInit {
     // Comparar los valores actuales con los valores originales
     return JSON.stringify(formularioActual) === JSON.stringify(this.usuarioOriginal);
   }
-  
-    
+
+
 }

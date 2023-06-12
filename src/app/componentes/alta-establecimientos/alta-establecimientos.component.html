@@ -15,40 +15,35 @@
     <div class="container-hijo">
         <form [formGroup]="establecimientoForm" class="row" (ngSubmit)="onSubmit()">
             <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                <input required type="text" class="form-control" id="nombreEstablecimiento"
-                    formControlName="nombreEstablecimiento" placeholder="Nombre del establecimiento">
-                <label for="nombreEstablecimiento">Nombre del establecimiento</label>
+                <input required type="text" class="form-control" id="nombre"
+                    formControlName="nombre" placeholder="Nombre del establecimiento">
+                <label for="nombre">Nombre del establecimiento</label>
             </div>
 
             <div class="form-floating mb-3 col-2">
                 <select required class="form-select" id="floatingSelectPais" aria-label="Floating label select example"
-                    formControlName="pais" (change)="onPaisSelected()">
-                    <option value="">Seleccionar país</option>
-                    <option *ngFor="let pais of paises" [value]="pais.idPais">{{ pais.Descripcion }}</option>
+                  formControlName="idPais" (change)="onPaisSelected()">
+                  <option value="">Seleccionar país</option>
+                  <option *ngFor="let pais of paises" [value]="pais.idPais">{{ pais.Descripcion }}</option>
                 </select>
                 <label for="floatingSelectPais">País</label>
-            </div>
-
-            <div class="form-floating mb-3 col-2">
-                <select required class="form-select" id="floatingSelectProvincia"
-                    aria-label="Floating label select example" formControlName="provincia"
-                    (change)="onProvinciaSelected()">
-                    <option value="">Seleccionar provincia</option>
-                    <option *ngFor="let provincia of provincias" [value]="provincia.idProvincia">{{
-                        provincia.Descripcion }}</option>
+              </div>
+              <div class="form-floating mb-3 col-2">
+                <select required class="form-select" id="floatingSelectProvincia" aria-label="Floating label select example"
+                  formControlName="idProvincia" (change)="onProvinciaSelected()">
+                  <option value="">Seleccionar provincia</option>
+                  <option *ngFor="let provincia of provincias" [value]="provincia.idProvincia">{{ provincia.Descripcion }}</option>
                 </select>
                 <label for="floatingSelectProvincia">Provincia</label>
-            </div>
-
-            <div class="form-floating mb-3 col-2">
-                <select required class="form-select" id="floatingSelectLocalidad"
-                    aria-label="Floating label select example" formControlName="localidad">
-                    <option value="">Seleccionar localidad</option>
-                    <option *ngFor="let localidad of localidades" [value]="localidad.idLocalidad">{{
-                        localidad.Descripcion }}</option>
+              </div>
+              <div class="form-floating mb-3 col-2">
+                <select required class="form-select" id="floatingSelectLocalidad" aria-label="Floating label select example"
+                formControlName="idLocalidad" >
+                  <option value="">Seleccionar localidad</option>
+                  <option *ngFor="let localidad of localidades" [value]="localidad.idLocalidad">{{ localidad.Descripcion }}</option>
                 </select>
                 <label for="floatingSelectLocalidad">Localidad</label>
-            </div>
+              </div>
 
             <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
                 <input required type="text" class="form-control" id="calle" formControlName="calle" placeholder="Calle">
@@ -70,18 +65,19 @@
                 <label for="correo">Correo electrónico</label>
             </div>
             <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                <input required type="text" class="form-control" id="horario_entrada" formControlName="horario_entrada"
+                <input required type="text" class="form-control" id="horaEntrada" formControlName="horaEntrada"
                     placeholder="Hora de entrada">
-                <label for="horario_entrada">Hora de entrada</label>
+                <label for="horaEntrada">Hora de entrada</label>
             </div>
             <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                <input required type="text" class="form-control" id="horario_salida" formControlName="horario_salida"
+                <input required type="text" class="form-control" id="horaSalida" formControlName="horaSalida"
                     placeholder="Hora de salida">
-                <label for="horario_salida">Hora de salida</label>
+                <label for="horaSalida">Hora de salida</label>
             </div>
 
             <div class="form-group">
-                <button type="submit" class="btn btn-success">Crear</button>
+                <button type="submit" class="btn btn-success" [disabled]="!hayCambios || establecimientoForm.invalid">Guardar</button>
+
                 <a class="btn btn-danger" [routerLink]="['/bienvenido']">Cancelar</a>
             </div>
         </form>

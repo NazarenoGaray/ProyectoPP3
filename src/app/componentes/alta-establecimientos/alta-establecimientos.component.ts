@@ -17,9 +17,10 @@ export class AltaEstablecimientosComponent implements OnInit {
 
   establecimientoForm!: FormGroup;
   establecimiento!: Establecimiento;
-  paises: Pais[] = [];
-  provincias: Provincia[] = [];
-  localidades: Localidad[] = [];
+  paises!: Pais[];
+  provincias!: Provincia[];
+  localidades!: Localidad[];
+  hayCambios: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -30,52 +31,56 @@ export class AltaEstablecimientosComponent implements OnInit {
 
   ngOnInit(): void {
     this.establecimientoForm = this.formBuilder.group({
-      nombreEstablecimiento: ['', Validators.required],
-      pais: new FormControl({ value: '', disabled: false }, Validators.required),
-      provincia: new FormControl({ value: '', disabled: true }, Validators.required),
-      localidad: new FormControl({ value: '', disabled: true }, Validators.required),
+      nombre: ['', Validators.required],
+      idPais: new FormControl({ value: '', disabled: false }, Validators.required),
+      idProvincia: new FormControl({ value: '', disabled: true }, Validators.required),
+      idLocalidad: new FormControl({ value: '', disabled: true }, Validators.required),
       calle: ['', Validators.required],
       altura: ['', Validators.required],
       telefono: ['', Validators.required],
       correo: ['', [Validators.required, Validators.email]],
-      horario_entrada: ['', Validators.required],
-      horario_salida: ['', Validators.required]
+      horaEntrada: ['', Validators.required],
+      horaSalida: ['', Validators.required],
     });
-
+    this.establecimientoForm.valueChanges.subscribe(() => {
+      this.hayCambios = this.establecimientoForm.valid;
+    });
     this.ubicacionService.getPaises().subscribe((data: any[]) => {
       this.paises = data;
+      console.log('paisdata:',data);
     });
   }
 
   onPaisSelected() {
-    const paisId = this.establecimientoForm.value.pais;
-    this.establecimientoForm.get('provincia')?.setValue('');
-    this.establecimientoForm.get('provincia')?.disable();
-    this.establecimientoForm.get('localidad')?.setValue('');
-    this.establecimientoForm.get('localidad')?.disable();
+    const paisId = this.establecimientoForm.value.idPais;
+    this.establecimientoForm.get('idProvincia')?.setValue('');
+    this.establecimientoForm.get('idProvincia')?.disable();
+    this.establecimientoForm.get('idLocalidad')?.setValue('');
+    this.establecimientoForm.get('idLocalidad')?.disable();
     this.provincias = [];
-
-
 
     if (paisId) {
       this.ubicacionService.getProvincias(paisId).subscribe((data: any[]) => {
+        console.log('provinciadata:',data);
         this.provincias = data;
-        
-        this.establecimientoForm.get('provincia')?.enable();
+        this.establecimientoForm.get('idProvincia')?.enable();
+      },
+      (err: any) => {
+        console.log(`Error al agregar el usuario: ${err.message}`);
       });
     }
   }
 
   onProvinciaSelected() {
-    const provinciaId = this.establecimientoForm.value.provincia;
-    this.establecimientoForm.get('localidad')?.setValue('');
-    this.establecimientoForm.get('localidad')?.disable();
+    const provinciaId = this.establecimientoForm.value.idProvincia;
+    this.establecimientoForm.get('idLocalidad')?.setValue('');
+    this.establecimientoForm.get('idLocalidad')?.disable();
     this.localidades = [];
 
     if (provinciaId) {
       this.ubicacionService.getLocalidades(provinciaId).subscribe((data: any[]) => {
         this.localidades = data;
-        this.establecimientoForm.get('localidad')?.enable();
+        this.establecimientoForm.get('idLocalidad')?.enable();
       });
     }
   }

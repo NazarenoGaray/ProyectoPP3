@@ -19,6 +19,7 @@ import { UsuarioComponent } from './componentes/usuario/usuario.component';
 import { SectorComponent } from './componentes/sector/sector.component';
 import { EquipoComponent } from './componentes/equipo/equipo.component';
 
+
 const routes: Routes = [
   { path: '', component: BienvenidoComponent },
   { path: 'bienvenido', component: BienvenidoComponent },
@@ -34,12 +35,12 @@ const routes: Routes = [
   { path: 'editar-establecimiento/:idEstablecimiento', component: EditarEstablecimientosComponent },
   { path: 'establecimiento/:idEstablecimiento', component: EstablecimientoComponent },
   { path: 'sector/:id', component: SectorComponent },
-  { path: 'equipo/:id', component: EquipoComponent},
+  { path: 'equipo/:id', component: EquipoComponent },
   { path: 'cargar-incidente', component: CargarIncidenteComponent },
-  {path: 'listar-incidentes', component: ListarIncidentesComponent, 
-  children: [{ path: ':id', component: ListarIncidentesComponent }]},
- // { path: 'listar-incidentes', component: ListarIncidentesComponent },
-  { path: 'incidente/:id', component: IncidenteComponent },
+  { path: 'cargar-incidente', component: CargarIncidenteComponent },
+  { path: 'listar-incidentes',component: ListarIncidentesComponent,
+    children: [{ path: ':idEstablecimiento', component: ListarIncidentesComponent }]},
+  { path: 'incidente/:idIncidente', component: IncidenteComponent },
   { path: '**', component: Error404Component },
 ];
 

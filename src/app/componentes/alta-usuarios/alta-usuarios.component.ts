@@ -28,6 +28,7 @@ export class AltaUsuariosComponent implements OnInit {
   paises: Pais[] = [];
   provincias: Provincia[] = [];
   localidades: Localidad[] = [];
+  hayCambios: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -124,7 +125,6 @@ export class AltaUsuariosComponent implements OnInit {
     if (this.usuarioForm.invalid) {
       return;
     }
-
     this.usuario = this.usuarioForm.value;
     this.usuarioService.crearUsuario(this.usuario).subscribe(
       (res: any) => {
