@@ -26,7 +26,7 @@ export class AltaEstablecimientosComponent implements OnInit {
     private formBuilder: FormBuilder,
     private establecimientoService: EstablecimientosService,
     private ubicacionService: UbicacionService,
-    private router: Router
+    private router: Router,
   ) { }
 
   ngOnInit(): void {

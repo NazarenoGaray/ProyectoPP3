@@ -11,6 +11,8 @@ export class InicioSesionComponent{
   usuario!: string;
   contrasena!: string;
   token!: any;
+  mostrarError = false;
+  
   constructor(
     private loginService: LoginService,
     private router: Router) { }
@@ -31,6 +33,7 @@ export class InicioSesionComponent{
       },
       (err: any) => {
         console.log(`Error al iniciar sesión ${err.message}`);
+        this.mostrarError = true;
       }
     );
   }

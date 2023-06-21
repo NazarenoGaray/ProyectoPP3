@@ -32,7 +32,10 @@ export class UsuarioService {
     const url = `${this.apiURL}`;
     return this.http.get<Usuario>(url);
   }
-
+  obtenerUsuariosInc(): Observable<any> {
+    const url = `${this.apiURL}`;
+    return this.http.get<Usuario>(url);
+  }
   // Función para obtener un usuario por su ID
   obtenerUsuarioPorId(idUsuario: number) {
     return this.http.get(`${this.apiURL}?idUsuario=${idUsuario}`).pipe(

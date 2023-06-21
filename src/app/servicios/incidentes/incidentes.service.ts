@@ -1,4 +1,4 @@
-import { Observable, tap } from "rxjs";
+import { Observable, catchError, tap, throwError } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Incidente } from "src/app/model/incidente.model";
@@ -25,6 +25,17 @@ export class IncidentesService {
     const url = `${this.apiUrl}/incidentes.php?idIncidente=${idIncidente}`;
     return this.http.get<Incidente[]>(url);
   }
+  cargarIncidente(incidente: Incidente){
+    console.log('Datos del incidente:', incidente);
+    return this.http.post(`${this.apiUrl}/incidentes.php`, incidente).pipe(
+      tap((data: any) => console.log(`incidente creado con ID ${data.idIncidente}`)),
+      catchError(err => {
+        console.log(`Error al crear incidente: ${err.message}`);
+        return throwError(err);
+      })
+    );
+  }  
+
 
 
 

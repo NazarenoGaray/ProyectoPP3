@@ -26,6 +26,7 @@ import { UsuarioComponent } from './componentes/usuario/usuario.component';
 import { PuestoComponent } from './componentes/puesto/puesto.component';
 import { SectorComponent } from './componentes/sector/sector.component';
 import { EquipoComponent } from './componentes/equipo/equipo.component';
+import { AltaSectorComponent } from './componentes/alta-sector/alta-sector.component';
 
 
 @NgModule({
@@ -52,6 +53,7 @@ import { EquipoComponent } from './componentes/equipo/equipo.component';
     PuestoComponent,
     EquipoComponent,
     SectorComponent,
+    AltaSectorComponent,
   ],
   imports: [
     BrowserModule,

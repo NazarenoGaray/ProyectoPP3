@@ -28,7 +28,7 @@ export class AltaUsuariosComponent implements OnInit {
   paises: Pais[] = [];
   provincias: Provincia[] = [];
   localidades: Localidad[] = [];
-  hayCambios: boolean = false;
+
 
   constructor(
     private formBuilder: FormBuilder,

@@ -2,7 +2,7 @@
 <div class="card container-fluid" id="content-establecimiento" *ngIf="incidente">
     <div class="container">
         <div class="card-header">
-            <div class="h2">{{ incidente.nombreEstablecimiento}}
+            <div class="h2">INC {{ incidente.idIncidente}}
                 <a class="btn btn-secondary" [routerLink]="['/listar-establecimientos']">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
@@ -24,8 +24,8 @@
                                 <div class="col-md-6">
                                     <!-- Datos de contacto -->
                                     <div class="detail">
-                                        <label class="card-subtitle mb-2 text-muted">Incidente:</label>
-                                        <span class="card-text">{{ incidente.idIncidente }}</span>
+                                        <label class="card-subtitle mb-2 text-muted">Establecimiento:</label>
+                                        <span class="card-text">{{ incidente.nombreEstablecimiento }}</span>
                                     </div>
                                     <div class="detail">
                                         <label class="card-subtitle mb-2 text-muted">Estado:</label>

@@ -45,7 +45,7 @@ export class SectorComponent implements OnInit {
     this.sectoresService.obtenerPuestosPorSector(idSector).subscribe(
       puestos => {
         this.puestos = puestos; // Almacenar los puestos de red en un array
-        console.log(this.puestos);
+        // console.log(this.puestos);
       },
       error => {
         console.error('Error al obtener los puestos de red:', error);
@@ -66,5 +66,11 @@ export class SectorComponent implements OnInit {
   verDetallesEquipo(equipo: Equipo) {
     this.router.navigate(['/equipo', equipo.idEquipo]);
   }
+  altaEquipo() {
+    this.router.navigate(['/alta-equipo']);
+  }
 
-}
+  editarDatosSector(){
+    this.router.navigate(['/editar-sector/idSector']);
+  }
+  }

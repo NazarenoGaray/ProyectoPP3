@@ -5,8 +5,10 @@ export interface Incidente {
   fechaInicio: Date;
   fechaCierre: Date;
   nombreUsuario: string;
+  nombreSector: string;
 
   estadoIncidente: string;
+  prioridad: string;
   categoria: string;
   informe: string;
   nombreEstablecimiento: string;

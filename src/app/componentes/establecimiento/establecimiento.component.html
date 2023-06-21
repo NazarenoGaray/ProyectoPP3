@@ -68,7 +68,6 @@
                     <!-- Datos de incidentes -->
                     <div class="card">
                         <div class="card-body">
-                            <h5>Incidentes</h5>
                             <div class="sectores-container">
                                 <div class="sectores-title">Sectores:</div>
                                 <!-- verifica si el objeto establecimiento y la propiedad sectores existen y si la longitud de establecimiento.sectores es mayor que cero. -->
@@ -83,12 +82,16 @@
                                     </ng-container>
                                 </ng-container>
                                 <ng-template #noSectores>
-                                    <div class="no-sectores-message">El establecimiento no tiene sectores asociados.
+                                    <div class="no-sectores-message" >El establecimiento no tiene sectores asociados.
                                     </div>
                                 </ng-template>
+                                <div class="col">
+                                    <a class="btn btn-primary" [routerLink]="['/alta-sector', establecimiento.idEstablecimiento]">Agregar Sector</a>
+                                </div>
                             </div>
+                            <h5>Incidentes:</h5>
                             <div class="detail">
-                                <label class="card-subtitle mb-2 text-muted">Incidentes:</label>
+                                
                                 <a [routerLink]="['/listar-incidentes', establecimiento.idEstablecimiento]"> Ver
                                     Detalles</a>
                             </div>

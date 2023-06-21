@@ -18,6 +18,8 @@ import { SobreNosotrosComponent } from './componentes/nosotros/sobre-nosotros.co
 import { UsuarioComponent } from './componentes/usuario/usuario.component';
 import { SectorComponent } from './componentes/sector/sector.component';
 import { EquipoComponent } from './componentes/equipo/equipo.component';
+import { AltaSectorComponent } from './componentes/alta-sector/alta-sector.component';
+import { TokenGuard } from './guards/token.guard';
 
 
 const routes: Routes = [
@@ -26,22 +28,23 @@ const routes: Routes = [
   { path: 'contacto', component: ContactoComponent },
   { path: 'nosotros', component: SobreNosotrosComponent },
   { path: 'inicio-sesion', component: InicioSesionComponent },
-  { path: 'alta-usuario', component: AltaUsuariosComponent },
-  { path: 'listar-usuarios', component: ListarUsuariosComponent },
-  { path: 'editar-usuario/:id', component: EditarUsuariosComponent },
-  { path: 'usuario/:id', component: UsuarioComponent },
-  { path: 'alta-establecimiento', component: AltaEstablecimientosComponent },
-  { path: 'listar-establecimientos', component: ListarEstablecimientosComponent },
-  { path: 'editar-establecimiento/:idEstablecimiento', component: EditarEstablecimientosComponent },
-  { path: 'establecimiento/:idEstablecimiento', component: EstablecimientoComponent },
-  { path: 'sector/:id', component: SectorComponent },
-  { path: 'equipo/:id', component: EquipoComponent },
-  { path: 'cargar-incidente', component: CargarIncidenteComponent },
-  { path: 'cargar-incidente', component: CargarIncidenteComponent },
-  { path: 'listar-incidentes',component: ListarIncidentesComponent,
+  { path: 'alta-usuario', component: AltaUsuariosComponent , canActivate:[TokenGuard]},
+  { path: 'listar-usuarios', component: ListarUsuariosComponent , canActivate:[TokenGuard]},
+  { path: 'editar-usuario/:id', component: EditarUsuariosComponent , canActivate:[TokenGuard]},
+  { path: 'usuario/:id', component: UsuarioComponent , canActivate:[TokenGuard]},
+  { path: 'alta-establecimiento', component: AltaEstablecimientosComponent , canActivate:[TokenGuard]},
+  { path: 'listar-establecimientos', component: ListarEstablecimientosComponent , canActivate:[TokenGuard]},
+  { path: 'editar-establecimiento/:idEstablecimiento', component: EditarEstablecimientosComponent , canActivate:[TokenGuard]},
+  { path: 'establecimiento/:idEstablecimiento', component: EstablecimientoComponent , canActivate:[TokenGuard]},
+  { path: 'sector/:id', component: SectorComponent , canActivate:[TokenGuard]},
+  { path: 'equipo/:id', component: EquipoComponent , canActivate:[TokenGuard]},
+  { path: 'cargar-incidente', component: CargarIncidenteComponent , canActivate:[TokenGuard]},
+  { path: 'cargar-incidente', component: CargarIncidenteComponent , canActivate:[TokenGuard]},
+  { path: 'listar-incidentes',component: ListarIncidentesComponent, canActivate:[TokenGuard],
     children: [{ path: ':idEstablecimiento', component: ListarIncidentesComponent }]},
-  { path: 'incidente/:idIncidente', component: IncidenteComponent },
-  { path: '**', component: Error404Component },
+  { path: 'incidente/:idIncidente', component: IncidenteComponent , canActivate:[TokenGuard]},
+  { path: 'alta-sector/:idEstablecimiento', component: AltaSectorComponent , canActivate:[TokenGuard]},
+  { path: '**', component: Error404Component},
 ];
 
 @NgModule({

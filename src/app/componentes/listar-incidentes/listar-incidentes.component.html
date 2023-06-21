@@ -10,9 +10,9 @@
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Establecimiento</th>
-                    <th scope="col">Tarea</th>
+                    <th scope="col">Sector</th>
                     <!-- <th scope="col">Informe Tecnico</th> -->
-                    <th scope="col">Estado</th>
+                    <th scope="col">Prioridad</th>
                     <th scope="col">Categoria</th>
                     <th scope="col">Acciones</th>
                 </tr>
@@ -21,9 +21,9 @@
                 <tr *ngFor="let incidente of listaIncidentes">
                     <th scope="row">{{ incidente.idIncidente }}</th>
                     <td>{{ incidente.nombreEstablecimiento }}</td>
-                    <td>{{ incidente.tarea }}</td>
+                    <td>{{ incidente.nombreSector }}</td>
                     <!-- <td>{{ incidente.informeTecnico }}</td> -->
-                    <td>{{ incidente.estadoIncidente }}</td>
+                    <td>{{ incidente.prioridad }}</td>
                     <td>{{ incidente.categoria }}</td>
                     <td>
                         <a class="btn btn-info" [routerLink]="['/incidente', incidente.idIncidente]">Detalles</a>

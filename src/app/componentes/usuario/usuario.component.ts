@@ -25,8 +25,6 @@ export class UsuarioComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private usuariosService: UsuarioService,
-
-
   ) { }
 
 

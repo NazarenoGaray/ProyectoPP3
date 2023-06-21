@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, catchError, tap, throwError } from 'rxjs';
 import { Sector } from 'src/app/model/sector.model';
 import { Puesto } from 'src/app/model/puesto.model';
 import { Equipo } from 'src/app/model/equipo.model';
@@ -29,9 +29,14 @@ export class SectoresService {
   //php sectoresComponent - Obtener sector por idSector
   obtenerSectorPorId(idSector: number): Observable<Sector> {
     const url = `${this.baseUrl}/sectores.php?idSector=${idSector}`;
-    return this.http.get<Sector>(url);
+    return this.http.get<Sector>(url).pipe(
+      catchError((error: any) => {
+        console.log(`Error al obtener el sector: ${error.message}`);
+        return throwError(error);
+      })
+    );
   }
-
+  
 
   //php - Obtener puestos por ID de sector
   obtenerPuestosPorSector(idSector: number): Observable<Puesto[]> {
@@ -44,5 +49,18 @@ export class SectoresService {
     const url = `${this.baseUrl}/equipos.php?idSector=${idSector}`;
     return this.http.get<Equipo[]>(url);
   }
+
+  crearSector( sector: Sector): Observable<Sector> {
+    const url = `${this.baseUrl}/sectores.php`;
+    return this.http.post<Sector>(url, sector).pipe(
+      tap((res: any) => {
+      }),
+      catchError((error: any) => {
+        console.log(`Error al agregar el sector: ${error.message}`);
+        return throwError(error);
+      })
+    );
+  }
+
 
 }
