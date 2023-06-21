@@ -46,7 +46,7 @@ export class EditarEstablecimientosComponent implements OnInit {
       telefono: ['', Validators.required],
       correo: ['', [Validators.required, Validators.email]],
     });
-     
+
     ////////////////////////////////////////////////////////
     this.ubicacionService.getPaises().subscribe((data: any[]) => {
       this.paises = data;
@@ -68,7 +68,7 @@ export class EditarEstablecimientosComponent implements OnInit {
           // this.establecimiento.idLocalidad = establecimiento.idLocalidad;
           // console.log('formularioActual:', JSON.stringify(this.establecimientoForm.value));
           // console.log('EstablecimientoOriginal:', JSON.stringify(this.establecimientoOriginal));
-         
+
           // Obtener el país del establecimiento seleccionado
           if (establecimiento.idPais) {
             this.establecimientoForm.get('idPais')?.setValue(establecimiento.idPais);
@@ -90,7 +90,7 @@ export class EditarEstablecimientosComponent implements OnInit {
               this.establecimientoForm.get('idLocalidad')?.setValue(establecimiento.idLocalidad);
             });
           }
-          
+
         } else {
           console.log("Usuario no encontrado");
         }
@@ -104,7 +104,7 @@ export class EditarEstablecimientosComponent implements OnInit {
       this.detectarCambios();
     });
     ////////////////////////////////////////////////////////
-    
+
   }
 
   actualizarEstablecimiento() {
@@ -140,7 +140,7 @@ export class EditarEstablecimientosComponent implements OnInit {
     return JSON.stringify(formularioActual) === JSON.stringify(this.establecimientoOriginal);
   }
   onPaisSelected() {
-    const paisId = this.establecimientoForm.value.pais;
+    const paisId = this.establecimientoForm.value.idPais;
     this.establecimientoForm.get('idProvincia')?.setValue('');
     this.establecimientoForm.get('idProvincia')?.disable();
     this.establecimientoForm.get('idLocalidad')?.setValue('');
@@ -149,15 +149,18 @@ export class EditarEstablecimientosComponent implements OnInit {
 
     if (paisId) {
       this.ubicacionService.getProvincias(paisId).subscribe((data: any[]) => {
+        //console.log('provinciadata:',data);
         this.provincias = data;
-        
         this.establecimientoForm.get('idProvincia')?.enable();
-      });
+      },
+        (err: any) => {
+          console.log(`Error al agregar el usuario: ${err.message}`);
+        });
     }
   }
 
   onProvinciaSelected() {
-    const provinciaId = this.establecimientoForm.value.provincia;
+    const provinciaId = this.establecimientoForm.value.idProvincia;
     this.establecimientoForm.get('idLocalidad')?.setValue('');
     this.establecimientoForm.get('idLocalidad')?.disable();
     this.localidades = [];
