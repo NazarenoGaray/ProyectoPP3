@@ -43,6 +43,7 @@ const routes: Routes = [
   { path: 'listar-incidentes',component: ListarIncidentesComponent, canActivate:[TokenGuard],
     children: [{ path: ':idEstablecimiento', component: ListarIncidentesComponent }]},
   { path: 'incidente/:idIncidente', component: IncidenteComponent , canActivate:[TokenGuard]},
+  { path: 'alta-sector', component: AltaSectorComponent , canActivate:[TokenGuard]},
   { path: 'alta-sector/:idEstablecimiento', component: AltaSectorComponent , canActivate:[TokenGuard]},
   { path: '**', component: Error404Component},
 ];

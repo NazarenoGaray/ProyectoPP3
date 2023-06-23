@@ -1,13 +1,15 @@
 <app-nav-bar></app-nav-bar>
 <div class="card container-fluid">
-  <div class="card-header lg-center">
-    <label class="h2" for="">Agregar Usuario</label>
-    <a class="btn btn-secondary" [routerLink]="['/']">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
-        <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
-      </svg>
-      Atras
-    </a>
+  <div class="card-header lg-center row">
+    <label class="h2 col-10" for="">Agregar Usuario</label>
+    <div class="col-2">
+      <a class="btn btn-secondary" [routerLink]="['/']">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+        </svg>
+        Atras
+      </a>
+    </div>
   </div>
   <div class="container-hijo">
     <form [formGroup]="usuarioForm" class="row" (ngSubmit)="onSubmit()">
@@ -46,7 +48,7 @@
       <div class="form-floating mb-3 col-2">
         <select required class="form-select" id="floatingSelectPais" aria-label="Floating label select example"
           formControlName="idPais" (change)="onPaisSelected()">
-          <option value="">Seleccionar país</option>
+          <option value=""disabled selected>Seleccionar país</option>
           <option *ngFor="let pais of paises" [value]="pais.idPais">{{ pais.Descripcion }}</option>
         </select>
         <label for="floatingSelectPais">País</label>
@@ -54,7 +56,7 @@
       <div class="form-floating mb-3 col-2">
         <select required class="form-select" id="floatingSelectProvincia" aria-label="Floating label select example"
           formControlName="idProvincia" (change)="onProvinciaSelected()">
-          <option value="">Seleccionar provincia</option>
+          <option value=""disabled selected>Seleccionar provincia</option>
           <option *ngFor="let provincia of provincias" [value]="provincia.idProvincia">{{ provincia.Descripcion }}</option>
         </select>
         <label for="floatingSelectProvincia">Provincia</label>
@@ -62,7 +64,7 @@
       <div class="form-floating mb-3 col-2">
         <select required class="form-select" id="floatingSelectLocalidad" aria-label="Floating label select example"
         formControlName="idLocalidad" >
-          <option value="">Seleccionar localidad</option>
+          <option value=""disabled selected>Seleccionar localidad</option>
           <option *ngFor="let localidad of localidades" [value]="localidad.idLocalidad">{{ localidad.Descripcion }}</option>
         </select>
         <label for="floatingSelectLocalidad">Localidad</label>

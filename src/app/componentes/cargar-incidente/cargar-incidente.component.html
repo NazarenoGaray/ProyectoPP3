@@ -9,22 +9,54 @@
             <div class="datosEstablecimiento">
                 <div class="centrar mb-3 col-4">
                     <label class="label">Establecimiento:</label>
-                    <select class="form-select" id="establecimiento" formControlName="idEstablecimiento"
+                    <!-- <select class="form-select" id="establecimiento" formControlName="idEstablecimiento"
                         (change)="onEstablecimientoSelect()">
                         <option value="">Seleccionar Establecimiento</option>
                         <option [value]="establecimiento.idEstablecimiento"
                             *ngFor="let establecimiento of establecimientos">{{establecimiento.nombreEstablecimiento}}
                         </option>
 
-                    </select>
+                    </select> -->
+                    <ng-autocomplete class="" id="establecimiento" formControlName="establecimiento"
+                        [data]="establecimientos" [searchKeyword]="keywordEstablecimiento"
+                        placeholder="Seleccionar Establecimiento" [itemTemplate]="itemTemplateEstablecimiento"
+                        [notFoundTemplate]="notFoundTemplateEstablecimiento"
+                        (selected)="onEstablecimientoSelect($event)">
+                    </ng-autocomplete>
+
+                    <ng-template #itemTemplateEstablecimiento let-item>
+                        <a>
+                            <span [innerHTML]="item.nombreEstablecimiento"></span>
+                            - Cuit:
+                            <span [innerHTML]="item.cuit"></span>
+                        </a>
+                    </ng-template>
+
+                    <ng-template #notFoundTemplateEstablecimiento let-notFound>
+                        <div [innerHTML]="notFound"></div>
+                    </ng-template>
                 </div>
                 <div class="centrar mb-3 col-6">
                     <label class="label">Sector establecimiento:</label>
-                    <select class="form-select" id="sector" formControlName="idSector">
+                    <!--<select class="form-select" id="sector" formControlName="idSector">
                         <option value="">Seleccionar Sector</option>
                         <option [value]="sector.idSector" *ngFor="let sector of sectores">{{sector.nombreSector}}
                         </option>
-                    </select>
+                    </select> -->
+                    <ng-autocomplete class="" formControlName="sector" [data]="sectores" [searchKeyword]="keywordSector"
+                        placeholder="Seleccionar Sector" [itemTemplate]="itemTemplateSector"
+                        [notFoundTemplate]="notFoundTemplateSector" (selected)="onSectorSelect($event)">
+                    </ng-autocomplete>
+
+                    <ng-template #itemTemplateSector let-item>
+                        <a>
+                            <span [innerHTML]="item.nombreSector"></span>
+                        </a>
+                    </ng-template>
+
+                    <ng-template #notFoundTemplateSector let-notFound>
+                        <div [innerHTML]="notFound"></div>
+                    </ng-template>
                 </div>
             </div>
             <div class="datosIncidentes">
@@ -33,14 +65,16 @@
                         <label class="label">Prioridad:</label>
                         <select class="form-select" id="Prioridad" formControlName="idPrioridad">
                             <option value="">Selecciones Prioridad</option>
-                            <option [value]="prioridad.idPrioridad" *ngFor="let prioridad of prioridades">{{prioridad.descripcion}} </option>
+                            <option [value]="prioridad.idPrioridad" *ngFor="let prioridad of prioridades">
+                                {{prioridad.descripcion}} </option>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label class="label">Categoria:</label>
                         <select class="form-select" id="Categoria" formControlName="idCategoria">
                             <option value="">Seleccione Categoria</option>
-                            <option [value]="categoria.idCategoria" *ngFor="let categoria of categorias">{{categoria.descripcion}} </option>
+                            <option [value]="categoria.idCategoria" *ngFor="let categoria of categorias">
+                                {{categoria.descripcion}} </option>
                         </select>
                     </div>
                     <!-- <div class="mb-3">
@@ -61,7 +95,16 @@
                 </div>
             </div>
             <div class="datosIncidentes">
-                <div class="centrar mb-3 col-6 row">
+                <div class="centrar mb-3 col-4 row">
+                    <label for="equiposAfectados">Equipos afectados:</label>
+                    <select id="equiposAfectados" multiple formControlName="equipos" #equiposSelect >
+                        <option *ngFor="let equipo of equipos" [value]="{idEquipo: equipo.idEquipo}">{{ equipo.nombreEquipo }}</option>
+                    </select>
+                    <label for="equiposAfectados" >(precione CTRL+Click para seleccionar barios)</label>
+                    <!-- Botón de enviar el formulario 
+                        <button type="button" (click)="verEquiposSeleccionados()">Enviar</button>
+                        <-- (change)="onEquiposAfectadosChange($event)"xxxxxxxxxxxxx-->
+                    
                     <!-- <div class="mb-3 col-6"> col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6
                         <label for="floatingInput">Fecha de Cargar: </label>
                         <input required type="date" class="form-control " id="fechacarga" placeholder="">
@@ -76,11 +119,31 @@
 
                 <div class="centrar mb-3 col-4">
                     <label class="label">Usuario Asignado:</label>
-                    <select class="form-select" id="idUsuario" formControlName="idUsuario">
+                    <!-- <select class="form-select" id="idUsuario" formControlName="idUsuario">
                         <option value="">Seleccione un Usuario</option>
                         <option [value]="usuario.idUsuario" *ngFor="let usuario of usuarios"> {{usuario.nombre}} </option> 
-                    </select>
+                    </select> -->
+                    <ng-autocomplete class="" formControlName="usuario" [data]="usuarios"
+                        [searchKeyword]="keywordUsuario" placeholder="Seleccione un Usuario"
+                        [itemTemplate]="itemTemplateUsuario" [notFoundTemplate]="notFoundTemplateUsuario"
+                        >
+                    </ng-autocomplete>
+                    <!-- (selected)="onUsuarioSelect($event)" -->
+                    <ng-template #itemTemplateUsuario let-item>
+                        <a>
+                            <span [innerHTML]="item.nombre +' '"> </span>
+                            <span [innerHTML]="item.apellido"> </span>
+                            :
+                            <span [innerHTML]="item.correo"></span>
+                        </a>
+                    </ng-template>
+
+                    <ng-template #notFoundTemplateUsuario let-notFound>
+                        <div [innerHTML]="notFound"></div>
+                    </ng-template>
+
                 </div>
+
             </div>
             <div class="btn-group btn-primary" role="group" aria-label="Button group name">
                 <button type="submit" class="btn btn-success" [disabled]="incidenteForm.invalid">Cargar</button>

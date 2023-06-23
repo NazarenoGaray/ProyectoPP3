@@ -2,48 +2,72 @@
 
 <div class="card container-fluid" id="content-establecimiento">
     <div class="container">
-        <div class="card-header">
-            <h2 class="h2"><span class="card-text">{{ usuario.nombre }} {{ usuario.apellido }}</span></h2>
+        <div class="card-header row">
+            <div class="h2 col-11"><span class="card-text">{{ usuario.nombre }} {{ usuario.apellido }}</span></div>
+            <div class="col-1">
+                <a class="btn btn-secondary" [routerLink]="['/listar-usuarios']">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+                    </svg>
+                </a>
+            </div>
         </div>
         <div class="row">
             <div class="col-sm col-xs-12">
                 <div class="card-columns">
                     <div class="card">
-                        <div class="card-body">
-                            <div class="detail">
-                                <label class="card-subtitle mb-2 text-muted">País:</label>
-                                <span class="card-text">{{ usuario.pais }}</span>
+                        <div class="card-body row">
+                            <div class="col-md-5">
+                                <div class="detail">
+                                    <label class="card-subtitle mb-2 text-muted">País:</label>
+                                    <span class="card-text">{{ usuario.pais }}</span>
+                                </div>
+                                <div class="detail">
+                                    <label class="card-subtitle mb-2 text-muted">Provincia:</label>
+                                    <span class="card-text">{{ usuario.provincia }}</span>
+                                </div>
+                                <div class="detail">
+                                    <label class="card-subtitle mb-2 text-muted">Localidad:</label>
+                                    <span class="card-text">{{ usuario.localidad}}</span>
+                                </div>
                             </div>
-                            <div class="detail">
-                                <label class="card-subtitle mb-2 text-muted">Provincia:</label>
-                                <span class="card-text">{{ usuario.provincia }}</span>
+                            <div class="col-md-6">
+
+                                <div class="detail">
+                                    <label class="card-subtitle mb-2 text-muted">Dirección:</label>
+                                    <span class="card-text"> {{usuario.direccion}} </span>
+                                </div>
+                                <div class="detail">
+                                    <label class="card-subtitle mb-2 text-muted">Estado:</label>
+                                    <span class="card-text">{{ usuario.estado }}</span>
+                                </div>
+                                <div class="detail">
+                                    <label class="card-subtitle mb-2 text-muted">Rol:</label>
+                                    <span class="card-text">{{ usuario.rol }}</span>
+                                </div>
                             </div>
-                            <div class="detail">
-                                <label class="card-subtitle mb-2 text-muted">Localidad:</label>
-                                <span class="card-text">{{ usuario.localidad}}</span>
-                            </div>
-                            <div class="detail">
-                                <label class="card-subtitle mb-2 text-muted">Dirección:</label>
-                                <span class="card-text"> {{usuario.direccion}} </span>
-                            </div>
-                            <div class="detail">
-                                <label class="card-subtitle mb-2 text-muted">Estado:</label>
-                                <span class="card-text">{{ usuario.estado }}</span>
-                            </div>
-                            <div class="detail">
-                                <label class="card-subtitle mb-2 text-muted">Rol:</label>
-                                <span class="card-text">{{ usuario.rol }}</span>
+
+                            <div class="col-md-1">
+                                <a class="btn btn-primary" [routerLink]="['/editar-usuario', usuario.idUsuario]">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="14" fill="currentColor"
+                                        class="bi bi-pencil" viewBox="0 0 16 16">
+                                        <path
+                                            d="M11.293 0.293a1 1 0 0 1 1.414 0l2 2a1 1 0 0 1 0 1.414L2.707 14.414a1 1 0 0 1-.424.242l-2 .5a1 1 0 0 1-1.243-1.242l.5-2a1 1 0 0 1 .242-.425L11.293.293zM13.5 2.5L12 4l1.5 1.5 1.5-1.5L13.5 2.5zm-3 3L9 7.5l-6 6V15h1.5l6-6z" />
+                                    </svg>
+                                </a>
                             </div>
                         </div>
                     </div>
                     <div class="card">
                         <div class="card-body">
                             <div class="detail">
-                                <h4 class="card-subtitle mb-2 text-muted">Horarios de Trabajo</h4>
+                                <!-- <h4 class="card-subtitle mb-2 text-muted">Horarios de Trabajo</h4>
                                 <label class="card-subtitle mb-2 text-muted">Entrada:</label>
                                 <span class="card-text"></span>
                                 <label class="card-subtitle mb-2 text-muted"> Salida:</label>
-                                <span class="card-text"></span>
+                                <span class="card-text"></span> -->
                             </div>
                             <div class="detail">
                                 <label class="card-subtitle mb-2 text-muted">Telefono:</label>
@@ -53,14 +77,13 @@
                                 <label class="card-subtitle mb-2 text-muted">Correo:</label>
                                 <span class="card-text">{{ usuario.correo }}</span>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <a class="btn btn-secondary" [routerLink]="['/listar-usuarios']">Atras</a>
 </div>
 
 <app-pie></app-pie>

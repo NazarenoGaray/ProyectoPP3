@@ -19,4 +19,6 @@ export interface Establecimiento {
   provincia: string;
   pais: string;
   sectores: Sector[];
+
+  cuit:string;
 }

@@ -1,9 +1,11 @@
 <app-nav-bar></app-nav-bar>
 <div class="card container-fluid" id="content-establecimiento" *ngIf="incidente">
     <div class="container">
-        <div class="card-header">
-            <div class="h2">INC {{ incidente.idIncidente}}
-                <a class="btn btn-secondary" [routerLink]="['/listar-establecimientos']">
+        <div class="card-header row">
+            <div class="h2 col-6">INC {{ incidente.idIncidente}}
+            </div>
+            <div class="col-6">
+                <a class="btn btn-secondary" [routerLink]="['/listar-incidentes']">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
                         <path fill-rule="evenodd"
@@ -11,6 +13,8 @@
                     </svg>
                     Atras
                 </a>
+                <a class="btn btn-primary">Actualizar </a>
+                <a class="btn btn-success">Cerrar incidente </a>
             </div>
 
         </div><br>
@@ -25,25 +29,33 @@
                                     <!-- Datos de contacto -->
                                     <div class="detail">
                                         <label class="card-subtitle mb-2 text-muted">Establecimiento:</label>
-                                        <span class="card-text">{{ incidente.nombreEstablecimiento }}</span>
+                                        <span class="card-text"> {{ incidente.nombreEstablecimiento }}</span>
                                     </div>
                                     <div class="detail">
                                         <label class="card-subtitle mb-2 text-muted">Estado:</label>
-                                        <span class="card-text">{{ incidente.estadoIncidente }}</span>
+                                        <span class="card-text"> {{ incidente.estadoIncidente ?
+                                            incidente.estadoIncidente : 'Nuevo' }}</span>
+                                    </div>
+                                    <div class="detail">
+                                        <label class="card-subtitle mb-2 text-muted">Prioridad:</label>
+                                        <span class="card-text"> {{ incidente.prioridad }}</span>
                                     </div>
                                     <div class="detail">
                                         <label class="card-subtitle mb-2 text-muted">Categoría:</label>
-                                        <span class="card-text">{{ incidente.categoria }}</span>
+                                        <span class="card-text"> {{ incidente.categoria }}</span>
                                     </div>
+
                                 </div>
                                 <div class="col-md-6">
+
                                     <div class="detail">
                                         <label class="card-subtitle mb-2 text-muted">Fecha de Inicio: </label>
-                                        <span class="card-text">{{ incidente.fechaInicio | date:'dd-MM-yyyy' }}</span>
+                                        <span class="card-text"> {{ incidente.fechaInicio | date:'dd-MM-yyyy' }}</span>
                                     </div>
                                     <div class="detail">
                                         <label class="card-subtitle mb-2 text-muted">Fecha de Cierre: </label>
-                                        <span class="card-text">{{ incidente.fechaCierre | date:'dd-MM-yyyy' }}</span>
+                                        <span class="card-text"> {{ incidente.fechaCierre ? (incidente.fechaCierre |
+                                            date:'dd-MM-yyyy') : 'Abierto' }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -52,20 +64,52 @@
                     <br>
                     <!-- Datos de incidentes -->
                     <div class="card">
-                        <div class="card-body">
-                            <h5>Detalle</h5>
-                            <div class="detail">
-                                <label class="card-subtitle mb-2 text-muted">Tarea:</label>
-                                <span class="card-text">{{ incidente.tarea }}</span>
+                        <h5>Detalle</h5>
+                        <div class="card-body row">
+                            <div class="col-md-6">
+                                <div class="detail">
+                                    <label class="card-subtitle mb-2 text-muted">Tarea:</label>
+                                    <span class="card-text"> {{ incidente.tarea }}</span>
+                                </div>
+                                <div class="detail">
+                                    <label class="card-subtitle mb-2 text-muted">Sector:</label>
+                                    <span class="card-text"> {{ incidente.nombreSector }}</span>
+                                </div>
                             </div>
-                            <div class="detail">
-                                <label class="card-subtitle mb-2 text-muted">Usuario:</label>
-                                <span class="card-text">{{ incidente.nombreUsuario }}</span>
+                            <div class="col-md-6">
+                                <div class="detail-text">
+                                    <label class="card-subtitle mb-2 text-muted">Descripción:</label>
+                                    <textarea class="card-text-text" rows="3" readonly
+                                        [ngModel]="incidente.descripcionIncidente" #descripcionTextArea></textarea>
+                                </div>
+
                             </div>
-                            <div class="detail">
-                                <label class="card-subtitle mb-2 text-muted">Descripción:</label>
-                                <span class="card-text">{{ incidente.descripcionIncidente }}</span>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="card">
+                        <div class="card-body row">
+                            <div class="col-md-6">
+                                <div class="detail">
+                                    <label class="card-subtitle mb-2 text-muted">Usuario asignado:</label>
+                                    <span class="card-text"> {{ incidente.nombreUsuario }} {{ incidente.apellidoUsuario
+                                        }}</span>
+                                </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="detail-text">
+                                    <label class="card-subtitle mb-2 text-muted">Informe del usuairo:</label>
+                                    <textarea class="card-text" rows="3" readonly [ngModel]="incidente.informeTecnico"
+                                        #descripcionTextArea></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="card">
+                        <div class="card-body ">
+                            <span class="card-text"> "Nombre de usuario que comenta" </span>
+                            <label class="card-subtitle mb-2 text-muted"> : "comentario"</label>
                         </div>
                     </div>
                 </div>
@@ -74,11 +118,8 @@
     </div>
     <br>
     <div class="container">
-        <div class="row">
-            <div class="col">
-                <a class="btn btn-primary" [routerLink]="['/editar-incidente' ]">Editar </a>
-            </div>
-        </div>
+
     </div>
 </div>
 <app-pie></app-pie>
+<!-- [routerLink]="['/editar-incidente' ]" -->

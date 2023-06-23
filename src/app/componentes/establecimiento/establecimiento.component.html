@@ -2,98 +2,108 @@
 
 <div class="card container-fluid" id="content-establecimiento" *ngIf="establecimiento">
     <div class="container">
-        <div class="card-header">
-            <div class="h2">{{ establecimiento.nombreEstablecimiento}}
+        <div class="card-header row">
+            <div class="h2 col-11">{{ establecimiento.nombreEstablecimiento}}
+            </div>
+            <div class="col-1">
                 <a class="btn btn-secondary" [routerLink]="['/listar-establecimientos']">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
                         <path fill-rule="evenodd"
-                            d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+                            d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 0 1 .708.708L5.707 7.5H11.5z" />
                     </svg>
-                    Atras
                 </a>
             </div>
-
         </div><br>
+        <div class="card">
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-md-5">
+                        <h5>Contacto</h5>
+                        <!-- Datos de contacto -->
+                        <div class="detail">
+                            <label class="card-subtitle mb-2 text-muted">Horarios de:</label>
+                            <span class="card-text"> {{ establecimiento.horaEntrada }}</span>
+                            <span class="separator">-</span>
+                            <label class="card-subtitle mb-2 text-muted">Hasta:</label>
+                            <span class="card-text"> {{ establecimiento.horaSalida }}</span>
+                        </div>
+                        <div class="detail">
+                            <label class="card-subtitle mb-2 text-muted">Telefono:</label>
+                            <span class="card-text"> {{ establecimiento.telefono }}</span>
+                        </div>
+                        <div class="detail">
+                            <label class="card-subtitle mb-2 text-muted">Correo:</label>
+                            <span class="card-text"> {{ establecimiento.correo }}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Ubicación</h5>
+                        <!-- Datos de ubicación -->
+                        <div class="detail">
+                            <label class="card-subtitle mb-2 text-muted">Dirección:</label>
+                            <span class="card-text"> {{ establecimiento.calle }} {{ establecimiento.altura }}</span>
+                        </div>
+                        <div class="detail">
+                            <label class="card-subtitle mb-2 text-muted">Localidad:</label>
+                            <span class="card-text"> {{ establecimiento.localidad }}</span>
+                        </div>
+                        <div class="detail">
+                            <label class="card-subtitle mb-2 text-muted">Provincia:</label>
+                            <span class="card-text"> {{ establecimiento.provincia }}</span>
+                        </div>
+                        <div class="detail">
+                            <label class="card-subtitle mb-2 text-muted">País:</label>
+                            <span class="card-text"> {{ establecimiento.pais }}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <a class="btn btn-primary"
+                            [routerLink]="['/editar-establecimiento', establecimiento.idEstablecimiento]">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-pencil" viewBox="0 0 16 16">
+                                <path
+                                    d="M11.293 0.293a1 1 0 0 1 1.414 0l2 2a1 1 0 0 1 0 1.414L2.707 14.414a1 1 0 0 1-.424.242l-2 .5a1 1 0 0 1-1.243-1.242l.5-2a1 1 0 0 1 .242-.425L11.293.293zM13.5 2.5L12 4l1.5 1.5 1.5-1.5L13.5 2.5zm-3 3L9 7.5l-6 6V15h1.5l6-6z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
         <div class="row">
             <div class="col-sm col-xs-12">
                 <div class="card-columns">
                     <div class="card">
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <h5>Contacto</h5>
-                                    <!-- Datos de contacto -->
-                                    <div class="detail">
-                                        <label class="card-subtitle mb-2 text-muted">Horarios de:</label>
-                                        <span class="card-text">{{ establecimiento.horaEntrada }}</span>
-                                        <span class="separator">-</span>
-                                        <label class="card-subtitle mb-2 text-muted">Hasta:</label>
-                                        <span class="card-text">{{ establecimiento.horaSalida }}</span>
-                                    </div>
-                                    <div class="detail">
-                                        <label class="card-subtitle mb-2 text-muted">Telefono:</label>
-                                        <span class="card-text">{{ establecimiento.telefono }}</span>
-                                    </div>
-                                    <div class="detail">
-                                        <label class="card-subtitle mb-2 text-muted">Correo:</label>
-                                        <span class="card-text">{{ establecimiento.correo }}</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <h5>Ubicación</h5>
-                                    <!-- Datos de ubicación -->
-                                    <div class="detail">
-                                        <label class="card-subtitle mb-2 text-muted">Dirección:</label>
-                                        <span class="card-text">{{ establecimiento.calle }} {{ establecimiento.altura
-                                            }}</span>
-                                    </div>
-                                    <div class="detail">
-                                        <label class="card-subtitle mb-2 text-muted">Localidad:</label>
-                                        <span class="card-text">{{ establecimiento.localidad }}</span>
-                                    </div>
-                                    <div class="detail">
-                                        <label class="card-subtitle mb-2 text-muted">Provincia:</label>
-                                        <span class="card-text">{{ establecimiento.provincia }}</span>
-                                    </div>
-                                    <div class="detail">
-                                        <label class="card-subtitle mb-2 text-muted">País:</label>
-                                        <span class="card-text">{{ establecimiento.pais }}</span>
-                                    </div>
-                                </div>
+                            <div class="detail">
+                                <h5>
+                                    <a [routerLink]="['/listar-incidentes', establecimiento.idEstablecimiento]">
+                                        Incidentes</a>
+                                </h5>
                             </div>
-                        </div>
-                    </div>
-                    <br>
-                    <!-- Datos de incidentes -->
-                    <div class="card">
-                        <div class="card-body">
+                            <br>
                             <div class="sectores-container">
-                                <div class="sectores-title">Sectores:</div>
+                                <h5>Sectores</h5>
                                 <!-- verifica si el objeto establecimiento y la propiedad sectores existen y si la longitud de establecimiento.sectores es mayor que cero. -->
                                 <ng-container
                                     *ngIf="establecimiento && establecimiento.sectores && establecimiento.sectores.length > 0; else noSectores">
-                                    <ng-container *ngFor="let sector of establecimiento.sectores">
+                                    <div class="sector-item" *ngFor="let sector of establecimiento.sectores">
                                         <span class="separator">|</span>
-                                        <div class="sector-item">
-                                            <a [routerLink]="['/sector', sector.idSector]">{{ sector.nombreSector }}</a>
-                                        </div>
-                                        <span class="separator">|</span>
-                                    </ng-container>
+                                        <a [routerLink]="['/sector', sector.idSector]">{{ sector.nombreSector }}</a>
+                                    </div>
+                                    <span class="separator">|</span>
                                 </ng-container>
                                 <ng-template #noSectores>
-                                    <div class="no-sectores-message" >El establecimiento no tiene sectores asociados.
+                                    <div class="no-sectores-message">El establecimiento no tiene sectores asociados.
                                     </div>
                                 </ng-template>
-                                <div class="col">
-                                    <a class="btn btn-primary" [routerLink]="['/alta-sector', establecimiento.idEstablecimiento]">Agregar Sector</a>
-                                </div>
                             </div>
-                            <h5>Incidentes:</h5>
-                            <div class="detail">
-                                
-                                <a [routerLink]="['/listar-incidentes', establecimiento.idEstablecimiento]"> Ver
-                                    Detalles</a>
+                            <div class="col">
+                                <a class="btn btn-primary"
+                                    [routerLink]="['/alta-sector', establecimiento.idEstablecimiento]">Agregar
+                                    Sector</a>
                             </div>
                         </div>
                     </div>
@@ -102,14 +112,7 @@
         </div>
     </div>
     <br>
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <a class="btn btn-primary"
-                    [routerLink]="['/editar-establecimiento', establecimiento.idEstablecimiento ]">Editar</a>
-            </div>
-        </div>
-    </div>
 </div>
+
 
 <app-pie></app-pie>

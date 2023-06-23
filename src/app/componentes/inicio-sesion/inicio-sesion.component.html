@@ -10,7 +10,7 @@
       <!-- Login Form -->
       <form>
         <input type="text" id="login" class="fadeIn second" name="login" [(ngModel)]="usuario" placeholder="login">
-        <input type="text" id="password" class="fadeIn third" name="contrasena" [(ngModel)]="contrasena" placeholder="password">
+        <input type="password" id="password" class="fadeIn third" name="contrasena" [(ngModel)]="contrasena" placeholder="password">
         <button type="submit" class="fadeIn fourth" (click)="onSubmit()">Iniciar sesión</button>
         <div *ngIf="mostrarError" class="error-message">Error, credencial invalida</div>
       </form>

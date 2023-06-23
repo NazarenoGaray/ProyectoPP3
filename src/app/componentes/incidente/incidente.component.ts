@@ -6,11 +6,10 @@ import { IncidentesService } from 'src/app/servicios/incidentes/incidentes.servi
 @Component({
   selector: 'app-incidente',
   templateUrl: './incidente.component.html',
-  styleUrls: ['./incidente.component.css']
+  styleUrls: ['./incidente.component.css'],
 })
 export class IncidenteComponent {
   incidente!: Incidente;
-
   constructor(
     private route: ActivatedRoute,
     private incidenteService: IncidentesService
@@ -40,6 +39,7 @@ obtenerDetalleIncidente(idIncidente: number) {
       console.log('Error al obtener los detalles del incidente:', error);
     }
   );
+
 }
 
 }

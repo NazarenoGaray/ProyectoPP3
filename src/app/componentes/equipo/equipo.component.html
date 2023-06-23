@@ -1,7 +1,7 @@
 <app-nav-bar></app-nav-bar>
 
-<div class="card container-fluid" id="content-establecimiento" *ngIf="equipo" style="max-width: 100%">
-  <div class="container" style="max-width: 100%">
+<div class="card container-fluid" id="content-establecimiento" *ngIf="equipo">
+  <div class="container">
     <div class="card-header">
       <div class="h2">{{ equipo[0].nombreEstablecimiento}}
       </div>
@@ -13,46 +13,62 @@
     <div class="row">
       <div class="col-sm col-xs-12">
         <br>
+        <h5>Detalles del Equipo</h5>
         <div class="card">
           <div class="card-body">
-            <h5>Detalles del Equipo</h5>
-            <table>
-              <thead>
-                <tr>
-                  <th style="width: 40px">ID</th>
-                  <th style="width: 120px">Nombre</th>
-                  <th style="width: 200px">Descripción</th>
-                  <th style="width: 80px">Marca</th>
-                  <th style="width: 100px">Modelo</th>
-                  <th style="width: 120px">Número de Serie</th>
-                  <th style="width: 100px">Fecha de Alta</th>
-                  <th style="width: 100px">Fecha de Baja</th>
-                  <th style="width: 80px">Estado</th>
-                  <th style="width: 80px">Puesto</th>
-                  <th style="width: 200px">Descripción Puesto</th>
-                  <th style="width: 120px">Teléfono</th>
-                  <th style="width: 120px">Tipo Equipo</th>
-                </tr>
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th style>ID</th>
+                    <th style>Nombre Equipo</th>
+                    <th style>Descripción</th>
+                    <th style>Marca</th>
+                    <th style>Modelo</th>
+                    <th style>Estado</th>
+                    <th style>Número de Serie</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let eq of equipo">
+                    <td>{{ eq.idEquipo }}</td>
+                    <td>{{ eq.nombreEquipo }}</td>
+                    <td>{{ eq.descripcionEquipo }}</td>
+                    <td>{{ eq.marca }}</td>
+                    <td>{{ eq.modelo }}</td>
+                    <td>{{ eq.estadoEquipo }}</td>
+                    <td>{{ eq.numSerie }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
 
-              </thead>
-              <tbody>
-                <tr *ngFor="let eq of equipo">
-                  <td>{{ eq.idEquipo }}</td>
-                  <td>{{ eq.nombreEquipo }}</td>
-                  <td>{{ eq.descripcionEquipo }}</td>
-                  <td>{{ eq.marca }}</td>
-                  <td>{{ eq.modelo }}</td>
-                  <td>{{ eq.numSerie }}</td>
-                  <td>{{ eq.fechaAlta }}</td>
-                  <td>{{ eq.fechaBaja }}</td>
-                  <td>{{ eq.estadoEquipo }}</td>
-                  <td>{{ eq.puestoEquipo }}</td>
-                  <td>{{ eq.descripcionPuesto }}</td>
-                  <td>{{ eq.telefono }}</td>
-                  <td>{{ eq.tipoEquipo }}</td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th style>Puesto</th>
+                    <th style>Descripción Puesto</th>
+                    <th style>Teléfono</th>
+                    <th style>Fecha de Alta</th>
+                    <th style>Fecha de Baja</th>
+                    <th style>Tipo Equipo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let eq of equipo">
+                    <td>{{ eq.puestoEquipo }}</td>
+                    <td>{{ eq.descripcionPuesto }}</td>
+                    <td>{{ eq.telefono }}</td>
+                    <td>{{ eq.fechaAlta }}</td>
+                    <td>{{ eq.fechaBaja }}</td>
+                    <td>{{ eq.tipoEquipo }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

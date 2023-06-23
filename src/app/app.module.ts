@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // Importar el módulo de formularios reactivos
 
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { InicioSesionComponent } from './componentes/inicio-sesion/inicio-sesion.component';
@@ -27,6 +28,7 @@ import { PuestoComponent } from './componentes/puesto/puesto.component';
 import { SectorComponent } from './componentes/sector/sector.component';
 import { EquipoComponent } from './componentes/equipo/equipo.component';
 import { AltaSectorComponent } from './componentes/alta-sector/alta-sector.component';
+import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 
 
 @NgModule({
@@ -54,13 +56,16 @@ import { AltaSectorComponent } from './componentes/alta-sector/alta-sector.compo
     EquipoComponent,
     SectorComponent,
     AltaSectorComponent,
+    
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule 
+    ReactiveFormsModule,
+    AutocompleteLibModule,
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

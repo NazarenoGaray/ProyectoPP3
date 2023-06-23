@@ -1,0 +1,14 @@
+h5{
+    margin-left: 1rem;
+    margin-top: 1rem;
+}
+.detail-text {
+    display: flex;
+    flex-direction: column;
+}
+  
+.card-text-text {
+    overflow-y: auto;
+    resize: vertical;
+    min-height: 50px;
+}

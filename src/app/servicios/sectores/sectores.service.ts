@@ -52,6 +52,7 @@ export class SectoresService {
 
   crearSector( sector: Sector): Observable<Sector> {
     const url = `${this.baseUrl}/sectores.php`;
+    console.log("lo que va al php:",sector);
     return this.http.post<Sector>(url, sector).pipe(
       tap((res: any) => {
       }),

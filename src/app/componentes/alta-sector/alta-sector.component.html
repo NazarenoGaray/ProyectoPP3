@@ -1,30 +1,52 @@
 <app-nav-bar></app-nav-bar>
 
 <div class="card container-fluid">
-    <div class="card-header lg-center">
-        <label class="h2" for="">Agregar Sector al establecimiento: {{establecimiento.nombre}} </label>
-        <a class="btn btn-secondary" [routerLink]="['/']">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
-                <path fill-rule="evenodd"
-                    d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
-            </svg>
-            Atras
-        </a>
+    <div class="card-header lg-center row">
+        <label class="h2 col-10" for="">Agregar Sector</label>
+        <div class="col-1">
+            <a class="btn btn-secondary " [routerLink]="['/']">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+                </svg>
+                Atras
+            </a>
+        </div>
     </div>
     <div class="container-hijo">
         <br>
         <form [formGroup]="sectorForm" class="row" (ngSubmit)="onSubmit()">
             <div class="form-group col-12">
-                <!-- <label for="establecimientoSeleccionado">Seleccionar Establecimiento</label>
-                <select class="form-control" formControlName="establecimientoSeleccionado"
-                    id="establecimientoSeleccionado">
+                <label for="establecimientoSeleccionado">Seleccionar Establecimiento</label>
+                <!-- <select class="form-control" formControlName="establecimientoSeleccionado"
+                    id="establecimientoSeleccionado" [disabled]="establecimientoIdParam !== null">
                     <option value="" disabled selected>Seleccionar establecimiento</option>
-                    <option *ngFor="let establecimiento of establecimientos"
-                        [value]="establecimiento.idEstablecimiento">
+                    <option [value]="establecimiento.idEstablecimiento"
+                        *ngFor="let establecimiento of establecimientos">
                         {{ establecimiento.nombreEstablecimiento }}
                     </option>
                 </select> -->
+                <ng-autocomplete class="" id="establecimiento" formControlName="establecimiento"
+                    placeholder="Seleccionar Establecimiento"
+                    [data]="establecimientos"
+                    [searchKeyword]="keywordEstablecimiento" 
+                    [itemTemplate]="itemTemplateEstablecimiento"
+                    [notFoundTemplate]="notFoundTemplateEstablecimiento"
+                    (selected)="onEstablecimientoSelect($event)">
+                </ng-autocomplete>
+
+                <ng-template #itemTemplateEstablecimiento let-item>
+                    <a>
+                        <span [innerHTML]="item.nombreEstablecimiento"></span>
+                        - Cuit:
+                        <span [innerHTML]="item.cuit"></span>
+                    </a>
+                </ng-template>
+
+                <ng-template #notFoundTemplateEstablecimiento let-notFound>
+                    <div [innerHTML]="notFound"></div>
+                </ng-template>
             </div>
 
             <div class="form-group col-12">
@@ -41,8 +63,7 @@
             </div>
             <div class="form-group col-12">
                 <br>
-                <button type="submit" class="btn btn-success"
-                    [disabled]="sectorForm.invalid">Guardar</button>
+                <button type="submit" class="btn btn-success" [disabled]="sectorForm.invalid">Guardar</button>
                 <a class="btn btn-danger" [routerLink]="['/bienvenido']">Cancelar</a>
             </div>
         </form>
