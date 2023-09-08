@@ -11,7 +11,7 @@ describe('AltaUsuariosComponent', () => {
       declarations: [ AltaUsuariosComponent ]
     })
     .compileComponents();
-
+ 
     fixture = TestBed.createComponent(AltaUsuariosComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

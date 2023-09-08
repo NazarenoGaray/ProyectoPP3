@@ -1,50 +1,98 @@
-<nav class="navbar bg-primary navbar-expand-lg" data-bs-theme="dark">
-   
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/bienvenido">Service IT</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
-            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Usuarios
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" routerLink="/alta-usuario">Alta usuario</a></li>
-                    <li><a class="dropdown-item" routerLink="/listar-usuarios">Listar usuarios</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                  </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Estableimientos
-                    </a>
-                    <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" routerLink="/alta-establecimiento">Alta estableimiento</a></li>
-                      <li><a class="dropdown-item" routerLink="/listar-establecimientos">Listar estableimientos</a></li>
-                      <li><hr class="dropdown-divider"></li>
-                    </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Incidentes
-                    </a>
-                    <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" routerLink="/cargar-incidente">Cargar incidente</a></li>
-                      <li><a class="dropdown-item" routerLink="/listar-incidentes">Listar incidentes</a></li>
-                      <li><hr class="dropdown-divider"></li>
-  
-                    </ul>
-                </li>
-            </ul>
-            <ul class="navbar-nav me-left mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/">Cerrar Sesion</a>
-                </li>
-            </ul>
-        </div>
+<nav class="navbar bg-primary navbar-expand-lg" [ngClass]="{'shrink': isNavbarShrunk}" data-bs-theme="dark">
+  <div class="container-fluid">
+    <div class="logo-wrapper logo-container">
+      <img
+        src="../../../assets/imagenes/Saved Pictures/3.png"
+        alt="Logo de Service IT">
     </div>
+
+    <a class="navbar-brand" href="/bienvenido">
+      <span style="margin-left: 30px;">Gestión365</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+      aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <ng-container *ngIf="isLoggedIn()">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Usuarios
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" routerLink="/alta-usuario">Alta usuario</a></li>
+              <li><a class="dropdown-item" routerLink="/listar-usuarios">Listar usuarios</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Establecimientos
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" routerLink="/alta-establecimiento">Alta establecimiento</a></li>
+              <li><a class="dropdown-item" routerLink="/alta-sector">Alta Sector</a></li>
+              <li><a class="dropdown-item" routerLink="/listar-establecimientos">Listar establecimientos</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Incidentes
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" routerLink="/cargar-incidente">Cargar incidente</a></li>
+              <li><a class="dropdown-item" routerLink="/listar-incidentes">Listar incidentes</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <ul>
+              <a class="navbar-brand" href="/vista-tecnico/1">
+                <span>Vista-Tecnico</span>
+              </a>
+            </ul>
+          </li>
+        </ng-container>
+
+        <ng-container *ngIf="!isLoggedIn()">
+          <li class="nav-item  ">
+            <a class="nav-link  px-4  " routerLink="/bienvenido" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Inicio
+            </a>
+          </li>
+
+          <li class="nav-item ">
+            <a class="nav-link  px-4 " routerLink="/nosotros" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Nosotros
+            </a>
+          </li>
+          <li class="nav-item  ">
+            <a class="nav-link  px-4 " routerLink="/contacto" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Contacto
+            </a>
+
+          </li>
+        </ng-container>
+      </ul>
+      <ul class="navbar-nav me-left mb-2 mb-lg-0">
+        <ng-container *ngIf="!isLoggedIn()">
+          <a class="btn btn-secondary  " routerLink="/inicio-sesion">Iniciar Sesión</a>
+        </ng-container>
+        <ng-container *ngIf="isLoggedIn()">
+          <button class="btn btn-danger " (click)="cerrarSesion()">Cerrar Sesión</button>
+        </ng-container>
+      </ul>
+    </div>
+  </div>
 </nav>

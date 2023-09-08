@@ -1,37 +1,176 @@
 <app-nav-bar></app-nav-bar>
-<div class="card container-fluid"  id="content-lista">
-    <div class="card-header">
-        <label class="h2" for=""> Lista de incidentes</label>
-    </div>
-    
+
+<div class="card container-fluid" id="content-lista">
+    <div class="container">
+        <div class="card-header row">
+            <div class="h2 col-8 p-1" for="">Lista de Incidentes </div>
+            <div class="col-3 p-1">
+                <a class="btn btn-success" routerLink="/cargar-incidente/">Crear Nuevo</a>
+            </div>
+            <div class="col-1">
+                <a class="btn btn-secondary" [routerLink]="['/']">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+                    </svg>
+                    <!-- Atrás -->
+                </a>
+            </div>
+        </div>
+        <form class="form" [formGroup]="incidenteForm" (ngSubmit)="onSubmit()">
+
+            <div class="container-filtro">
+
+                <mat-form-field class="id">
+                    <mat-label>Ingrese ID</mat-label>
+                    <input matInput formControlName="id">
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Establecimiento</mat-label>
+                    <input formControlName="establecimiento" matInput>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Prioridad</mat-label>
+                    <mat-select id="Prioridad" formControlName="prioridad">
+                        <mat-option>Seleccione</mat-option>
+                        <mat-option [value]="prioridad.descripcion" *ngFor="let prioridad of prioridades">
+                            {{prioridad.descripcion}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="categoria">
+                    <mat-label>Categoria</mat-label>
+                    <mat-select id="Categoria" formControlName="categoria">
+                        <mat-option>Seleccione</mat-option>
+                        <mat-option [value]="categoria.descripcion" *ngFor="let categoria of categorias">
+                            {{categoria.descripcion}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="estado">
+                    <mat-label>Estado</mat-label>
+                    <mat-select class id="Estado" formControlName="estado">
+                        <mat-option>Seleccione</mat-option>
+                        <mat-option [value]="estado.descripcion" *ngFor="let estado of estados">
+                            {{estado.descripcion}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+            </div>
+            <div class="container-boton">
+                <button type="submit" role="group" [disabled] mat-raised-button color="primary">Filtrar</button>
+            </div>
+
+        </form>
+        <app-spinner *ngIf="getEstado() | async"></app-spinner>
+        <br>
         <div class="table-responsive ">
-            <table class="table">
+            <table class="table table-striped">
                 <thead>
-                    <tr >
-                        <th scope="col" >ID</th>
+                    <tr class="thNombres">
+                        <th scope="col">ID</th>
                         <th scope="col">Establecimiento</th>
-                        <th scope="col">Tipo</th>
-                        <th scope="col">Sub Tipo</th>
-                        <th scope="col">Acciones</th>
+                        <th scope="col">Prioridad</th>
+                        <th scope="col">Categoria</th>
+                        <th scope="col">Fecha Inicial</th>
+                        <th scope="col">Fecha Cierre</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col"></th>
                     </tr>
+                    <!-- <tr>
+                        <th><input type="number" class="col-3 border-0" [(ngModel)]="filtroId" placeholder=""></th>
+                        <th><input class="col-10 border-0" [(ngModel)]="filtroEstablecimiento" placeholder=""></th>
+                        <th><input class="col-8 border-0" [(ngModel)]="filtroPrioridad" placeholder=""></th>
+                        <th><input class="col-8 border-0" [(ngModel)]="filtroCategoria" placeholder=""></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th><input class="col-4 border-0" [(ngModel)]="filtroEstado" placeholder=""></th>
+                        <th><button class="btn btn-info" (click)="filtrar()" class="btn btn-sm btn-info">Filtrar</button></th>
+                    </tr> -->
+
                 </thead>
                 <tbody>
-                    <!--Usuarios es una lista de usuarios en json -->
-                    <tr  >
-                        <!-- <th scope="row"> {{ incidente.id}} </th>
-                        <td>{{ incidente.nombre }}</td>-->
-                     
+                    <tr *ngFor="let incidente of incidentes">
+                        <th scope="row">{{ incidente.idIncidente }}</th>
+                        <td>{{ incidente.establecimientos.nombre }}</td>
+                        <td>{{ incidente.prioridad_incidente.descripcion }}</td>
+                        <td>{{ incidente.categoria_incidente.descripcion }}</td>
+                        <td>{{ incidente.fechaInicio | date:'dd-MM-yyyy HH:mm:ss' }}</td>
+                        <td>{{ incidente.fechaCierre ? (incidente.fechaCierre | date:'dd-MM-yyyy HH:mm:ss') : 'Abierto'
+                            }}</td>
+                        <td>{{ incidente.estado_incidente.descripcion }}</td>
                         <td>
-                            <a class="btn btn-info" routerLink="/editar-incidente"> Actualizar </a> |
-                            <a class="btn btn-danger" 
-                                role="button">Borrar</a>
+                            <a class="btn btn-info" [routerLink]="['/incidente', incidente.idIncidente]">Detalles</a>
                         </td>
                     </tr>
                 </tbody>
             </table>
-            <div>
-                <a class="btn btn-success" routerLink="/cargar-incidente/"> Agregar Nuevo Incidente </a>
-            </div>
         </div>
+    </div>
 </div>
 <app-pie></app-pie>
+<!-- 
+<form [formGroup]="incidenteForm" (ngSubmit)="onSubmit()">
+
+    <div class="container-filtro">
+
+        <mat-form-field class="id">
+            <mat-label>Ingrese ID</mat-label>
+            <input matInput formControlName="id">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Establecimiento</mat-label>
+            <input formControlName="establecimiento" matInput>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Prioridad</mat-label>
+            <mat-select id="Prioridad" formControlName="prioridad">
+                <mat-option>Seleccione</mat-option>
+                <mat-option
+                    [value]="prioridad.descripcion"
+                    *ngFor="let prioridad of prioridades">
+                    {{prioridad.descripcion}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Categoria</mat-label>
+            <mat-select id="Categoria" formControlName="categoria">
+                <mat-option>Seleccione</mat-option>
+                <mat-option
+                    [value]="categoria.descripcion"
+                    *ngFor="let categoria of categorias">
+                    {{categoria.descripcion}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Estado</mat-label>
+            <mat-select class id="Estado" formControlName="estado">
+                <mat-option>Seleccione</mat-option>
+                <mat-option
+                    [value]="estado.descripcion"
+                    *ngFor="let estado of estados">
+                    {{estado.descripcion}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+    </div>
+    <div class="container-boton">
+        <button type="submit" role="group"
+            [disabled] mat-raised-button
+            color="primary">Filtrar</button>
+    </div>
+
+</form> -->

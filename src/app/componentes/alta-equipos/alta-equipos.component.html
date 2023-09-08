@@ -1,0 +1,122 @@
+<app-nav-bar></app-nav-bar>
+
+<div class="card container-fluid" id="content-lista">
+    <div class="container">
+        <div class="card-header row">
+            <div class="h2 col-8" for="">Alta Equipo </div>
+            <div class="col-1">
+                <a class="btn btn-secondary" [routerLink]="['/']">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+                    </svg>
+                    <!-- Atrás -->
+                </a>
+            </div>
+        </div>
+        <br>
+
+        <div class="card-body">
+            <form [formGroup]="equipoForm" class="row" (ngSubmit)="altaEquipo()">
+
+                <!-- Establecimiento -->
+                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                    <select class="form-control" id="idEstablecimiento" formControlName="idEstablecimiento"
+                        (change)="onEstablecimientoSelected()">
+                        <option *ngFor="let establecimiento of establecimientos"
+                            [value]="establecimiento.idEstablecimiento">{{
+                            establecimiento.nombre }}</option>
+                    </select>
+                    <label for="puestoEquipo">Seleccionar Establecimiento (Obligatorio)</label>
+                </div>
+
+                <!-- Sectores -->
+                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                    <select class="form-control" id="idSector" formControlName="idSector" (change)="onSectorSelected()">
+                        <option *ngFor=" let sector of sectores" [value]="sector.idSector">{{
+                            sector.nombre }}</option>
+                    </select>
+                    <label for="puestoEquipo">Seleccionar Sector (Obligatorio)</label>
+                </div>
+
+                <!-- Puestos -->
+                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                    <select class="form-control" id="idPuesto" formControlName="idPuesto">
+                        <option *ngFor=" let puesto of puestos" [value]="puesto.idPuesto">{{
+                            puesto.puestoRed }}</option>
+                    </select>
+                    <label for="puestoEquipo">Seleccionar Puesto (Obligatorio)</label>
+                </div>
+
+
+
+
+                <!-- Nombre Equipo -->
+                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                    <textarea required class="form-control" id="nombre" formControlName="nombre" rows="3"
+                        style="resize: vertical;"></textarea>
+                    <label class="" for="nombre">Escribir nombre del Equipo</label>
+                </div>
+
+                <!-- Marca -->
+                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                    <textarea required class="form-control" id="marca" formControlName="marca" rows="3"
+                        style="resize: vertical;"></textarea>
+                    <label class="" for="marca">Escribir Marca del Equipo</label>
+
+                </div>
+
+                <!-- modelo -->
+                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                    <textarea required class="form-control" id="modelo" formControlName="modelo" rows="3"
+                        style="resize: vertical;"></textarea>
+                    <label class="" for="modelo">Escribir modelo del Equipo</label>
+                </div>
+
+                <!-- numeroSerie -->
+                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                    <textarea required class="form-control" id="idNumeroSerie" formControlName="numeroSerie" rows="3"
+                        style="resize: vertical;"></textarea>
+                    <label class="" for="numeroSerie">Escribir numero de Serie</label>
+                </div>
+
+
+                <!-- Descripcion Equipo -->
+                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                    <textarea required class="form-control" id="descripcion" formControlName="descripcion" rows="3"
+                        style="resize: vertical;"></textarea>
+                    <label class="" for="descripcion">Escribir una breve descripción</label>
+                </div>
+
+
+
+                <!-- Estado Equipo -->
+                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                    <select class="form-control" id="idEstadoEquipo" formControlName="idEstadoEquipo">
+                        <option *ngFor="let item of estadoEquipo" [value]="item.idEstadoEquipo">{{
+                            item.descripcion }}</option>
+                    </select>
+                    <label for="idEstadoEquipo">Seleccionar una Estado del Equipo (Obligatorio)</label>
+                </div>
+
+                <!-- Tipo Equipo -->
+                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                    <select class="form-control" id="idTipoEquipo" formControlName="idTipoEquipo">
+                        <option *ngFor="let item of tipoEquipo" [value]="item.idTipoEquipo">{{
+                            item.descripcion }}</option>
+                    </select>
+                    <label for="tipoEquipo">Seleccionar Tipo Equipo (Obligatorio)</label>
+                </div>
+
+                <!-- Botones -->
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success" [disabled]="equipoForm.invalid">Guardar</button>
+                    <a class="btn btn-danger" (click)="cancelarEdicion()">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<app-pie></app-pie>

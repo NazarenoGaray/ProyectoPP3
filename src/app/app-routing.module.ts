@@ -12,20 +12,54 @@ import { Error404Component } from './componentes/error404/error404.component';
 import { CargarIncidenteComponent } from './componentes/cargar-incidente/cargar-incidente.component';
 import { ListarIncidentesComponent } from './componentes/listar-incidentes/listar-incidentes.component';
 import { IncidenteComponent } from './componentes/incidente/incidente.component';
+import { EstablecimientoComponent } from './componentes/establecimiento/establecimiento.component';
+import { ContactoComponent } from './componentes/contacto/contacto.component';
+import { SobreNosotrosComponent } from './componentes/nosotros/sobre-nosotros.component';
+import { UsuarioComponent } from './componentes/usuario/usuario.component';
+import { SectorComponent } from './componentes/sector/sector.component';
+import { EquipoComponent } from './componentes/equipo/equipo.component';
+import { AltaSectorComponent } from './componentes/alta-sector/alta-sector.component';
+import { TokenGuard } from './guards/token.guard';
+import { VistaTecnicoComponent } from './componentes/vista-tecnico/vista-tecnico.component';
+import { EditarIncidentesComponent } from './componentes/editar-incidentes/editar-incidentes.component';
+import { AltaEquiposComponent } from './componentes/alta-equipos/alta-equipos.component';
+import { EditarEquiposComponent } from './componentes/editar-equipos/editar-equipos.component';
+import { GestionComponent } from './componentes/vistas/gestion/gestion.component';
+
 
 const routes: Routes = [
-  { path: '', component: InicioSesionComponent },
+  { path: '', component: BienvenidoComponent },
   { path: 'bienvenido', component: BienvenidoComponent },
-  { path: 'alta-usuario', component : AltaUsuariosComponent},
-  { path: 'listar-usuarios', component : ListarUsuariosComponent},
-  { path: 'editar-usuarios', component : EditarUsuariosComponent},
-  { path: 'alta-establecimiento', component: AltaEstablecimientosComponent},
-  { path: 'listar-establecimientos', component : ListarEstablecimientosComponent},
-  { path: 'editar-establecimiento', component : EditarEstablecimientosComponent},
-  { path: 'cargar-incidente', component: CargarIncidenteComponent},
-  { path: 'incidente', component: IncidenteComponent},
-  { path: 'listar-incidentes', component: ListarIncidentesComponent},
-  { path: '**', component : Error404Component},
+  { path: 'contacto', component: ContactoComponent },
+  { path: 'nosotros', component: SobreNosotrosComponent },
+  { path: 'inicio-sesion', component: InicioSesionComponent },
+  { path: 'alta-usuario', component: AltaUsuariosComponent , canActivate:[TokenGuard]},
+  { path: 'listar-usuarios', component: ListarUsuariosComponent , canActivate:[TokenGuard]},
+  { path: 'editar-usuario/:id', component: EditarUsuariosComponent , canActivate:[TokenGuard]},
+  { path: 'usuario/:idUsuario', component: UsuarioComponent , canActivate:[TokenGuard]},
+  { path: 'alta-establecimiento', component: AltaEstablecimientosComponent , canActivate:[TokenGuard]},
+  { path: 'listar-establecimientos', component: ListarEstablecimientosComponent , canActivate:[TokenGuard]},
+  { path: 'editar-establecimiento/:idEstablecimiento', component: EditarEstablecimientosComponent , canActivate:[TokenGuard]},
+  { path: 'establecimiento/:idEstablecimiento', component: EstablecimientoComponent , canActivate:[TokenGuard]},
+  { path: 'sector/:id', component: SectorComponent , canActivate:[TokenGuard]},
+  { path: 'equipo/:idEquipo', component: EquipoComponent , canActivate:[TokenGuard]},
+  { path: 'cargar-incidente', component: CargarIncidenteComponent , canActivate:[TokenGuard]},
+  { path: 'listar-incidentes',component: ListarIncidentesComponent, canActivate:[TokenGuard],
+    children: [{ path: ':idEstablecimiento', component: ListarIncidentesComponent }]},
+  { path: 'incidente/:idIncidente', component: IncidenteComponent , canActivate:[TokenGuard]},
+  { path: 'alta-sector', component: AltaSectorComponent , canActivate:[TokenGuard]},
+  { path: 'alta-sector/:idEstablecimiento', component: AltaSectorComponent , canActivate:[TokenGuard]},
+
+  { path: 'vista-tecnico/:idUsuario', component: VistaTecnicoComponent , canActivate:[TokenGuard]},
+  { path: 'editar-incidente/:idIncidente', component: EditarIncidentesComponent , canActivate:[TokenGuard]},
+
+  { path: 'alta-equipo', component: AltaEquiposComponent , canActivate:[TokenGuard]},
+  { path: 'editar-equipo/:idEquipo', component: EditarEquiposComponent , canActivate:[TokenGuard]},
+
+  { path: 'gestion', component: GestionComponent , canActivate:[TokenGuard]},
+
+
+  { path: '**', component: Error404Component},
 ];
 
 @NgModule({

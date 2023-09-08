@@ -1,0 +1,8 @@
+.sectores-container {
+  display: flex;
+  align-items: center;
+}
+
+.separator {
+  margin: 0 5px;
+}

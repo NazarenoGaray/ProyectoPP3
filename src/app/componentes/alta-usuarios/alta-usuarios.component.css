@@ -1,0 +1,67 @@
+.mat-stepper-horizontal {
+    margin-top: 8px;
+  }
+  
+  .mat-mdc-form-field {
+    margin-top: 16px;
+  }
+
+  mat-form-field{
+    width: 70%;
+    margin-left: 5rem;
+  
+  }
+
+  .form-1{
+    display: flex;
+    justify-content: center;
+    flex-wrap:wrap;
+  }
+  
+  .example-stepper {
+    margin-top: 8px;
+  }
+  
+  .mat-mdc-form-field {
+    margin-top: 16px;
+  }
+
+  .botones-final{
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap:wrap;
+  }
+
+  .btn-seccionUno{
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap:wrap;
+    /* background-color: red; */
+
+  }
+
+  .btn-form{
+    margin-top: 15px;
+    background-color: blue;
+    font-size: 16px;
+    width: 8rem;
+    height:2.5rem ;
+  }
+.container-hijo{
+ background-color: rgba(245, 245, 245, 0.561);
+
+ -webkit-box-shadow: 0px 0px 35px -8px rgba(237,237,237,1);
+ -moz-box-shadow: 0px 0px 35px -8px rgba(237,237,237,1);
+ box-shadow: 0px 0px 35px -8px rgba(237,237,237,1);
+
+ border-radius: 12px 12px 12px 12px;
+-moz-border-radius: 12px 12px 12px 12px;
+-webkit-border-radius: 12px 12px 12px 12px;
+border: 0px solid #000000;
+
+  margin-top: 1rem ;
+  margin-bottom: 3rem ;
+
+
+}
+ 

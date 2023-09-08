@@ -1,3 +1,30 @@
-.navbar{
-height: 10%;
+.navbar-expand-lg {
+  max-height: 17vh;
+  /* Establece la altura máxima deseada */
+  margin-left: -30px
+}
+
+.logo-container {
+  width: 17vh;
+  /* Separar logo de letras */
+  margin-top: 15px;
+  /* Altura del logo */
+  height: auto;
+  margin-left: 0px;
+}
+
+.logo-container img {
+  width: 150px;
+  height: 150px;
+  margin-top: -10px;
+}
+
+/* Efecto */
+.logo-wrapper {
+  text-align: center;
+  transition: all 0.7s ease;
+}
+
+.shrink .logo-wrapper {
+  transform: scale(0.7);
 }

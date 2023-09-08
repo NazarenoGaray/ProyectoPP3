@@ -1,19 +1,43 @@
 <app-nav-bar></app-nav-bar>
-<div class="row">
-
-    <div class="container">
-        <div class="row">
-            <div class="col-sm col-xs-12">
-                <div class="row">
-                    <!-- *ngFor="let establecimiento of this.listaEstablecimiento " -->
-                    <div    class="col-4">
-                        <!-- <app-establecimiento [nombredeotravariable]="establecimiento" (eliminar)="quitar(establecimiento)"></app-establecimiento> -->
-                        <app-establecimiento></app-establecimiento>
-
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="card container-fluid" id="content-lista">
+  <div class="container">
+    <div class="card-header row">
+      <div class="h2 col-11" for="">Lista de Establecimientos
+      </div>
+      <div class="col-1">
+        <a class="btn btn-secondary" [routerLink]="['/']">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+            class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+          </svg>
+        </a>
+      </div>
     </div>
+    <br>
+    <app-spinner *ngIf="getEstado() | async"></app-spinner>
+    <div class="row">
+      <div class="col-sm col-xs-12">
+        <div class="row">
+          <div class="col-4" *ngFor="let establecimiento of listaEstablecimiento">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-title">{{ establecimiento.nombre }}</h5>
+              </div>
+              <div class="card-body">
+                <p class="card-text">{{ establecimiento.calle }} {{ establecimiento.altura }}</p>
+                <p class="card-text">{{ establecimiento.provincia.Descripcion }} - {{ establecimiento.localidad.Descripcion }}</p>
+                <h6 class="card-subtitle mb-2 text-muted">{{ establecimiento.pais.Descripcion }}</h6>
+                <a class="btn btn-primary"
+                [routerLink]="['/establecimiento', establecimiento.idEstablecimiento]">Ver detalles</a>
+              </div>
+            </div>
+            <br>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
 <app-pie></app-pie>

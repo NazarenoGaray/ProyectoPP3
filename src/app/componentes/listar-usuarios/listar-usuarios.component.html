@@ -1,49 +1,114 @@
 <app-nav-bar></app-nav-bar>
-<div class="card container-fluid"  id="content-lista">
-    <div class="card-header">
-        <label class="h2" for=""> Lista de usuarios</label>
+
+<div class="card container-fluid" id="content-lista">
+  <div class="container">
+    <div class="card-header row">
+      <div class="h2 col-11" for=""> Lista de Usuarios</div>
+      <div class="col-1">
+        <a class="btn btn-secondary" [routerLink]="['/']">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+            class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+          </svg>
+          <!-- Atras -->
+        </a>
+      </div>
     </div>
-    
-        <div class="table-responsive ">
-            <table class="table">
-                <thead>
-                    <tr >
-                        <th>Id</th>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Dirección</th>
-                        <th>Teléfono</th>
-                        <th>Correo</th>
-                        <th>Domicilio</th>
-                        <th>Usuario</th>
-                        <th>Contraseña</th>
-                        <th>Rol</th>
-                        <th scope="col">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let usuario of usuarios">
-                        <td>{{ usuario.id }}</td>
-                        <td>{{ usuario.nombre }}</td>
-                        <td>{{ usuario.apellido }}</td>
-                        <td>{{ usuario.direccion }}</td>
-                        <td>{{ usuario.telefono }}</td>
-                        <td>{{ usuario.correo }}</td>
-                        <td>{{ usuario.domicilio }}</td>
-                        <td>{{ usuario.usuario }}</td>
-                        <td>{{ usuario.contrasena }}</td>
-                        <td>{{ usuario.rol }}</td>
-                        <td>
-                            <a class="btn btn-info" routerLink="/editar-usuarios"> Editar </a> |
-                            <a class="btn btn-danger" 
-                                role="button">Borrar</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div>
-                <a class="btn btn-success" routerLink="/alta-usuario/"> Agregar Nuevo Usuario </a>
-            </div>
-        </div>
+    <app-spinner *ngIf="getEstado() | async"></app-spinner>
+    <form class="form" [formGroup]="usuarioForm" (ngSubmit)="onSubmit()">
+
+      <div class="container-filtro">
+
+        <mat-form-field class="id">
+          <mat-label>Ingrese ID</mat-label>
+          <input matInput formControlName="id">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Nombre</mat-label>
+          <input formControlName="nombre" matInput>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Apellido</mat-label>
+          <input formControlName="apellido" matInput>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Correo</mat-label>
+          <input formControlName="correo" matInput>
+        </mat-form-field>
+
+        <mat-form-field class="rol">
+          <mat-label>Rol</mat-label>
+          <mat-select id="rol" formControlName="rol">
+            <mat-option>Seleccione</mat-option>
+            <mat-option [value]="rol.nombre" *ngFor="let rol of roles">
+              {{rol.nombre}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="estado">
+          <mat-label>Estado</mat-label>
+          <mat-select class id="Estado" formControlName="estado">
+            <mat-option>Seleccione</mat-option>
+            <mat-option [value]="estado.descripcion" *ngFor="let estado of estados">
+              {{estado.descripcion}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </div>
+      <div class="container-boton">
+        <button type="submit" role="group" [disabled] mat-raised-button color="primary">Filtrar</button>
+      </div>
+
+    </form>
+    <br>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead class="">
+          <tr class="thNombres">
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Correo</th>
+            <th>Rol</th>
+            <th>Estado</th>
+            <th scope="col"></th>
+          </tr>
+          <!-- <tr>
+            <th><input class="col-2 border-0" [(ngModel)]="filtroId" placeholder=""></th>
+            <th><input class="col-6 border-0" [(ngModel)]="filtroNombre" placeholder=""></th>
+            <th><input class="col-6 border-0" [(ngModel)]="filtroApellido" placeholder=""></th>
+            <th><input class="col-4 border-0" [(ngModel)]="filtroCorreo" placeholder=""></th>
+            <th><input class="col-3 border-0" [(ngModel)]="filtroRol" placeholder=""></th>
+            <th><input class="col-4 border-0" [(ngModel)]="filtroEstado" placeholder=""></th>
+            <th><button (click)="filtrar()" class="btn btn-sm btn-info">Filtrar</button></th>
+          </tr> -->
+
+        </thead>
+        <tbody>
+          <tr *ngFor="let usuario of usuarios">
+            <td>{{ usuario.idUsuario }}</td>
+            <td>{{ usuario.nombre }}</td>
+            <td>{{ usuario.apellido }}</td>
+            <td>{{ usuario.correo }}</td>
+            <td>{{ usuario.rol.nombre }}</td>
+            <td>{{ usuario.estado_usuario.descripcion }}</td>
+            <td>
+              <!-- <a [routerLink]="['/editar-usuario', usuario.idUsuario]" class="btn btn-sm btn-primary mr-2">Editar</a> -->
+              <button (click)="detallesUsuario(usuario.idUsuario)" class="btn btn-sm btn-info">Detalles</button>
+
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
+
 <app-pie></app-pie>

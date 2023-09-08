@@ -1,49 +1,99 @@
 <app-nav-bar></app-nav-bar>
 <div class="card">
-    <div class="card-header">
-        Editar Usuario
+    <div class="card-header row">
+        <label class="h2 col-10" for="">Editar Establecimiento</label>
+        <div class="col-2">
+            <a class="btn btn-secondary" [routerLink]="['/establecimiento', idEstablecimiento ]">
+            
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+                </svg>
+                Atras
+            </a>
+        </div>
     </div>
     <div class="card-body">
-
-        <!--formularioDeUsuarios para que al momento de editar los campos traigan los datos de la bd-->
-        <form class="row"><!-- ngNativeValidate [formGroup]="formularioDeUsuarios" (ngSubmit)="enviarDatos()" -->
-
+        <form [formGroup]="establecimientoForm" (ngSubmit)="actualizarEstablecimiento()" class="row">
             <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                <input required type="text" class="form-control " id="floatingInput" formControlName="nombre"
-                    placeholder="Los Pepes">
-                <label for="floatingInput">Nombre: </label>
+                <input required type="text" class="form-control" id="nombre"
+                    formControlName="nombre" placeholder="Nombre del establecimiento" (ngModelChange)="detectarCambios()">
+
+                <label for="nombre">Nombre del establecimiento</label>
             </div>
 
             <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                <input required type="text" class="form-control" id="floatingInput" formControlName="Direccion"
-                    placeholder="AV. Maipu 123">
-                <label for="floatingInput">Direccion: </label>
+                <input required type="text" class="form-control" id="calle" formControlName="calle" placeholder="Calle"
+                    (ngModelChange)="detectarCambios()">
+                <label for="calle">Calle</label>
             </div>
+
             <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                <input required type="text" class="form-control" id="floatingInput" formControlName="RazonSocial"
-                    placeholder="Los pepes S.A">
-                <label for="floatingInput">Razon Social: </label>
+                <input required type="text" class="form-control" id="altura" formControlName="altura"
+                    placeholder="Altura" (ngModelChange)="detectarCambios()">
+                <label for="altura">Altura</label>
             </div>
-            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                <input required type="number" class="form-control" id="floatingInput" formControlName="telefono"
-                    placeholder="1560603333">
-                <label for="floatingInput">Telefono: </label>
-            </div>
-            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                <input required type="email" class="form-control" formControlName="correo"
-                    placeholder="correo de contacto">
-                <label for="floatingInput">Correo: </label>
-            </div>
-            <div class="mb-3 col-5">
-                <label class="label">Tipo establecimiento:</label>
-                <select class="form-select" id="rol" formControlName="rol">
-                    <option> </option> <!--  [value]="rol" *ngFor="let rol of roles"-->
+            <div class="form-floating mb-3 col-2">
+                <select required class="form-select" id="floatingSelectPais" aria-label="Floating label select example"
+                    formControlName="idPais" (change)="onPaisSelected()">
+                    <option value="">Seleccionar país</option>
+                    <option *ngFor="let pais of paises" [value]="pais.idPais">{{ pais.Descripcion }}</option>
                 </select>
+                <label for="floatingSelectPais">País</label>
             </div>
-            <div class="btn-group" role="group" aria-label="Button group name">
-                <button type="submit" class="btn btn-success">Modificar establecimiento</button>
-                <button type="button" routerLink="/listar-usuario/" class="btn btn-danger">Cancelar</button>
+
+            <div class="form-floating mb-3 col-2">
+                <select required class="form-select" id="floatingSelectProvincia"
+                    aria-label="Floating label select example" formControlName="idProvincia"
+                    (change)="onProvinciaSelected()">
+                    <option value="">Seleccionar provincia</option>
+                    <option *ngFor="let provincia of provincias" [value]="provincia.idProvincia">{{
+                        provincia.Descripcion }}</option>
+                </select>
+                <label for="floatingSelectProvincia">Provincia</label>
+            </div>
+
+            <div class="form-floating mb-3 col-2">
+                <select required class="form-select" id="floatingSelectLocalidad"
+                    aria-label="Floating label select example" formControlName="idLocalidad">
+                    <option value="">Seleccionar localidad</option>
+                    <option *ngFor="let localidad of localidades" [value]="localidad.idLocalidad">{{
+                        localidad.Descripcion }}</option>
+                </select>
+                <label for="floatingSelectLocalidad">Localidad</label>
+            </div>
+            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                <input required type="text" class="form-control" id="telefono" formControlName="telefono"
+                    placeholder="Teléfono" (ngModelChange)="detectarCambios()">
+                <label for="telefono">Teléfono</label>
+            </div>
+
+            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                <input required type="email" class="form-control" id="correo" formControlName="correo"
+                    placeholder="Correo electrónico" (ngModelChange)="detectarCambios()">
+                <label for="correo">Correo electrónico</label>
+            </div>
+
+            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                <input required type="text" class="form-control" id="horaEntrada" formControlName="horaEntrada"
+                    placeholder="Hora de entrada" (ngModelChange)="detectarCambios()">
+                <label for="horaEntrada">Hora de entrada</label>
+            </div>
+
+            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                <input required type="text" class="form-control" id="horaSalida" formControlName="horaSalida"
+                    placeholder="Hora de salida" (ngModelChange)="detectarCambios()">
+                <label for="horaSalida">Hora de salida</label>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-success"
+                    [disabled]="!hayCambios || establecimientoForm.invalid">Guardar</button>
+                <a class="btn btn-danger" [routerLink]="['/listar-establecimientos']">Cancelar</a>
             </div>
         </form>
     </div>
 </div>
+
+<app-pie></app-pie>

@@ -1,45 +1,95 @@
 <app-nav-bar></app-nav-bar>
-<div class="card container-fluid" id="content-registrar">
-    <div class="card-header">
-        <label class="h2" for="">Agregar Establecimiento</label>
-    </div>
-    <div class="container-hijo" >
-        <form  class="row" >
-            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                <input required type="text" class="form-control " id="floatingInput" formControlName="nombre"placeholder="Los Pepes">
-                <label for="form-label">Nombre: </label>
+
+<div class="card container-fluid">
+    <div class="container">
+        <div class="card-header lg-center row">
+            <label class="h2 col-10" for="">Agregar Establecimiento</label>
+            <div class="col-2">
+                <a class="btn btn-secondary" [routerLink]="['/']">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+                    </svg>
+                    Atras
+                </a>
             </div>
-            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                <input required type="text" class="form-control" id="floatingInput" formControlName="direccion" placeholder="Av. maipu 123">
-                <label for="form-label">Direccion: </label>
-            </div>
-            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                <input required type="text" class="form-control" id="floatingInput" formControlName="Razon Social" placeholder="Establecimiento S.A">
-                <label for="form-label">Razon Social: </label>
-            </div>
-            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                <input required type="number" class="form-control" id="floatingInput" formControlName="telefono" placeholder="1560603333">
-                <label for="form-label">Telefono: </label>
-            </div>
-            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                <input required type="text" class="form-control" id="floatingInput" formControlName="nombreusuario" placeholder="m.lopez">
-                <label for="form-label">Nombre de Usuario: </label>
-            </div>
-            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                <input required type="email" class="form-control" formControlName="correo" placeholder="correo de contacto">
-                <label for="form-label">Correo: </label>
-            </div>   
-            <div class="mb-3 col-5">
-                <label class="label" >Tipo establecimiento:</label>
-                <select class="form-select" id="rol"  formControlName="tipo" >
-                    <option >  </option> <!--  [value]="tipo" *ngFor="let tipo of tipos"-->
-                </select>
-            </div>       
-            <div class="btn-group btn-primary" role="group" aria-label="Button group name">
-                <button type="submit" class="btn btn-success">Agregar</button>
-                <button type="button" routerLink="/listar-establecimientos/" class="btn btn-danger">Cancelar</button>
-            </div>
-        </form>
+        </div>
+        <div class="container-hijo">
+            <form [formGroup]="establecimientoForm" class="row" (ngSubmit)="onSubmit()">
+                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                    <input required type="text" class="form-control" id="nombre" formControlName="nombre"
+                        placeholder="Nombre del establecimiento">
+                    <label for="nombre">Nombre del establecimiento</label>
+                </div>
+
+                <div class="form-floating mb-3 col-2">
+                    <select required class="form-select" id="floatingSelectPais"
+                        aria-label="Floating label select example" formControlName="idPais" (change)="onPaisSelected()">
+                        <option value="">Seleccionar país</option>
+                        <option *ngFor="let pais of paises" [value]="pais.idPais">{{ pais.Descripcion }}</option>
+                    </select>
+                    <label for="floatingSelectPais">País</label>
+                </div>
+                <div class="form-floating mb-3 col-2">
+                    <select required class="form-select" id="floatingSelectProvincia"
+                        aria-label="Floating label select example" formControlName="idProvincia"
+                        (change)="onProvinciaSelected()">
+                        <option value="">Seleccionar provincia</option>
+                        <option *ngFor="let provincia of provincias" [value]="provincia.idProvincia">{{
+                            provincia.Descripcion }}</option>
+                    </select>
+                    <label for="floatingSelectProvincia">Provincia</label>
+                </div>
+                <div class="form-floating mb-3 col-2">
+                    <select required class="form-select" id="floatingSelectLocalidad"
+                        aria-label="Floating label select example" formControlName="idLocalidad">
+                        <option value="">Seleccionar localidad</option>
+                        <option *ngFor="let localidad of localidades" [value]="localidad.idLocalidad">{{
+                            localidad.Descripcion }}</option>
+                    </select>
+                    <label for="floatingSelectLocalidad">Localidad</label>
+                </div>
+
+                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                    <input required type="text" class="form-control" id="calle" formControlName="calle"
+                        placeholder="Calle">
+                    <label for="calle">Calle</label>
+                </div>
+                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                    <input required type="text" class="form-control" id="altura" formControlName="altura"
+                        placeholder="Altura">
+                    <label for="altura">Altura</label>
+                </div>
+                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                    <input required type="text" class="form-control" id="telefono" formControlName="telefono"
+                        placeholder="Teléfono">
+                    <label for="telefono">Teléfono</label>
+                </div>
+                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                    <input required type="email" class="form-control" id="correo" formControlName="correo"
+                        placeholder="Correo electrónico">
+                    <label for="correo">Correo electrónico</label>
+                </div>
+                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                    <input required type="text" class="form-control" id="horaEntrada" formControlName="horaEntrada"
+                        placeholder="Hora de entrada">
+                    <label for="horaEntrada">Hora de Apertura</label>
+                </div>
+                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                    <input required type="text" class="form-control" id="horaSalida" formControlName="horaSalida"
+                        placeholder="Hora de salida">
+                    <label for="horaSalida">Hora de Cierre</label>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success"
+                        [disabled]="establecimientoForm.invalid">Guardar</button>
+
+                    <a class="btn btn-danger" [routerLink]="['/bienvenido']">Cancelar</a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 <app-pie></app-pie>
