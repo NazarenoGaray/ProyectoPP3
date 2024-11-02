@@ -1,0 +1,106 @@
+<app-nav-bar></app-nav-bar>
+
+<div class="card container-fluid" id="content-lista">
+    <div class="container">
+        <div class="card-header row">
+            <div class="h2 col-8" for="">Alta Puesto</div>
+            <div class="col-1">
+                <a class="btn btn-secondary" [routerLink]="['/']">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+                    </svg>
+                    <!-- Atrás -->
+                </a>
+            </div>
+        </div>
+        <br>
+
+        <div class="card-body">
+            <form [formGroup]="puestoForm" class="row" (ngSubmit)="altaPuesto()">
+                <div class="form-group col-6">
+
+                    <!-- Establecimiento -->
+                    <ng-autocomplete class="establecimiento" id="idEstablecimiento" formControlName="idEstablecimiento"
+                        placeholder="Seleccionar Establecimiento" [data]="establecimientos" [searchKeyword]="keyword"
+                        [itemTemplate]="itemTemplateEstablecimiento"
+                        [notFoundTemplate]="notFoundTemplateEstablecimiento"
+                        (selected)="onEstablecimientoSelect($event)">
+                    </ng-autocomplete>
+
+                    <ng-template #itemTemplateEstablecimiento let-item>
+                        <a>
+                            <span [innerHTML]="item.nombre"></span>
+                            - Cuit:
+                            <span [innerHTML]="item.cuit"></span>
+                        </a>
+                    </ng-template>
+
+                    <ng-template #notFoundTemplateEstablecimiento let-notFound>
+                        <div [innerHTML]="notFound"></div>
+                    </ng-template>
+                </div>
+
+                <!-- Sectores -->
+                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                    <select class="form-control" id="idSector" formControlName="idSector">
+                        <option *ngFor=" let sector of sectores" [value]="sector.idSector">{{
+                            sector.nombre }}</option>
+                    </select>
+                    <label for="puestoEquipo">Seleccionar Sector (Obligatorio)</label>
+                </div>
+
+
+                <!-- Al parecer da error porque envia el sector como objeto y no solo el idSector -->
+                <!-- <ng-autocomplete class="" id="idSector" formControlName="idSector" placeholder="Seleccionar Sector"
+                    [data]="sectores" [searchKeyword]="keyword" [itemTemplate]="itemTemplateSector"
+                    [notFoundTemplate]="notFoundTemplateSector">
+                </ng-autocomplete>
+
+                <ng-template #itemTemplateSector let-item>
+                    <a>
+                        <span [innerHTML]="item.nombre"></span>
+                    </a>
+                </ng-template>
+
+                <ng-template #notFoundTemplateSector let-notFound>
+                    <div [innerHTML]="notFound"></div>
+                </ng-template> -->
+
+                <!-- Puesto Red -->
+                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                    <textarea required class="form-control" id="puestoRed" formControlName="puestoRed" rows="3"
+                        style="resize: vertical;"></textarea>
+                    <label class="" for="puestoRed">Escribir nomenclatura Puesto Red</label>
+                </div>
+
+                <!-- Telefono -->
+                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                    <textarea required class="form-control" id="telefono" formControlName="telefono" rows="3"
+                        style="resize: vertical;"></textarea>
+                    <label class="" for="telefono">Escribir Telefono del Equipo</label>
+
+                </div>
+
+                <!-- Descripcion Equipo -->
+                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                    <textarea required class="form-control" id="descripcion" formControlName="descripcion" rows="3"
+                        style="resize: vertical;"></textarea>
+                    <label class="" for="descripcion">Escribir una breve descripción</label>
+                </div>
+
+
+
+                <!-- Botones -->
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success" [disabled]="puestoForm.invalid">Guardar</button>
+                    <a class="btn btn-danger" (click)="cancelarEdicion()">Cancelar</a>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<app-pie></app-pie>

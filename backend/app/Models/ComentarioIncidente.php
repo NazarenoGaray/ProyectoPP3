@@ -11,7 +11,7 @@ class ComentarioIncidente extends Model
     protected $primaryKey = 'idComentario';
     protected $table = 'comentarios_incidente';
     protected $fillable = [
-        'comentario', 'fechaHora', 'idUsuario', 'idIncidente', 'idTipoComentario'
+        'comentario', 'idUsuario', 'idIncidente', 'idTipoComentario'
     ];
     public function usuario()
     {

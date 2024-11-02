@@ -35,7 +35,7 @@ export class UsuarioService {
   }
   obtenerUsuariosFiltro(usuario:any): Observable<Usuario[]> {
     const url = `${this.apiURL}/usuarios/buscar`;
-    console.log("se envia:",usuario);
+    //console.log("se envia:",usuario);
     return this.http.post<Usuario[]>(url,usuario).pipe(
       catchError((error: any) => {
         return throwError('Error al obtener los usuarios',error);

@@ -22,8 +22,14 @@ use App\Http\Controllers\IncidenteAgendaController;
 use App\Http\Controllers\IncidenteUsuarioController;
 use App\Http\Controllers\TipoComentarioController;
 use App\Http\Controllers\IncidenteEquipoController;
+use App\Http\Controllers\IniciarSesionController;
+use App\Http\Controllers\EstadisticasController;
+use App\Http\Controllers\RenovarTokenController;
 
-
+//Iniciar Sesion
+Route::post('/iniciar-sesion', [IniciarSesionController::class, 'iniciarSesion']);
+//Renovar Token
+Route::post('/renovar-token', [RenovarTokenController::class, 'renovarToken']);//->middleware('auth:api');
 
 // Obtener los Paises
 Route::get('/paises', [DireccionController::class, 'obtenerTodosPaises']);
@@ -133,7 +139,8 @@ Route::get('/equipos/{idEquipo}', [EquipoController::class, 'obtenerEquipoPorId'
 Route::post('/equipos', [EquipoController::class, 'crearEquipo']);
 // Actualizar un Equipo existente
 Route::put('/equipos/{idEquipo}', [EquipoController::class, 'editarEquipo']);
-
+// Obtener historial Equipo
+Route::get('/equipos/{idEquipo}/historial', [EquipoController::class, 'obtenerHistorialComentariosEquipo']);
 
 // Obtener todas las Categorias de los incidentes
 Route::get('/categorias', [CategoriaIncidenteController::class, 'obtenerCategoriasIncidente']);
@@ -167,6 +174,7 @@ Route::put('/prioridadIncidentes/{idPrioridadIncidente}', [PrioridadIncidenteCon
 
 // Obtener todos los incidentes
 Route::post('/incidentes/buscar', [IncidenteController::class, 'buscar']);
+
 Route::get('/incidentes', [IncidenteController::class, 'obtenerIncidentes']);
 // Obtener un incidente especifica por su id
 Route::get('/incidentes/{idIncidente}', [IncidenteController::class, 'obtenerIncidentePorId']);
@@ -174,10 +182,12 @@ Route::get('/incidentes/{idIncidente}', [IncidenteController::class, 'obtenerInc
 Route::post('/incidentes', [IncidenteController::class, 'crearIncidente']);
 // Actualizar incidente existente
 Route::put('/incidentes/{idIncidente}', [IncidenteController::class, 'editarIncidente']);
-
 // Obtener Equipos de un Incidente
 Route::get('/incidentes/{idIncidente}/equipos', [IncidenteEquipoController::class, 'obtenerEquiposDeUnIncidente']);
+// Obtener Incidentes de un Establecimiento
+Route::get('/incidentes/{idEstablecimiento}/establecimiento', [IncidenteController::class, 'obtenerIncidentesPorEstablecimiento']);
 
+Route::get('/usuario/{idUsuario}/incidentes/{fecha}', [IncidenteAgendaController::class, 'obtenerIncidentesPorUsuarioYFecha']);
 
 
 // Obtener todos los incidentes Agenda
@@ -212,20 +222,18 @@ Route::put('/tipoComentario/{idTipoComentario}', [TipoComentarioController::clas
 
 // Obtener todos los comentariosIncidente
 Route::get('/comentariosIncidente', [ComentariosIncidenteController::class, 'obtenerComentariosIncidente']);
-// Obtener un comentariosIncidente especifica por su id
-Route::get('/comentariosIncidente/{idTipoComentario}', [ComentariosIncidenteController::class, 'obtenerComentarioIncidentePorId']);
 // Crear comentariosIncidente
 Route::post('/comentariosIncidente', [ComentariosIncidenteController::class, 'crearComentarioIncidente']);
 // Actualizar comentariosIncidente existente
 Route::put('/comentariosIncidente/{idTipoComentario}', [ComentariosIncidenteController::class, 'editarComentarioIncidente']);
+// Obtener todos los comentarios por Incidente
+Route::get('/comentariosPorIncidente/{idIncidente}', [ComentariosIncidenteController::class, 'obtenerComentariosPoridIncidente']);
 
 
 Route::get('/incidenteUsuarios', [IncidenteUsuarioController::class, 'obtenerUsuariosDeLosIncidentes']);
 // Route::get('/incidenteUsuarios/incidente/{idIncidente}', [IncidenteUsuarioController::class, 'obtenerUsuariosDeUnIncidente']);
-
 // Obtener Usuarios de un Incidente - usuarios asignados a un incidente
 Route::get('/incidentes/{idIncidente}/usuarios', [IncidenteUsuarioController::class, 'obtenerUsuariosDeUnIncidente']);
-
 // Obtener Los Incidentes de un Usuario - Ver su actividad
 Route::get('/usuarios/{idUsuario}/incidentes', [IncidenteUsuarioController::class, 'obtenerIncidentesDeUnUsuario']);
 
@@ -233,7 +241,10 @@ Route::get('/usuarios/{idUsuario}/incidentes', [IncidenteUsuarioController::clas
 Route::post('/incidenteUsuarios', [IncidenteUsuarioController::class, 'crearOEditarIncidenteUsuario']); // Ruta para crear o editar
 Route::put('/incidenteUsuarios/{idIncidente}/{idUsuario}', [IncidenteUsuarioController::class, 'editarIncidenteUsuario']);
 
-
+// Estadisticas - Incidentes Por Fecha
+Route::get('/estadisticas/incidentesPorFecha', [EstadisticasController::class, 'incidentesPorFecha']);
+// Estadisticas - Establecimientos Con Mas Incidencias
+Route::get('/estadisticas/establecimientosConMasIncidencias', [EstadisticasController::class, 'establecimientosConMasIncidencias']);
 
 
 

@@ -1,0 +1,122 @@
+.thNombres{
+    background-color: rgb(180, 199, 216);
+}
+
+.center{
+    display: flex;
+    align-self:center;
+}
+
+.form{
+   width: 100%; 
+}
+.container-filtro{
+    background-color: rgba(228, 228, 228, 0.637);
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    padding-top: 13px;
+}
+
+.container-filtro mat-form-field{
+    margin: 0px 20px;  
+    height: 4.6rem;
+   
+}
+
+mat-label{
+    font-size: 15px;
+}
+
+.container-filtro .id,.categoria, .estado{
+    width: 10rem;
+}
+
+
+
+
+.container-boton{
+    background-color:rgba(228, 228, 228, 0.637);
+    display: flex;
+    justify-content: center;
+    width: 100% ;
+}
+.container-boton button{
+    margin-bottom:13px;
+    padding:0px 5rem;
+    background-color:#0d6efd;
+}
+
+/* Estilos base para tu formulario */
+.form-container {
+    width: 100%;
+    max-width: 600px; /* Por ejemplo, ajusta esto según tus necesidades */
+    margin: 0 auto;
+    /* Otros estilos... */
+  }
+  
+  /* Aplicar estilos cuando la pantalla sea más pequeña */
+  @media (max-width: 768px) {
+    .form-container {
+      max-width: 100%; /* Otra configuración para pantallas más pequeñas */
+    }
+  }
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////*/
+.table-container {
+    max-width: 100%;
+    overflow-x: auto;
+    padding: 20px;
+}
+
+/* Estilos para la tabla */
+.responsive-table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.responsive-table th,
+.responsive-table td {
+    padding: 10px;
+    text-align: left;
+}
+
+.responsive-table th {
+    background-color: #333;
+    color: #fff;
+}
+/* Estilos para filas pares */
+.responsive-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Estilos para filas impares (opcional, ya que el fondo predeterminado es blanco) */
+.responsive-table tbody tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+/* .responsive-table th,
+.responsive-table td {
+    border-bottom: 1px solid #ddd;
+} */
+
+/* Estilos para el input de búsqueda */
+.search-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .responsive-table {
+        overflow-x: scroll;
+    }
+}
+/*//////////////////////////////////////////////////////////////*/
+ 

@@ -29,7 +29,7 @@ export class InicioSesionComponent{
         //localStorage.setItem('TOKEN',this.token);
         sessionStorage.setItem('TOKEN',this.token);// se guarda en sesion storage
         // se lee con:
-        this.router.navigate(['/bienvenido']);
+        this.router.navigate(['/']);
       },
       (err: any) => {
         console.log(`Error al iniciar sesión ${err.message}`);

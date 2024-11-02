@@ -1,0 +1,56 @@
+<app-nav-bar></app-nav-bar>
+<div class="card">
+    <div class="card-header row">
+        <label class="h2 col-10" for="">Editar Sector</label>
+        <div class="col-2">
+            <a class="btn btn-secondary" [routerLink]="['/sector', idSector ]">
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+                </svg>
+                Atras
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <form [formGroup]="sectorForm" (ngSubmit)="editarSector()" class="row">
+
+            <div class="form-floating mb-3 col-2">
+                <select required class="form-select" id="floatingSelectEstablecimiento"
+                    aria-label="Floating label select example" formControlName="idEstablecimiento">
+                    <option value="">Seleccionar Establecimiento</option>
+                    <option *ngFor="let establecimiento of establecimientos"
+                        [value]="establecimiento.idEstablecimiento">{{ establecimiento.nombre }}</option>
+                </select>
+                <label for="floatingSelectSector">Sector</label>
+            </div>
+
+
+            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                <input required type="text" class="form-control" id="nombre" formControlName="nombre"
+                    placeholder="Nombre del sector" (ngModelChange)="detectarCambios()">
+
+                <label for="nombre">Nombre del Sector</label>
+            </div>
+
+
+            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                <input required type="text" class="form-control" id="ubicacion" formControlName="ubicacion"
+                    placeholder="ubicacion" (ngModelChange)="detectarCambios()">
+                <label for="ubicacion">Ubicacion</label>
+            </div>
+
+
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-success"
+                    [disabled]="!hayCambios || sectorForm.invalid">Guardar</button>
+                <a class="btn btn-danger" [routerLink]="['/listar-establecimientos']">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<app-pie></app-pie>

@@ -1,0 +1,95 @@
+.fixed-table {
+  table-layout: fixed;
+  /* Establece el ancho de la tabla como fijo */
+  width: 100%;
+  /* Establece el ancho de la tabla como el 100% del contenedor */
+}
+
+.fixed-col {
+  width: 150px;
+  /* Establece el ancho fijo deseado para las columnas */
+  white-space: nowrap;
+  /* Evita el desbordamiento de texto */
+  overflow: hidden;
+  /* Oculta el contenido que desborda */
+  text-overflow: ellipsis;
+  /* Agrega puntos suspensivos (...) al texto desbordado */
+}
+
+
+
+/* Estilo para los hipervínculos al pasar el ratón */
+a:hover {
+  background-color: lightgray;
+  /* Cambia el fondo al pasar el ratón */
+  color: darkblue;
+  /* Cambia el color al pasar el ratón */
+}
+
+/* Estilos generales */
+body {
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  margin-top: 50px;
+}
+
+.card {
+  margin-bottom: 20px;
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.card-body {
+  padding: 20px;
+}
+
+/* Estilos para las tablas */
+.table {
+  width: 100%;
+  margin-bottom: 1rem;
+  background-color: transparent;
+}
+
+.table th,
+.table td {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+}
+
+/* Estilos para las filas de las tablas */
+.table tbody tr {
+  transition: background-color 0.3s;
+}
+
+.table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* Estilos para los enlaces */
+a {
+  color: #007BFF;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #0056b3;
+}
+
+/* Estilos para la clase .fixed-table */
+.fixed-table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.fixed-col {
+  width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -36,6 +36,9 @@ export class SectoresService {
   }
 
 
+  editarSector(idSector: number, sector: Sector): Observable<Sector> {
+    return this.http.put<Sector>(`${this.apiURL}/sectores/${idSector}`, sector);
+  }
 
 
   //php equipos - Obtener equipos por sector
@@ -45,16 +48,9 @@ export class SectoresService {
   }
 
   crearSector(sector: Sector): Observable<Sector> {
-    const url = `${this.apiURL}/sectores.php`;
-    console.log("lo que va al php:", sector);
-    return this.http.post<Sector>(url, sector).pipe(
-      tap((res: any) => {
-      }),
-      catchError((error: any) => {
-        console.log(`Error al agregar el sector: ${error.message}`);
-        return throwError(error);
-      })
-    );
+    const url = `${this.apiURL}/sectores`;
+    console.log("lo que va al php", sector);
+    return this.http.post<Sector>(url, sector);
   }
 
 

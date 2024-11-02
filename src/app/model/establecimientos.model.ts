@@ -3,6 +3,7 @@ import { Sector } from "./sector.model";
 import { Pais } from "./pais.model";
 import { Provincia } from "./provincia.model";
 import { Localidad } from "./localidad.model";
+import { Estadisticas } from "./estadisticas.model";
 
 export class Establecimiento {
   idEstablecimiento!: number;
@@ -21,9 +22,21 @@ export class Establecimiento {
   horaSalida!: Time;
 
   nombreEstablecimiento!: string;
-  localidad!: Localidad;
-  provincia!: Provincia;
-  pais!: Pais;
-  sectores!: Sector[];
 
+  pais!: Pais;
+  provincia!: Provincia;
+  localidad!: Localidad;
+
+  sectores!: Sector[];
+  estadisticas!: Estadisticas;
+
+  totalIncidentes!: number;
+
+
+  paisEstablecimiento!: string;
+  provinciaEstablecimiento!: string;
+  localidadEstablecimiento!: string;
+
+
+  
 }

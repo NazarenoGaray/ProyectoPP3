@@ -5,29 +5,30 @@ namespace App\Http\Controllers;
 use App\Models\Establecimiento;
 use App\Models\Sector;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EstablecimientoController extends Controller
 {
     //
-    public function obtenerEstablecimientos()
-    {
-        try {
-            $establecimientos = Establecimiento::with([
-                'pais:idPais,Descripcion',
-                'provincia:idProvincia,Descripcion',
-                'localidad:idLocalidad,Descripcion',
-            ])->get();
+    // public function obtenerEstablecimientos()
+    // {
+    //     try {
+    //         $establecimientos = Establecimiento::with([
+    //             'pais:idPais,Descripcion',
+    //             'provincia:idProvincia,Descripcion',
+    //             'localidad:idLocalidad,Descripcion',
+    //         ])->get();
+ 
+    //         // Ocultar campos específicos de la tabla 'establecimientos'
+    //         $establecimientos->makeHidden(['created_at', 'updated_at']);
 
-            // Ocultar campos específicos de la tabla 'establecimientos'
-            $establecimientos->makeHidden(['created_at', 'updated_at']);
-
-            // Retornar la respuesta con el establecimiento creado
-            return response()->json($establecimientos, 201);
-        } catch (\Exception $e) {
-            // Capturar cualquier excepción y mostrar el mensaje de error
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
-    }
+    //         // Retornar la respuesta con el establecimiento creado
+    //         return response()->json($establecimientos, 201);
+    //     } catch (\Exception $e) {
+    //         // Capturar cualquier excepción y mostrar el mensaje de error
+    //         return response()->json(['error' => $e->getMessage()], 500);
+    //     }
+    // }
 
 
     // Método para mostrar detalles de un establecimiento específico
@@ -48,6 +49,32 @@ class EstablecimientoController extends Controller
         return response()->json($establecimiento, 200);
     }
 
+    public function obtenerEstablecimientos()
+    {
+        try {
+            $establecimientos = DB::select("
+            SELECT
+            establecimientos.idEstablecimiento,nombre,calle,altura,
+            paises.Descripcion AS paisEstablecimiento,
+            provincias.Descripcion AS provinciaEstablecimiento,
+            localidades.Descripcion AS localidadEstablecimiento
+            FROM establecimientos
+            LEFT JOIN paises ON establecimientos.idPais = paises.idPais
+            LEFT JOIN provincias ON establecimientos.idProvincia = provincias.idProvincia
+            LEFT JOIN localidades ON establecimientos.idLocalidad = localidades.idLocalidad
+
+            ", );
+
+            if (empty($establecimientos)) {
+                abort(404, 'Establecimientos no encontrado');
+            }
+
+            return response()->json($establecimientos, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
     public function crearEstablecimiento(Request $request)
     {
         try {
@@ -59,7 +86,7 @@ class EstablecimientoController extends Controller
                 'telefono' => 'nullable|string|max:25',
                 'correo' => 'required|string|max:60',
                 'cuit' => 'nullable|string|max:20',
-                'descripcion'  => 'required|string',
+                'descripcion'  => 'nullable|string',
                 'sitioweb' => 'nullable|string|max:255',
                 'idPais' => 'required|exists:paises,idPais',
                 'idProvincia' => 'required|exists:provincias,idProvincia',
@@ -107,6 +134,8 @@ class EstablecimientoController extends Controller
             $sectores = Sector::where('idEstablecimiento', $idEstablecimiento)
                 ->orderBy('nombre', 'asc')
                 ->get();
+            $sectores->makeHidden(['created_at', 'updated_at']);
+
 
             // Retornar la respuesta con los sectores ordenados del Establecimiento
             return response()->json($sectores, 200);

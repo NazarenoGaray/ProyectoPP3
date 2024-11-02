@@ -6,9 +6,10 @@ export class Sector {
   idSector!: number;
   nombre!: string;
   ubicacion!: string;
-  establecimiento!: Establecimiento;
 
   puestos!: Puesto[];
   equipos!: Equipo[];
+  
+  establecimiento!: Establecimiento;
 
 }

@@ -6,10 +6,13 @@ export class Puesto {
     puestoRed!: number;
     telefono!: string;
     descripcion!: string;
-    idSector!: number;
 
-    sector!: Sector;
+    sectores!: Sector;
     equipos!: Equipo[];
-    sectores!: Sector[];
+    puesto!: Puesto;
+
+    idEstablecimiento!: number;
+    idSector!: number;
+  mostrarEquipos!: boolean;
 
 }

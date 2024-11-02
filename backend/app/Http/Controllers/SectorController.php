@@ -26,46 +26,44 @@ class SectorController extends Controller
         }
     }
 
-    // Método para mostrar detalles de un sector específico
     public function obtenerSectorPorId($idSector)
     {
-        $sector = Sector::with(
-            'establecimiento',
-        )->find($idSector);;
-
-        // Ocultar campos específicos de la tabla 'sector'
-        $sector->makeHidden(['created_at', 'updated_at']);
+        $sector = Sector::with('establecimiento')->find($idSector);
 
         if (!$sector) {
             abort(404, 'Sector no encontrado');
         }
+
+        // Ocultar campos específicos de la tabla 'sector'
+        $sector->makeHidden(['created_at', 'updated_at']);
+
+        // Ocultar campos específicos de la relación 'establecimiento'
+        $sector->establecimiento->makeHidden(['telefono', 'correo', 'descripcion', 'sitioweb', 'cuit', 'idPais', 'idProvincia', 'idLocalidad', 'created_at', 'updated_at']);
+
         return response()->json($sector, 200);
     }
 
-    // // Método para mostrar todos los puestos y equipos de un sector
-    // public function obtenerPuestosYEquiposDeUnSector($idSector)
+
+    // Método para mostrar detalles de un sector específico
+    // public function obtenerSectoresPorIdEstablecimiento($idEstablecimiento)
     // {
     //     try {
-    //         // Buscar el sector existente por su ID
-    //         $sector = Sector::find($idSector);
-    //         if (!$sector) {
-    //             abort(404, 'Sector no encontrado');
-    //         }
+    //         // Obtener todos los sectores relacionados con el establecimiento dado
+    //         $sectores = Sector::where('idEstablecimiento', $idEstablecimiento)->get();
 
-    //         // Obtener los puestos que pertenecen al sector con sus equipos
-    //         $puestos = Puesto::where('idSector', $idSector)
-    //             // ->with('equipos')
-    //             ->with('equipos.estadoEquipo', 'equipos.tipoEquipo')
+    //         // Puedes ocultar los campos específicos de la tabla 'sectores' si lo deseas
+    //         $sectores->makeHidden(['created_at', 'updated_at']);
 
-    //             ->get();
-
-    //         // Retornar la respuesta con los puestos y equipos del sector
-    //         return response()->json($puestos, 200);
+    //         // Retornar la respuesta con los sectores encontrados
+    //         return response()->json($sectores, 200);
     //     } catch (\Exception $e) {
     //         // Capturar cualquier excepción y mostrar el mensaje de error
     //         return response()->json(['error' => $e->getMessage()], 500);
     //     }
     // }
+
+
+
 
     public function obtenerPuestosDeUnSector($idSector)
     {
@@ -76,6 +74,7 @@ class SectorController extends Controller
             }
 
             $puestos = Puesto::where('idSector', $idSector)
+                ->with('sectores.establecimiento') // Utiliza la relación correcta: 'sectores'
                 ->get();
 
             return response()->json($puestos, 200);
@@ -84,6 +83,7 @@ class SectorController extends Controller
         }
     }
 
+
     public function obtenerEquiposDeUnSector($idSector)
     {
         try {
@@ -91,20 +91,20 @@ class SectorController extends Controller
             if (!$sector) {
                 abort(404, 'Sector no encontrado');
             }
-    
+
             // Obtener los equipos a través de la relación con la tabla puestos
             $equipos = Equipo::whereHas('puestos', function ($query) use ($idSector) {
                 $query->where('idSector', $idSector);
             })
-            ->with('puestos', 'estadoEquipo', 'tipoEquipo')
-            ->get();
-    
+                ->with('puestos', 'estadoEquipo', 'tipoEquipo')
+                ->get();
+
             return response()->json($equipos, 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-    
+
 
 
 

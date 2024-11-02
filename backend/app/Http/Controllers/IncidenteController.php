@@ -50,6 +50,30 @@ class IncidenteController extends Controller
         }
         return response()->json($incidente, 200);
     }
+    // Método para mostrar incidentes por Establecimiento
+    public function obtenerIncidentesPorEstablecimiento($idEstablecimiento)
+    {
+        try {
+            $incidentes = Incidente::with([
+                'establecimientos:idEstablecimiento,nombre',
+                'sectores:idSector,nombre',
+                'PrioridadIncidente:idPrioridadIncidente,descripcion',
+                'CategoriaIncidente:idCategoriaIncidente,descripcion',
+                'EstadoIncidente:idEstadoIncidente,descripcion',
+            ])->where('idEstablecimiento', $idEstablecimiento)->get();
+
+            // Ocultar campos específicos de la tabla 'incidentes'
+            $incidentes->each(function ($incidente) {
+                $incidente->makeHidden(['created_at', 'updated_at']);
+            });
+
+            // Retornar la respuesta con los incidentes encontrados
+            return response()->json($incidentes, 201);
+        } catch (\Exception $e) {
+            // Capturar cualquier excepción y mostrar el mensaje de error
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
     // public function buscar(Request $request){
 
     //     $id = $request->id;
@@ -97,7 +121,7 @@ class IncidenteController extends Controller
                 'idPrioridadIncidente' => 'required|exists:prioridad_incidentes,idPrioridadIncidente',
                 'idCategoriaIncidente' => 'required|exists:categoria_incidentes,idCategoriaIncidente',
                 'idEstadoIncidente' => 'required|exists:estado_incidentes,idEstadoIncidente',
-                'titulo' => 'required|string',
+                'tarea' => 'required|string',
                 'descripcion' => 'required|string|max:80',
                 'fechaInicio'=> 'nullable|date_format:Y-m-d H:i:s',
                 'fechaCierre'=> 'nullable|date_format:Y-m-d H:i:s',
@@ -111,7 +135,7 @@ class IncidenteController extends Controller
                 'idCategoriaIncidente' => $request->idCategoriaIncidente,
                 'idEstadoIncidente' => $request->idEstadoIncidente,
                 'descripcion' => $request->descripcion,
-                'titulo' => $request->titulo,
+                'tarea' => $request->tarea,
                 'fechaInicio'=> $request->fechaInicio,
                 'fechaCierre'=> $request->fechaCierre,
             ]);
@@ -120,8 +144,13 @@ class IncidenteController extends Controller
             $incidente->save();
 
 
-            $incidente->equipos()->attach($request->idEquipos);
-            $incidente->usuarios()->attach($request->idUsuarios);
+            if (!empty($request->idEquipos)) {
+                $incidente->equipos()->attach($request->idEquipos);
+            }
+    
+            if (!empty($request->idUsuarios)) {
+                $incidente->usuarios()->attach($request->idUsuarios);
+            }
 
 
             // Retornar la respuesta con el incidente creado
@@ -144,16 +173,9 @@ class IncidenteController extends Controller
 
             // Validar los datos recibidos en la solicitud
             $request->validate([
-                'idEstablecimiento' => 'required|exists:establecimientos,idEstablecimiento',
-                'idSector' => 'required|exists:sectores,idSector',
                 'idPrioridadIncidente' => 'required|exists:prioridad_incidentes,idPrioridadIncidente',
                 'idCategoriaIncidente' => 'required|exists:categoria_incidentes,idCategoriaIncidente',
                 'idEstadoIncidente' => 'required|exists:estado_incidentes,idEstadoIncidente',
-
-                'titulo' => 'required|string|max:80',
-                'tarea' => 'required|string',
-                'fechaInicio' => 'required|date_format:Y-m-d H:i:s',
-                'fechaCierre' => 'nullable|date_format:Y-m-d H:i:s',
             ]);
 
             // Actualizar los campos del incidente con los datos proporcionados
@@ -162,10 +184,9 @@ class IncidenteController extends Controller
             $incidente->idPrioridadIncidente = $request->idPrioridadIncidente;
             $incidente->idCategoriaIncidente = $request->idCategoriaIncidente;
             $incidente->idEstadoIncidente = $request->idEstadoIncidente;
-            $incidente->titulo = $request->titulo;
             $incidente->tarea = $request->tarea;
-            $incidente->fechaInicio = $request->fechaInicio;
-            $incidente->fechaCierre = $request->fechaCierre;
+            $incidente->descripcion = $request->descripcion;
+
 
             // Guardar los cambios en la base de datos
             $incidente->save();

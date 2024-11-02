@@ -22,3 +22,4 @@ class IncidenteEquipoController extends Controller
     }
     
 }
+

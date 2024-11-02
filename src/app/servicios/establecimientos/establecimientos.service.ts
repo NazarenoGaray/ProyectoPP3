@@ -22,33 +22,17 @@ export class EstablecimientosService {
     const url = `${this.apiURL}/establecimientos/${idEstablecimiento}`;
     return this.http.get<Establecimiento>(url);
   }
-  
-  
-  obtenerHorariosDeUnEstablecimiento(idEstablecimiento: number): Observable<Establecimiento> {
-    const url = `${this.apiURL}/establecimientos/${idEstablecimiento}/horarios`;
-    return this.http.get<Establecimiento>(url);
-  }
-
-
-  obtenerEstablecimientoPorId(idEstablecimiento: number): Observable<Establecimiento> {
-    const url = `${this.apiURL}/establecimientos=${idEstablecimiento}`;
-    return this.http.get<Establecimiento>(url);
-  }
 
   crearEstablecimiento(establecimiento: Establecimiento): Observable<Establecimiento> {
     const url = `${this.apiURL}/establecimientos`;
-    console.log(establecimiento);
+    // console.log("Datos que llegan a establecimientoService", establecimiento);
     return this.http.post<Establecimiento>(url, establecimiento);
   }
 
-  actualizarEstablecimiento(idEstablecimiento: number, establecimiento: Establecimiento): Observable<any> {
-    return this.http.put(`${this.apiURL}/establecimientos?idEstablecimiento=${idEstablecimiento}`, establecimiento).pipe(
-      catchError(err => {
-        console.log(`Error al actualizar establecimiento: ${err.message}`);
-        return throwError(err);
-      })
-    );
+  actualizarEstablecimiento(idEstablecimiento: number, establecimiento: Establecimiento): Observable<Establecimiento> {
+    return this.http.put<Establecimiento>(`${this.apiURL}/establecimientos/${idEstablecimiento}`, establecimiento);
   }
+
 
   eliminarEstablecimiento(idEstablecimiento: number): Observable<Establecimiento> {
     const url = `${this.apiURL}/establecimientos`;
@@ -56,3 +40,9 @@ export class EstablecimientosService {
   }
 
 }
+
+
+  // obtenerHorariosDeUnEstablecimiento(idEstablecimiento: number): Observable<Establecimiento> {
+  //   const url = `${this.apiURL}/establecimientos/${idEstablecimiento}/horarios`;
+  //   return this.http.get<Establecimiento>(url);
+  // }

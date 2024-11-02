@@ -1,0 +1,203 @@
+<app-nav-bar></app-nav-bar>
+
+
+
+
+<div class="card container-fluid" id="vista-tecnico">
+    <div class="container">
+        <div class="card-header row">
+            <div class="h3 col-11">Bienvenido</div>
+            <div class="h5 col-11" *ngIf="usuario">
+                <a [routerLink]="'/usuario/' + usuario.idUsuario">
+                    {{ usuario.nombre }} {{ usuario.apellido }} - {{ usuario.rol.nombre}}
+                </a>
+            </div>
+        </div>
+        <br>
+
+
+        <!-- Campos para elegir las fechas y el botón de consultas -->
+        <div class="card">
+            <div class="card-body">
+                <h5>Consultar Incidentes Por Fecha</h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="fechaInicio">Fecha de Inicio: </label>
+                        <input type="date" id="fechaInicio" [(ngModel)]="fechaInicio">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="fechaFinalizacion">Fecha de Finalización: </label>
+                        <input type="date" id="fechaFinalizacion" [(ngModel)]="fechaFinalizacion">
+                    </div>
+                    <!-- Botón de consultas -->
+                    <div class="consultar">
+                        <div class="col-md-12">
+                            <button (click)="consultarEstadisticasIncidentes()">Consultar</button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Cantidad de Incidencias -->
+                <h5>Historico Incidentes</h5>
+
+                <div class="row">
+                    <div class="col-xl-4 col-md-6 mb-4">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                            Cantidad de Incidencias</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                            <div class="h5 col-11" *ngIf="estadisticasPorFecha">
+                                                {{ estadisticasPorFecha.totalIncidentes }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Incidentes Solucionados -->
+                    <div class="col-xl-4 col-md-6 mb-4">
+                        <div class="card border-left-success shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            Incidentes Solucionados</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                            <div class="h5 col-11" *ngIf="estadisticasPorFecha">
+                                                {{ estadisticasPorFecha.incidentesSolucionados }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- incidentes Abiertos  -->
+                    <div class="col-xl-4 col-md-6 mb-4">
+                        <div class="card border-left-info shadow h-100 py-2" (click)="togglePrioridades()">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                            Incidentes <br> Abiertos
+                                        </div>
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col-auto">
+                                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                                                    <div class="h5 col-11" *ngIf="estadisticasPorFecha">
+                                                        {{ estadisticasPorFecha.incidentesAbiertos }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="col-auto">
+                                    <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                </div>
+                                <div class="h5 col-11" *ngIf="incidentes && mostrarPrioridades">
+                                    <h6>Prioridad</h6>
+                                    Baja {{ incidentes.prioridadBaja }} <br>
+                                    Media {{ incidentes.prioridadMedia }} <br>
+                                    Alta {{ incidentes.prioridadAlta }} <br>
+                                </div> -->
+
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+        <br><br>
+        <div class="card">
+            <div class="card-body">
+                <h5>Establecimientos Con Más Incidencias</h5>
+                <div class="col-md-4" *ngFor="let establecimiento of listaEstablecimiento; let i = index">
+                    <span class="float-right">{{ i + 1 }}° - {{ establecimiento.nombre }}
+                        <br>
+                        Incidentes: {{ establecimiento.totalIncidentes }} <br>
+                    </span>
+                    <div class="progress mb-4">
+                        <div class="progress-bar" role="progressbar"
+                            [style.width]="(establecimiento.totalIncidentes / totalIncidentes) * 100 + '%'"
+                            [attr.aria-valuenow]="establecimiento.totalIncidentes">
+                            ({{ (establecimiento.totalIncidentes / totalIncidentes) * 100 | number:'1.0-2' }}%)
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <br><br>
+
+        <div class="card">
+            <div class="card-body">
+                <h5>Establecimientos Con Más Incidencias</h5>
+                <div class="row">
+                    <div class="col-md-4" *ngFor="let establecimiento of listaEstablecimiento">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ establecimiento.nombre }}</h5>
+                                <p class="card-text">Total de Incidencias: {{ establecimiento.totalIncidentes }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <br><br>
+</div>
+<!-- Bootstrap core JavaScript-->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="/src/assets/vendor/jquery/jquery.min.js"></script>
+
+
+<script src="/src/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="/src/assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="/src/assets/js/sb-admin-2.min.js"></script>
+
+<!-- Page level plugins -->
+<script src="/src/assets/vendor/chart.js/Chart.min.js"></script>
+
+<!-- Page level custom scripts -->
+<script src="/src/assets/js/demo/chart-area-demo.js"></script>
+<script src="/src/assets/js/demo/chart-pie-demo.js"></script>
+
+<app-pie></app-pie>

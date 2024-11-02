@@ -15,13 +15,10 @@ export class EquiposService {
   constructor(private http: HttpClient) { }
 
   obtenerEquipoPorId(idEquipo: number): Observable<Equipo> {
-    return this.http.get<Equipo>(`${this.baseUrl}/equipos/${idEquipo}`).pipe(
-      catchError((error: any) => {
-        console.error('Error al obtener el equipo:', error);
-        return throwError('Error al obtener el equipo');
-      })
-    );
+    const url = `${this.baseUrl}/equipos/${idEquipo}`;
+    return this.http.get<Equipo>(url);
   }
+
 
 
   obtenerEquiposPorPuesto(idSector: number): Observable<Equipo[]> {
@@ -40,18 +37,17 @@ export class EquiposService {
   }
 
 
-    // Método para crear un nuevo equipo
-    altaEquipo(equipo: Equipo): Observable<Equipo> {
-      return this.http.post<Equipo>(`${this.baseUrl}/equipos`, equipo);
-    }
-  
+  // Método para crear un nuevo equipo
+  altaEquipo(equipo: Equipo): Observable<Equipo> {
+    return this.http.post<Equipo>(`${this.baseUrl}/equipos`, equipo);
+  }
+
 
 
 
 
   obtenerEquiposPorSector(idSector: number): Observable<Equipo[]> {
     const url = `${this.baseUrl}/sectores/${idSector}/equipos`;
-    console.log("Equipos por sector obtenidos:",this.http.get<Equipo[]>(url))
     return this.http.get<Equipo[]>(url);
   }
 
@@ -63,7 +59,8 @@ export class EquiposService {
   }
 
   obtenerHistorialEquipo(idEquipo: number): Observable<Equipo[]> {
-    const url = `${this.baseUrl}/historialEquipos.php?idEquipo=${idEquipo}`;
+    const url = `${this.baseUrl}/equipos/${idEquipo}/historial`;
+
     return this.http.get<Equipo[]>(url);
   }
 

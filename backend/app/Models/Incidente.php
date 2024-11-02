@@ -13,10 +13,11 @@ class Incidente extends Model
     protected $table = 'incidentes';
 
     protected $fillable = [
-        'idPrioridadIncidente', 'idCategoriaIncidente', 'idEstadoIncidente'
-        ,'titulo','descripcion', 'fechaCierre', 'fechaInicio',
-        'idEstablecimiento', 'idSector'
+        'idEstablecimiento', 'idSector',
+        'idPrioridadIncidente', 'idCategoriaIncidente', 'idEstadoIncidente',
+        'descripcion', 'tarea', 'fechaInicio', 'fechaCierre',
     ];
+
     public function establecimientos()
     {
         return $this->belongsTo(Establecimiento::class, 'idEstablecimiento');
@@ -38,5 +39,15 @@ class Incidente extends Model
     public function EstadoIncidente()
     {
         return $this->belongsTo(EstadoIncidente::class, 'idEstadoIncidente');
+    }
+    //funciones para declarar relaciones
+    public function equipos()
+    {
+        return $this->belongsToMany(Equipo::class, 'incidente_equipos', 'idIncidente', 'idEquipo');
+    }
+
+    public function usuarios()
+    {
+        return $this->belongsToMany(Usuario::class, 'incidente_usuarios', 'idIncidente', 'idUsuario');
     }
 }

@@ -9,4 +9,13 @@ export class comentarios_incidente {
     idTipoComentario!: number;
     usuario!: Usuario;
 
+
+    nombreUsuario!: string;
+    apellidoUsuario!: string;
+    comentarioIncidente!: string;
+    tipoComentario!: string;
+    rolUsuario!: string;
+    fechaComentario!: Date;
+
+
 }

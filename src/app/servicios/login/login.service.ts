@@ -6,15 +6,17 @@ import { catchError, map, tap, throwError} from 'rxjs';
   providedIn: 'root'
 })
 export class LoginService {
-  apiUrl = 'http://localhost/probando/login.php';
+  //apiUrl = 'http://localhost/probando/login.php';
+  apiUrl = 'http://localhost:8000/api/iniciar-sesion';
 
   constructor(private http: HttpClient) { }
 
-  validarCredencial(usuario: string, contrasena: string) {
+  validarCredencial(usuario: string, contraseña: string) {
     const body = {
       usuario: usuario,
-      contrasena: contrasena
+      contraseña: contraseña
     };
+    console.log(`usuario enviado:`,body);
     return this.http.post(this.apiUrl, body).pipe(
       tap((data: any) => console.log(`Inicio sesión exitosa`)),
       catchError(err => {

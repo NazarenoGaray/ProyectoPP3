@@ -1,0 +1,104 @@
+<app-nav-bar></app-nav-bar>
+
+<div class="card container-fluid" id="content-puesto" *ngIf="puesto">
+    <div class="container">
+        <div class="card-header row">
+            <div class="card-header">
+                <div class="h2 col-8">
+                    <a [routerLink]="'/establecimiento/' + puesto.sectores.establecimiento.idEstablecimiento">
+                        {{ puesto.sectores.establecimiento.nombre }}
+                    </a>
+                </div>
+ 
+                <!-- <div class="col-1">
+          <a class="btn btn-secondary" [routerLink]="['/listar-equipos']">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+              class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 0 1 .708.708L5.707 7.5H11.5z" />
+            </svg>
+          </a>
+        </div> -->
+
+                <div class="h5">
+                    <a [routerLink]="'/sector/' + puesto.sectores.idSector">
+                        {{ puesto.sectores.nombre }} - {{ puesto.sectores.ubicacion }}
+                    </a>
+                </div>
+                <td>
+                    <a class="btn btn-primary" [routerLink]="['/editar-puesto', puesto.idPuesto]">
+                        Editar Puesto
+                    </a>
+                </td>
+
+            </div>
+        </div>
+        <br>
+
+        <div class="card-body">
+            <h4>Puesto</h4>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th style>Puesto</th>
+                            <th style>Teléfono</th>
+                            <th style>Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ puesto.puestoRed }}</td>
+                            <td>{{ puesto.telefono }}</td>
+                            <td>{{ puesto.descripcion }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <br>
+
+        <h4>Equipos</h4>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th style>ID</th>
+                        <th style>Nombre</th>
+                        <th style>Marca</th>
+                        <th style>Modelo</th>
+                        <th style>Estado</th>
+                        <th style>Tipo</th>
+                        <th style>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let equipo of equipos">
+                        <td>{{ equipo.idEquipo }}</td>
+                        <td>{{ equipo.nombre }}</td>
+                        <td>{{ equipo.marca }}</td>
+                        <td>{{ equipo.modelo }}</td>
+                        <td>{{ equipo.estado_equipo.descripcion }}</td>
+                        <td>{{ equipo.tipo_equipo.descripcion }}</td>
+                        <td> <a [routerLink]="['/equipo', equipo.idEquipo]">Ver detalles</a>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <td>
+            <a class="btn btn-primary" [routerLink]="['/alta-equipo', puesto.idPuesto]">
+                Agregar Equipo
+            </a>
+        </td>
+
+
+    </div>
+</div>
+
+<br>
+
+<app-pie></app-pie>

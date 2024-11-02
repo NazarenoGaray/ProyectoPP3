@@ -189,6 +189,7 @@ class UsuarioController extends Controller
 
             // Retornar la respuesta con el usuario creado
             return response()->json($usuario, 201);
+            
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
             return response()->json(['error' => $e->getMessage()], 500);

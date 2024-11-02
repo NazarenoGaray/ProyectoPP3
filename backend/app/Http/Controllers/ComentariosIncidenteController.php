@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\ComentarioIncidente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class ComentariosIncidenteController extends Controller
 {
@@ -14,7 +16,7 @@ class ComentariosIncidenteController extends Controller
             $comentariosIncidente = ComentarioIncidente::all();
 
             // Ocultar campos específicos de la tabla 'ComentariosIncidente'
-            $comentariosIncidente->makeHidden(['created_at', 'updated_at']);
+            $comentariosIncidente->makeHidden(['created_at']);
 
             // Agregar logs para verificar los valores
             info($comentariosIncidente);
@@ -27,22 +29,42 @@ class ComentariosIncidenteController extends Controller
         }
     }
 
-    // Método para mostrar detalles de un tipo de Comentario específico
-    public function obtenerComentarioIncidentePorId($idTipoComentario)
+    public function obtenerComentariosPoridIncidente($idIncidente)
     {
-        $comentarios_incidente = ComentarioIncidente::with('usuario')->find($idTipoComentario);
+        try {
+            // Verificar si $idIncidente es un número válido
+            if (!is_numeric($idIncidente)) {
+                return response()->json(['error' => 'El ID del incidente no es válido'], 400);
+            }
 
-        if (!$comentarios_incidente) {
-            abort(404, 'Tipo Comentario no encontrado');
+            $comentarioIncidente = DB::select("
+            SELECT
+                c.idComentario,
+                c.comentario AS comentarioIncidente,
+                t.descripcion AS tipoComentario,
+                u.nombre AS nombreUsuario,
+                u.apellido AS apellidoUsuario,
+                r.nombre AS rolUsuario,
+                t.descripcion as tipoComentario,
+                c.updated_at as fechaHora
+
+            FROM comentarios_incidente c
+            LEFT JOIN tipo_comentarios t ON c.idTipoComentario = t.idTipoComentario
+            LEFT JOIN usuarios u ON c.idUsuario = u.idUsuario
+            LEFT JOIN roles r ON u.idRol = r.idRol
+
+            WHERE c.idIncidente = ?
+            ORDER BY c.updated_at
+        ", [$idIncidente]);
+
+            if (empty($comentarioIncidente)) {
+                return response()->json(['error' => 'No se encontraron comentarios para el incidente especificado'], 404);
+            }
+
+            return response()->json($comentarioIncidente, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-
-        // Ocultar campos en el modelo de usuario asociado
-        $comentarios_incidente->usuario->setHidden(['contrasena', 'created_at', 'updated_at']);
-
-        // Ocultar campos específicos de la tabla 'tipoComentario'
-        $comentarios_incidente->makeHidden(['created_at', 'updated_at']);
-
-        return response()->json($comentarios_incidente, 200);
     }
 
 
@@ -52,12 +74,12 @@ class ComentariosIncidenteController extends Controller
             // Valida los datos recibidos del formulario
             $request->validate([
                 'comentario' => 'required|string',
-                'fechaHora' => 'required|date_format:Y-m-d H:i:s',
                 'idUsuario' => 'required|exists:usuarios,idUsuario',
                 'idIncidente' => 'required|exists:incidentes,idIncidente',
                 'idTipoComentario' => 'required|exists:tipo_comentarios,idTipoComentario',
-
+                
             ]);
+            // 'fechaHora' => 'required|date_format:Y-m-d H:i:s',
 
             // Crear el nuevo Comentario con los datos validados
             $comentarioIncidente = new ComentarioIncidente([

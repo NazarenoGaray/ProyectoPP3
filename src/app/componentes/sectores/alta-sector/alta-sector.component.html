@@ -1,0 +1,69 @@
+<app-nav-bar></app-nav-bar>
+
+<div class="card container-fluid">
+    <div class="container">
+        <div class="card-header row">
+            <div class="h2 col-11">Alta Sector
+            </div>
+            <div class="col-1">
+                <a class="btn btn-secondary" [routerLink]="['/listar-establecimientos']">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 0 1 .708.708L5.707 7.5H11.5z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+        <br>
+        <div class="container-hijo">
+            <form [formGroup]="sectorForm" class="row" (ngSubmit)="altaSector()">
+                <div class="form-group col-12">
+                    
+                    <label for="establecimientoSeleccionado">Seleccionar Establecimiento</label>
+                    <ng-autocomplete class="" id="establecimiento" formControlName="establecimiento"
+                        placeholder="Seleccionar Establecimiento" [data]="establecimientos"
+                        [searchKeyword]="keywordEstablecimiento" [itemTemplate]="itemTemplateEstablecimiento"
+                        [notFoundTemplate]="notFoundTemplateEstablecimiento"
+                        (selected)="onEstablecimientoSelect($event)">
+                    </ng-autocomplete>
+
+                    <ng-template #itemTemplateEstablecimiento let-item>
+                        <a>
+                            <span [innerHTML]="item.nombre"></span>
+                            - Cuit:
+                            <span [innerHTML]="item.cuit"></span>
+                        </a>
+                    </ng-template>
+
+                    <ng-template #notFoundTemplateEstablecimiento let-notFound>
+                        <div [innerHTML]="notFound"></div>
+                    </ng-template>
+                </div>
+
+                <div class="form-group col-12">
+                    <br>
+                    <label for="nombre">Nombre del Sector</label>
+                    <input required type="text" class="form-control" id="nombre" formControlName="nombre"
+                        placeholder="Escriba el nombre del sector">
+                </div>
+                <div class="form-group col-12">
+                    <br>
+                    <label for="ubicacion">Ubicacion</label>
+                    <input required type="text" class="form-control" id="ubicacion" formControlName="ubicacion"
+                        placeholder="Escriba la ubicacion del sector">
+                </div>
+                <div class="form-group col-12">
+                    <br>
+                    <button type="submit" class="btn btn-success" [disabled]="sectorForm.invalid">Guardar</button>
+                    <a class="btn btn-danger" [routerLink]="['/bienvenido']">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br>
+</div>
+<br>
+
+
+<app-pie></app-pie>

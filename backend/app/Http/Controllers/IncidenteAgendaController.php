@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\IncidenteAgenda;
+use App\Models\Usuario;
+
 use Illuminate\Http\Request;
 
 class IncidenteAgendaController extends Controller
@@ -66,6 +68,27 @@ class IncidenteAgendaController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
+
+
+
+    public function obtenerIncidentesPorUsuarioYFecha($idUsuario, $fecha)
+    {
+        // Obtener el usuario por su ID
+        $usuario = Usuario::with(['incidenteUsuario.incidenteAgenda'])
+            ->findOrFail($idUsuario);
+
+        // Filtrar los incidentes del usuario en la fecha seleccionada
+        $incidentes = $usuario->incidenteUsuario
+            ->where('incidenteAgenda.fechaAgenda', $fecha)
+            ->pluck('incidenteAgenda');
+
+        return response()->json(['incidentes' => $incidentes]);
+    }
+
+
+
+
 
     public function editarIncidenteAgenda(Request $request, $idIncidenteAgenda)
     {
