@@ -201,23 +201,23 @@
                                     </mat-select>
                                 </mat-form-field>
 
-                                <!-- TAREAS-->
+                                <!-- Contenido-->
 
                                 <mat-form-field>
-                                    <mat-label>Tarea</mat-label>
-                                    <input matInput formControlName="tarea"
-                                        placeholder="Escribir Titulo de la tarea..."
+                                    <mat-label>Titulo</mat-label>
+                                    <input matInput formControlName="titulo"
+                                        placeholder="Escribir Titulo del incidente..."
                                         required>
                                 </mat-form-field>
 
-                                <!-- DESCRIPCION DE TAREAS-->
+                                <!-- DESCRIPCION DE incidente-->
                                 <mat-form-field class="textarea">
                                     <mat-label>Descripcion</mat-label>
                                     <textarea class="area"
                                     #input maxlength="700"
                                     matInput 
                                     formControlName="descripcion"
-                                    placeholder="Escribir descripcion de la tarea..."
+                                    placeholder="Escribir descripcion del incidente..."
                                     required
                                     ></textarea>
                                     <mat-hint align="end">{{input.value.length}}/700</mat-hint>

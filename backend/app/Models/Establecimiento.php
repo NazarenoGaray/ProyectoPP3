@@ -12,7 +12,7 @@ class Establecimiento extends Model
     protected $table = 'establecimientos';
     protected $fillable = [
         'nombre', 'calle', 'altura', 'telefono', 'correo', 'cuit', 'descripcion',  'sitioweb',
-        'idPais', 'idProvincia', 'idLocalidad'
+        'idPais', 'idProvincia', 'idLocalidad','horaEntrada','horaSalida'
     ];
 
     public function pais()

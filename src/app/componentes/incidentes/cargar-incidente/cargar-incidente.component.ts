@@ -25,6 +25,9 @@ import { IncidentesService } from 'src/app/servicios/incidentes/incidentes.servi
 import { PrioridadService } from 'src/app/servicios/incidentes/prioridad.service';
 import { SectoresService } from 'src/app/servicios/sectores/sectores.service';
 import { UsuarioService } from 'src/app/servicios/usuarios/usuario.service';
+import { ConfirmCargarIncidenteComponent } from '../../modal/confirm-cargar-incidente/confirm-cargar-incidente.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ExitoCargarIncidenteComponent } from '../../modal/exito-cargar-incidente/exito-cargar-incidente.component';
 
 @Component({
   selector: 'app-cargar-incidente',
@@ -78,6 +81,8 @@ export class CargarIncidenteComponent implements OnInit {
     private usuariosService: UsuarioService,
     private equipoService: EquiposService,
     private estadoIncidenteService: EstadoIncidenteService,
+    private dialog: MatDialog,
+
   ) { }
 
   ngOnInit(): void {
@@ -88,16 +93,14 @@ export class CargarIncidenteComponent implements OnInit {
 
   initializeForm(): void {
     this.incidenteForm = this.formBuilder.group({
-      establecimiento: new FormControl({ value: '', disabled: false }, Validators.required),
-      sector: new FormControl({ value: '', disabled: true }, Validators.required),
-      idPrioridadIncidente: ['', Validators.required],
-      idCategoriaIncidente: ['', Validators.required],
-      idEstadoIncidente: ['', Validators.required],
-      equipos: new FormControl({ value: '', disabled: true }),
-      tarea: ['', Validators.required],
+      idCategoriaIncidente: [null, Validators.required],
+      idUsuarios: [[]], // Si es un array de usuarios
+      idEstablecimiento: [null, Validators.required],
+      idSector: [null, Validators.required],
+      idPrioridadIncidente: [null, Validators.required],
+      idEstadoIncidente: [null, Validators.required],
+      titulo: ['', Validators.required],
       descripcion: ['', Validators.required],
-      buscarEquipos: new FormControl({ value: '', disabled: true }),
-      buscarUsuario: [''],
     });
   }
 
@@ -117,7 +120,7 @@ export class CargarIncidenteComponent implements OnInit {
 
         idPrioridadIncidente: ['', Validators.required],
         idEstadoIncidente: ['', Validators.required],
-        tarea: ['', Validators.required],
+        titulo: ['', Validators.required],
         descripcion: ['', Validators.required],
 
       }),
@@ -243,6 +246,7 @@ export class CargarIncidenteComponent implements OnInit {
 
     const incidente: Incidente = this.incidenteForm.value;
 
+
     const usuariosIDs = this.usuariosAgregados.map(usuario => usuario.idUsuario);
     const equiposIDs = this.equiposAgregados.map(equipo => equipo.idEquipo);
 
@@ -251,17 +255,33 @@ export class CargarIncidenteComponent implements OnInit {
     incidente.idEstablecimiento = this.idEstablecimiento;
     incidente.idSector = this.idSector;
 
-    console.log("datos enviados del incidente:", this.incidenteForm.value);
-    this.incidenteService.cargarIncidente(incidente).subscribe(
-      () => {
-        console.log('Incidente agregado exitosamente');
-        this.router.navigate(['/listar-incidentes']);
-      },
-      (error: any) => {
-        console.log(`Error al agregar el incidente: ${error.message}`);
+    console.log("datos a enviar del incidente:", this.incidenteForm.value);
+
+    const dialogRef = this.dialog.open(ConfirmCargarIncidenteComponent,{
+      width: '400px',
+      data: { incidente, modo: 'alta'}
+    })
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.incidenteService.cargarIncidente(incidente).subscribe(
+          (res: any) => {
+            const exitoDialog = this.dialog.open(ExitoCargarIncidenteComponent, {
+              width: '300px',
+              data: { res, modo: 'alta' }
+            });
+            exitoDialog.afterClosed().subscribe(() => {
+              console.log('Incidente agregado exitosamente', res);
+              this.router.navigate(['/listar-Incidentes']);
+            });
+          },
+          (error: any) => {
+            console.log(`Error al agregar el incidente: ${error.message}`);
+          }
+        );
       }
-    );
+    });
   }
+
   // ****************************************************  ENVIAR  FORMULARIO step ****************************************************
 
   onSubmitStep() {
@@ -269,37 +289,75 @@ export class CargarIncidenteComponent implements OnInit {
       return;
     }
     // datosTicket:establecimiento,sector,buscarEquipos,equipos,buscarUsuario,idCategoriaIncidente
-    // descripcionTicket:idPrioridadIncidente,idEstadoIncidente,tarea,descripcion
+    // descripcionTicket:idPrioridadIncidente,idEstadoIncidente,titulo,descripcion
     // OBTENEMOS FORMULARIOS
     const datosTicket = this.incidenteFormStepper.get('datosTicket')?.value;
     const descripcionTicket = this.incidenteFormStepper.get('descripcionTicket')?.value;
     // MAPEAMOS USUARIOS Y EQUIPOS
     const usuariosIDs = this.usuariosAgregados.map((usuario) => usuario.idUsuario);
     const equiposIDs = this.equiposAgregados.map((equipo) => equipo.idEquipo);
+
+    
     // GUARDAMOS EN EL FORMULARIO DATOS MAPEADOS
     datosTicket.idUsuarios = usuariosIDs;
     datosTicket.idEquipos = equiposIDs;
     datosTicket.idEstablecimiento = this.idEstablecimiento;
     datosTicket.idSector = this.idSector;
+
+    // Obtener descripciones en base a los IDs
+    const categoria = this.categorias.find(cat => cat.idCategoriaIncidente === datosTicket.idCategoriaIncidente);
+    const prioridad = this.prioridades.find(pri => pri.idPrioridadIncidente === descripcionTicket.idPrioridadIncidente);
+    const estado = this.estados.find(est => est.idEstadoIncidente === descripcionTicket.idEstadoIncidente);
+    
+    const establecimiento = this.establecimientos.find(est => est.idEstablecimiento === this.idEstablecimiento);
+    const sector = this.sectores.find(sec => sec.idSector === this.idSector);
+    
     // CREAMOS UN OBJETO UNIENDO EL FORMULARIO 
     const incidenteCompleto: Incidente = {
       ...datosTicket,
       ...descripcionTicket
     };
 
-    console.log("datos enviados: ", incidenteCompleto);
-    this.incidenteService.cargarIncidente(incidenteCompleto).subscribe(
-      (res: any) => {
+    const incidenteDialog: any = {
+      ...datosTicket,
+      ...descripcionTicket,
+      categoriaDescripcion: categoria ? categoria.descripcion : 'No especificado',
+      prioridadDescripcion: prioridad ? prioridad.descripcion : 'No especificado',
+      estadoDescripcion: estado ? estado.descripcion : 'No especificado',
+      establecimientoNombre: establecimiento ? establecimiento.nombre : 'No especificado',
+      sectorNombre: sector ? sector.nombre : 'No especificado',
+      usuarios: this.usuariosAgregados.map(usuario => `${usuario.nombre} ${usuario.apellido}`),
+      equipos: this.equiposAgregados.map(equipo => `${equipo.nombre} - ${equipo.modelo}`)
+    };
+    
 
-        console.log('Incidente agregado exitosamente');
-        console.log('Respuesta del serv', res);
-        this.router.navigate(['/listar-incidentes']);
-      },
-      (err: any) => {
-        console.log(`Error al agregar el incidente: ${err.message}`);
-        console.log('error: ', err.message);
+    console.log("datos enviados: ", incidenteCompleto);
+
+    const dialogRef = this.dialog.open(ConfirmCargarIncidenteComponent,{
+      width: '400px',
+      data: { incidenteDialog, modo: 'alta'}
+    })
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.incidenteService.cargarIncidente(incidenteCompleto).subscribe(
+          (res: any) => {
+
+            const exitoDialog = this.dialog.open(ExitoCargarIncidenteComponent, {
+              width: '300px',
+              data: { res, modo: 'alta' }
+            });
+            exitoDialog.afterClosed().subscribe(() => {
+              console.log('Incidente agregado exitosamente', res);
+              this.router.navigate(['/incidentes',res.idIncidente]);
+            });
+          },
+          (err: any) => {
+            console.log(`Error al agregar el incidente: ${err.message}`);
+            console.log('error: ', err.message);
+          }
+        );
       }
-    );
+    });
   }
 
   //**************busqueda de equipos/s******

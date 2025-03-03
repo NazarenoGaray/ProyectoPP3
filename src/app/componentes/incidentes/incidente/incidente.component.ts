@@ -5,6 +5,7 @@ import { Equipo } from 'src/app/model/equipo.model';
 import { Incidente } from 'src/app/model/incidente.model';
 import { Usuario } from 'src/app/model/usuario.model';
 import { IncidentesService } from 'src/app/servicios/incidentes/incidentes.service';
+import { LoadingService } from 'src/app/servicios/loading.service';
 
 @Component({
   selector: 'app-incidente',
@@ -22,11 +23,13 @@ export class IncidenteComponent {
   constructor(
     private route: ActivatedRoute,
     private incidenteService: IncidentesService,
+    private loadingService: LoadingService,
 
   ) { }
 
 
   ngOnInit(): void {
+    this.loadingService.show();
     this.route.paramMap.subscribe(params => {
       const idIncidente = params.get('idIncidente');
       const idTipoComentario = params.get('idIncidente');
@@ -36,6 +39,8 @@ export class IncidenteComponent {
         this.obtenerEquiposDeUnIncidente(Number(idIncidente));
         this.obtenerUsuariosDeUnIncidente(Number(idIncidente));
         this.obtenerComentariosDeUnIncidente(Number(idTipoComentario));
+        this.loadingService.hide();
+
       }
     });
   }
@@ -99,7 +104,9 @@ export class IncidenteComponent {
       }
     );
   }
-
+  getEstado(){
+    return this.loadingService.getEstado();
+  } 
 
 
 

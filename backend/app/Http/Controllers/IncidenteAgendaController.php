@@ -6,6 +6,7 @@ use App\Models\IncidenteAgenda;
 use App\Models\Usuario;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class IncidenteAgendaController extends Controller
 {
@@ -21,6 +22,7 @@ class IncidenteAgendaController extends Controller
             return response()->json($incidenteAgenda, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -65,6 +67,7 @@ class IncidenteAgendaController extends Controller
             return response()->json($incidenteAgenda, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -120,6 +123,7 @@ class IncidenteAgendaController extends Controller
             return response()->json($incidenteAgenda, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }

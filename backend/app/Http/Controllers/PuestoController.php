@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Equipo;
 use App\Models\Puesto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class PuestoController extends Controller
 {
@@ -22,6 +23,7 @@ class PuestoController extends Controller
             return response()->json($puestos, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -59,6 +61,7 @@ class PuestoController extends Controller
 
             return response()->json($equipos, 200);
         } catch (\Exception $e) {
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -114,6 +117,7 @@ class PuestoController extends Controller
             return response()->json($puesto, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }

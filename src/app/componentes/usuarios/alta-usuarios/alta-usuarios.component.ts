@@ -15,6 +15,9 @@ import { EstadoUsuariosService } from 'src/app/servicios/usuarios/estado-usuario
 import { Observable } from 'rxjs';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import {map} from 'rxjs/operators';
+import { ConfirmAltaUsuarioComponent } from '../../modal/confirm-alta-usuario/confirm-alta-usuario.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ExitoAltaUsuarioComponent } from '../../modal/exito-alta-usuario/exito-alta-usuario.component';
 
 @Component({
   selector: 'app-alta-usuarios',
@@ -42,6 +45,7 @@ export class AltaUsuariosComponent implements OnInit {
     private rolService: RolService,
     private estadoService: EstadoUsuariosService,
     private ubicacionService: UbicacionService,
+    private dialog: MatDialog,
     private router: Router,
     breakpointObserver: BreakpointObserver
   ) { 
@@ -87,7 +91,7 @@ export class AltaUsuariosComponent implements OnInit {
     this.estadoService.obtenerEstadosUsuarios().subscribe(
       (res: estado_usuarios[]) => {
         this.estados = res;
-        console.log(`estados obtenidos: `,this.estados);
+        //console.log(`estados obtenidos: `,this.estados);
     },
       (err: any) => {
         console.log(`Error al obtener los estados del usuario: ${err.message}`);
@@ -96,7 +100,7 @@ export class AltaUsuariosComponent implements OnInit {
     ////////////////////////////////////////////////////////////////////////
     this.ubicacionService.obtenerPaises().subscribe((data: Pais[]) => {
       this.paises = data;
-      console.log('Paises recuperados:', data);
+      //console.log('Paises recuperados:', data);
     });
   }
 
@@ -110,7 +114,7 @@ export class AltaUsuariosComponent implements OnInit {
   onPaisSelected() {
     //const paisId = this.usuarioForm.value.idPais;
     const paisId = this.usuarioForm.get('datosPersonales.idPais')?.value;
-    console.log('onPaisSelected() llamado');
+    //console.log('onPaisSelected() llamado');
     this.usuarioForm.get('datosPersonales.idProvincia')?.setValue('');
     this.usuarioForm.get('datosPersonales.idProvincia')?.disable();
     this.usuarioForm.get('datosPersonales.idLocalidad')?.setValue('');
@@ -119,7 +123,7 @@ export class AltaUsuariosComponent implements OnInit {
 
     if (paisId) {
       this.ubicacionService.obtenerProvinciaPorId(paisId).subscribe((data: Provincia[]) => {
-        console.log('provinciadata:', data);
+        //console.log('provinciadata:', data);
         this.provincias = data;
         this.usuarioForm.get('datosPersonales.idProvincia')?.enable();
       },
@@ -132,7 +136,7 @@ export class AltaUsuariosComponent implements OnInit {
   onProvinciaSelected() {
     //const provinciaId = this.usuarioForm.value.datosPersonales.idProvincia;
     const provinciaId = this.usuarioForm.get('datosPersonales.idProvincia')?.value;
-    console.log('onProvinciaSelected() llamado');
+    //console.log('onProvinciaSelected() llamado');
     this.usuarioForm.get('datosPersonales.idLocalidad')?.setValue('');
     this.usuarioForm.get('datosPersonales.idLocalidad')?.disable();
     this.localidades = [];
@@ -156,19 +160,36 @@ export class AltaUsuariosComponent implements OnInit {
       ...datosPersonales,
       ...datosUsuario
     };
-    console.log("datos enviados: ",datosUsuarioCompleto);
-    this.usuarioService.crearUsuario(datosUsuarioCompleto).subscribe(
-      (res: any) => {
-        
-        console.log('Usuario agregado exitosamente', this.usuario);
-        console.log('Respuesta del serv', res);
-        this.router.navigate(['/listar-usuarios']);
-      },
-      (err: any) => {
-        console.log(`Error al agregar el Usuario: ${err.message}`);
-        console.log('error: ',err.message);
+
+    //console.log("datos para el confirm: ",datosUsuarioCompleto);
+    const dialogRef = this.dialog.open(ConfirmAltaUsuarioComponent, {
+      width: '400px',
+      data: { datosUsuarioCompleto }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Si confirma, envía la petición
+        this.usuarioService.crearUsuario(datosUsuarioCompleto).subscribe(
+          (res: any) => {
+            
+            // Abre el modal de éxito con el ID generado
+            const exitoDialog = this.dialog.open(ExitoAltaUsuarioComponent, {
+              width: '300px',
+              data: { res }
+            });
+            
+            exitoDialog.afterClosed().subscribe(() => {
+              //console.log('Usuario agregado exitosamente', res);
+              this.router.navigate(['/listar-usuarios']);
+            });
+          },
+          (err: any) => {
+            console.log(`Error al agregar el usuario: ${err.message}`);
+          }
+        );
       }
-    );
+    });
   } 
 
 

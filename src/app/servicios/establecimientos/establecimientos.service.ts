@@ -24,9 +24,9 @@ export class EstablecimientosService {
   }
 
   crearEstablecimiento(establecimiento: Establecimiento): Observable<Establecimiento> {
-    const url = `${this.apiURL}/establecimientos`;
+    //const url = ;
     // console.log("Datos que llegan a establecimientoService", establecimiento);
-    return this.http.post<Establecimiento>(url, establecimiento);
+    return this.http.post<Establecimiento>(`${this.apiURL}/establecimientos`, establecimiento);
   }
 
   actualizarEstablecimiento(idEstablecimiento: number, establecimiento: Establecimiento): Observable<Establecimiento> {

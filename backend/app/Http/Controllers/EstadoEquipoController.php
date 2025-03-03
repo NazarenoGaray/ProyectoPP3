@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\EstadoEquipo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class EstadoEquipoController extends Controller
 {
@@ -20,6 +21,7 @@ class EstadoEquipoController extends Controller
             return response()->json($estadoEquipo, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -58,6 +60,7 @@ class EstadoEquipoController extends Controller
             return response()->json($estadoEquipo, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -88,6 +91,7 @@ class EstadoEquipoController extends Controller
             return response()->json($estadoEquipo, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }

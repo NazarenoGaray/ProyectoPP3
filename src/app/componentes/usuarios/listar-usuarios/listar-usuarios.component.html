@@ -62,18 +62,19 @@
 
       </div>
       <div class="container-boton">
-        <button type="submit" role="group" [disabled] mat-raised-button color="primary">Filtrar</button>
+        <button type="submit" role="group" [disabled] mat-raised-button color="primary">Buscar</button>
       </div>
 
     </form>
     <br>
     <div class="table-responsive row">
-      <div class="col-3">
-        Usuarios encontrados
-    </div>
-    <div class="col-3">
-        <input class="col-4" [(ngModel)]="filtro" placeholder="Buscar" (ngModelChange)="fBuscar()">
-    </div>
+      <div class="filtro-container">
+        <div class="usuarios-encontrados">
+          <h2>Usuarios encontrados</h2>
+        </div>
+        <input class="form-control" [(ngModel)]="filtro" placeholder="Filtrar usuario..." (ngModelChange)="fBuscar()">
+      </div>
+
       <table class="table table-striped">
         <thead class="">
           <tr class="thNombres">

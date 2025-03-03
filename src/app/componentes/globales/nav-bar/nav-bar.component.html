@@ -14,44 +14,47 @@
     <div class="collapse navbar-collapse" id="navbarText">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <ng-container *ngIf="isLoggedIn()">
-          <li class="nav-item dropdown">
+          <li class="nav-item dropdown" *ngIf="menuUsuarios == true">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Usuarios
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" routerLink="/alta-usuario">Alta usuario</a></li>
-              <li><a class="dropdown-item" routerLink="/listar-usuarios">Listar usuarios</a></li>
-              <li>
+              <li><a class="dropdown-item" routerLink="/alta-usuario" *ngIf="altaUsuario">Alta usuario</a></li>
+              <li *ngIf="altaUsuario">
                 <hr class="dropdown-divider">
               </li>
+              <li><a class="dropdown-item" routerLink="/listar-usuarios" *ngIf="listarUsuario">Listar usuarios</a></li>
             </ul>
           </li>
-          <li class="nav-item dropdown">
+          <li class="nav-item dropdown" *ngIf="menuEstablecimientos == true">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Establecimientos
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" routerLink="/alta-establecimiento">Alta establecimiento</a></li>
-              <li><a class="dropdown-item" routerLink="/alta-sector">Alta Sector</a></li>
-              <li><a class="dropdown-item" routerLink="/listar-establecimientos">Listar establecimientos</a></li>
-              <li>
+              <li><a class="dropdown-item" routerLink="/alta-establecimiento" *ngIf="cargarEstablecimiento">Alta establecimiento</a></li>
+              <li *ngIf="cargarEstablecimiento">
                 <hr class="dropdown-divider">
               </li>
+              <li><a class="dropdown-item" routerLink="/alta-sector" *ngIf="cargarSector">Alta Sector</a></li>
+              <li *ngIf="cargarSector">
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" routerLink="/listar-establecimientos" *ngIf="listarEstablecimiento">Listar establecimientos</a></li>
             </ul>
           </li>
-          <li class="nav-item dropdown">
+          <li class="nav-item dropdown" *ngIf="menuIncidentes == true">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Incidentes
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" routerLink="/cargar-incidente">Cargar incidente</a></li>
-              <li><a class="dropdown-item" routerLink="/listar-incidentes">Listar incidentes</a></li>
-              <li>
+              <li><a class="dropdown-item" routerLink="/cargar-incidente" *ngIf="cargarIncidente">Cargar incidente</a></li>
+              <li *ngIf="cargarIncidente">
                 <hr class="dropdown-divider">
               </li>
+              <li><a class="dropdown-item" routerLink="/listar-incidentes" *ngIf="listarIncidente">Listar incidentes</a></li>
             </ul>
           </li>
-          <li class="nav-item">
+          <!--<li class="nav-item">
             <a class="nav-link " role="button" data-bs-toggle="dropdown" aria-expanded="false"
               [routerLink]="['/vista-tecnico', this.usuario.idUsuario]">
               Vista-Tecnico
@@ -62,7 +65,7 @@
               [routerLink]="['/vista-gerencial', this.usuario.idUsuario]">
               Vista-Gerencia
             </a>
-          </li>
+          </li>-->
 
           <li class="nav-item">
             <a class="nav-link  px-4 " routerLink="/nosotros" role="button" data-bs-toggle="dropdown"

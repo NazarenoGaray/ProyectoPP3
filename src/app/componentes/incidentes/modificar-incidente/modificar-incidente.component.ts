@@ -19,6 +19,9 @@ import { UsuarioService } from 'src/app/servicios/usuarios/usuario.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmarDialogComponent } from '../../globales/confirmar-dialog/confirmar-dialog.component';
 import { TokenService } from 'src/app/servicios/token/token.service';
+import { LoadingService } from 'src/app/servicios/loading.service';
+import { forkJoin } from 'rxjs';
+
 
 
 @Component({
@@ -49,6 +52,8 @@ export class ModificarIncidenteComponent implements OnInit {
   informeCierre: string = '';
   incidenteSolucionado!: boolean;
   flag: boolean = true;
+  isLoading: boolean = true;
+  incidente: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -62,30 +67,35 @@ export class ModificarIncidenteComponent implements OnInit {
     private tokenService: TokenService,
     private estadoIncidenteService: EstadoIncidenteService,
     private dialog: MatDialog,
+    private loadingService: LoadingService,
+
   ) { }
 
+  //**************************************NG ON INIT************************************/
+  
   ngOnInit(): void {
-    this.initializeForm();
-    this.loadIncidente();
-    this.fetchData();
-    this.usuarioAct = this.tokenService.getAuthenticatedUser();
-  }
-
-  initializeForm(): void {
+    
     this.incidenteForm = this.formBuilder.group({
       establecimiento: new FormControl({ value: '', disabled: false }, Validators.required),
       sector: new FormControl({ value: '', disabled: false }, Validators.required),
-      tarea: new FormControl({ value: '', disabled: false }, Validators.required),
+      titulo: new FormControl({ value: '', disabled: false }, Validators.required),
       descripcion: new FormControl({ value: '', disabled: false }, Validators.required),
       idPrioridadIncidente: ['', Validators.required],
       idCategoriaIncidente: ['', Validators.required],
       idEstadoIncidente: ['', Validators.required],
       idEstablecimiento: ['', Validators.required],
       idSector: ['', Validators.required],
+      informeCierre:[''],
+
     });
+
+    this.loadData();
+
   }
 
-  loadIncidente(): void {
+  
+
+ /* loadIncidente(): void {
     const incidenteId = this.route.snapshot.paramMap.get('idIncidente');
     this.idIncidente = Number(incidenteId);
     this.incidenteService.obtenerDetalleIncidentePorId(this.idIncidente).subscribe((incidente: any) => {
@@ -93,18 +103,23 @@ export class ModificarIncidenteComponent implements OnInit {
       this.incidenteForm.patchValue(incidente);
       const sectorControl = this.incidenteForm.get('sector');
       const establecimientoControl = this.incidenteForm.get('establecimiento');
+      this.informeCierre = this.incidenteForm.get('informeCierre')?.value;
+
       //const idEstablecimientoControl = this.incidenteForm.get('idEstablecimiento');
       if (establecimientoControl) {
         establecimientoControl.setValue(incidente.establecimientos.nombre);
         this.idEstablecimiento = incidente.establecimientos.idEstablecimiento;
+        
         //console.log("el nombre del establecimiento es:", establecimientoControl);
       } else {
+        this.loadingService.hide();
         console.error('El control "establecimiento" no fue encontrado en el formulario.');
       }
       if (sectorControl) {
         sectorControl.setValue(incidente.sectores.nombre);
         this.idSector = incidente.sectores.idSector;
       } else {
+        this.loadingService.hide();
         console.error('El control "sector" no fue encontrado en el formulario.');
       }
       if (incidente.idEstadoIncidente === 4) {
@@ -114,6 +129,101 @@ export class ModificarIncidenteComponent implements OnInit {
       }
     });
 
+    this.obtenerUsuariosYEquipos();
+    this.obtenerComentariosDeUnIncidente();
+
+  }*/
+
+//************************************** ONSUBMIT ********************************************/
+  onSubmit(): void {
+    if (this.incidenteForm.invalid) {
+      console.log("el incidente es invalido");
+      return;
+    }
+    console.log("estado inc al actualizar: ", this.incidenteForm.value.idEstadoIncidente);
+    const updatedIncidente = this.incidenteForm.value;
+    if (this.incidenteForm.value.idEstadoIncidente != 4) {
+      console.log("entros sin ser 4");
+      this.actualizar(updatedIncidente);
+    } else if (this.incidenteForm.value.idEstadoIncidente == 4 && this.informeCierre != '') {
+      console.log("entros siendo 4 y inf de cierre no null");
+      this.actualizar(updatedIncidente);
+      this.publicarComentario();
+    } else if (this.incidenteForm.value.idEstadoIncidente == 4 && this.informeCierre == '') {
+      this.activeTab = 'informacion';
+    }
+
+    // console.log("------------------------------------------------------------");
+    // console.log("datos incidentes para actualizar:", this.incidenteForm.value);
+    // console.log("id incidentes a actualizar:", this.idIncidente);
+
+  }
+  
+  //********************************************     CONSULTAR A SERIVICIO POR DATOS   ********************************************/
+
+  /*fetchData(): void {
+    this.establecimientosService.obtenerEstablecimientos().subscribe((data: Establecimiento[]) => {
+      this.establecimientos = data;
+    });
+
+    this.prioridadService.obtenerPrioridades().subscribe((data: Prioridad[]) => {
+      //console.log("prioridades", data);
+      this.prioridades = data;
+    });
+
+    this.categoriaService.obtenerCategorias().subscribe((data: Categoria[]) => {
+      //console.log("categorias", data);
+      this.categorias = data;
+    });
+    this.estadoIncidenteService.obtenerEstadosIncidentes().subscribe((data: estado_incidente[]) => {
+      //console.log("estados incidentes:", data);
+      this.estados = data;
+    });
+    this.usuariosService.obtenerUsuarios().subscribe((data: Usuario[]) => {
+      this.usuarios = data;
+      //console.log("usuarios obtenidos:", this.usuarios)
+    });
+  }*/
+  
+  loadData(){
+    const incidenteId = this.route.snapshot.paramMap.get('idIncidente');
+    this.idIncidente = Number(incidenteId);
+    // Usa forkJoin para esperar a que todas las solicitudes se completen
+    forkJoin({
+      incidente: this.incidenteService.obtenerDetalleIncidentePorId(this.idIncidente),
+      prioridades: this.prioridadService.obtenerPrioridades(),
+      categorias: this.categoriaService.obtenerCategorias(),
+      estados: this.estadoIncidenteService.obtenerEstadosIncidentes(),
+      usuarios: this.usuariosService.obtenerUsuarios(),
+      establecimientos: this.establecimientosService.obtenerEstablecimientos(),
+      comentarios: this.incidenteService.obtenerComentariosDeUnIncidente(this.idIncidente),
+      usuariosInc: this.incidenteService.obtenerUsuariosDeUnIncidente(this.idIncidente),
+      equiposInc: this.incidenteService.obtenerEquiposDeUnIncidente(this.idIncidente),
+    }).subscribe(
+      (responses) => {
+        // Asigna los datos a las propiedades del componente
+        this.prioridades = responses.prioridades;
+        this.categorias = responses.categorias;
+        this.estados = responses.estados;
+        this.comentarios = responses.comentarios;
+        this.usuariosInc = responses.usuariosInc;
+        this.equiposInc = responses.equiposInc;
+
+        // Rellena el formulario con los datos del incidente
+        this.incidenteForm.patchValue(responses.incidente);
+        this.incidenteSolucionado = responses.incidente.estado_incidente.idEstadoIncidente === 4;
+
+        // Marca la carga como completada
+        this.isLoading = false;
+        this.incidente = true;
+      },
+      (error) => {
+        console.error('Error al cargar los datos:', error);
+        this.isLoading = false; // Asegúrate de desactivar el spinner en caso de error
+      }
+    );
+  }
+  obtenerUsuariosYEquipos() {
     this.incidenteService.obtenerUsuariosDeUnIncidente(this.idIncidente).subscribe(
       (response: any) => {
         if (Array.isArray(response)) {
@@ -141,65 +251,6 @@ export class ModificarIncidenteComponent implements OnInit {
         console.log('Error al obtener los equipos del incidente:', error);
       }
     );
-
-    this.obtenerComentariosDeUnIncidente();
-
-  }
-
-  onSubmit(): void {
-    if (this.incidenteForm.invalid) {
-      console.log("el incidente es invalido");
-      return;
-    }
-    console.log("estado inc al actualizar: ", this.incidenteForm.value.idEstadoIncidente);
-    const updatedIncidente = this.incidenteForm.value;
-    if (this.incidenteForm.value.idEstadoIncidente != 4) {
-      console.log("entros sin ser 4");
-      this.actualizar(updatedIncidente);
-    } else if (this.incidenteForm.value.idEstadoIncidente == 4 && this.informeCierre != '') {
-      console.log("entros siendo 4 y inf de cierre no null");
-      this.actualizar(updatedIncidente);
-      this.publicarComentario();
-    } else if (this.incidenteForm.value.idEstadoIncidente == 4 && this.informeCierre == '') {
-      this.activeTab = 'informacion';
-    }
-
-    // console.log("------------------------------------------------------------");
-    // console.log("datos incidentes para actualizar:", this.incidenteForm.value);
-    // console.log("id incidentes a actualizar:", this.idIncidente);
-
-  }
-  //********************************************     CONSULTAR A SERIVICIO POR DATOS   ********************************************/
-  actualizar(updatedIncidente: any) {
-    this.incidenteService.actualizarIncidente(this.idIncidente, updatedIncidente).subscribe(() => {
-      console.log('Incidente actualizado con éxito');
-      this.router.navigate(['/listar-incidentes']); // Redirige a la lista de incidentes u otra ubicación deseada
-    }, (error: any) => {
-      console.error('Error al actualizar el incidente:', error);
-    });
-  }
-  fetchData(): void {
-    this.establecimientosService.obtenerEstablecimientos().subscribe((data: Establecimiento[]) => {
-      this.establecimientos = data;
-    });
-
-    this.prioridadService.obtenerPrioridades().subscribe((data: Prioridad[]) => {
-      //console.log("prioridades", data);
-      this.prioridades = data;
-    });
-
-    this.categoriaService.obtenerCategorias().subscribe((data: Categoria[]) => {
-      //console.log("categorias", data);
-      this.categorias = data;
-    });
-    this.estadoIncidenteService.obtenerEstadosIncidentes().subscribe((data: estado_incidente[]) => {
-      //console.log("estados incidentes:", data);
-      this.estados = data;
-    });
-    this.usuariosService.obtenerUsuarios().subscribe((data: Usuario[]) => {
-      this.usuarios = data;
-      //console.log("usuarios obtenidos:", this.usuarios)
-    });
   }
 
   obtenerComentariosDeUnIncidente() {
@@ -209,13 +260,14 @@ export class ModificarIncidenteComponent implements OnInit {
     });
   }
 
+  //*********************************************ACTUALIZAR   /   COMENTAR ********************************************/
   publicarComentario() {
-    if (this.idEstado = 4) {
+    if (this.idEstado === 4) {
       this.idTipoComentario = 1
       this.comentario = this.informeCierre;
-    } else if (this.idEstado = 3) {
+    } else if (this.idEstado === 3) {
       this.idTipoComentario = 2;
-    } 
+    }
     const comentarioObj = {
       comentario: this.comentario,
       idUsuario: this.usuarioAct.idUsuario,
@@ -229,17 +281,19 @@ export class ModificarIncidenteComponent implements OnInit {
         console.log('Comentario enviado:', respuesta);
 
         this.limpiarInputComentario();
+        this.obtenerComentariosDeUnIncidente();
       },
       (error: any) => {
 
         console.error('Error al enviar el comentario:', error);
       }
     );
-    this.obtenerComentariosDeUnIncidente();
   }
+
   limpiarInputComentario() {
     this.comentario = '';
   }
+
   confirmarReapertura(): void {
     const dialogRef = this.dialog.open(ConfirmarDialogComponent, {
       width: '300px', // Establece el ancho del cuadro de diálogo según tus preferencias
@@ -251,6 +305,7 @@ export class ModificarIncidenteComponent implements OnInit {
       }
     });
   }
+
   reabrirIncidente(): void {
     const estadoControl = this.incidenteForm.get('idEstadoIncidente');
     if (estadoControl) {
@@ -275,5 +330,14 @@ export class ModificarIncidenteComponent implements OnInit {
         console.error('Error al reabrir el incidente:', error);
       }
     );
+  }
+
+  actualizar(updatedIncidente: any) {
+    this.incidenteService.actualizarIncidente(this.idIncidente, updatedIncidente).subscribe(() => {
+      console.log('Incidente actualizado con éxito');
+      this.router.navigate(['/incidente',this.idIncidente]); // Redirige a la lista de incidentes u otra ubicación deseada
+    }, (error: any) => {
+      console.error('Error al actualizar el incidente:', error);
+    });
   }
 }

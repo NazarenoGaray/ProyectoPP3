@@ -12,6 +12,9 @@ import { Rol } from '../../../model/roles.model';
 import { UsuarioService } from 'src/app/servicios/usuarios/usuario.service';
 import { RolService } from 'src/app/servicios/usuarios/roles.service';
 import { EstadoUsuariosService } from 'src/app/servicios/usuarios/estado-usuarios.service';
+import { LoadingService } from 'src/app/servicios/loading.service';
+import { ConfirmAltaUsuarioComponent } from '../../modal/confirm-alta-usuario/confirm-alta-usuario.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -30,6 +33,7 @@ export class EditarUsuariosComponent implements OnInit {
   provincias: Provincia[] = [];
   localidades: Localidad[] = [];
   hayCambios: boolean = false;
+  loading: boolean = true; // Inicialmente en true para indicar que está cargando
 
   constructor(
     private formBuilder: FormBuilder,
@@ -37,11 +41,15 @@ export class EditarUsuariosComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private rolService: RolService,
+    private loadingService: LoadingService,
     private estadoService: EstadoUsuariosService,
     private ubicacionService: UbicacionService,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
+    this.loading = true; // Iniciamos la carga
+
     this.usuarioForm = this.formBuilder.group({
       idUsuario: ['', Validators.required],
       nombre: ['', Validators.required],
@@ -68,7 +76,7 @@ export class EditarUsuariosComponent implements OnInit {
     ///////////////////////////////////////////////
     this.estadoService.obtenerEstadosUsuarios().subscribe(
       (res: estado_usuarios[]) => {
-      console.log(`roles obtenidos: `,this.estados);
+      //console.log(`roles obtenidos: `,this.estados);
       this.estados = res;
     },
       (err: any) => {
@@ -80,20 +88,21 @@ export class EditarUsuariosComponent implements OnInit {
       this.paises = data;
     });
     ////////////////////////////////////////////////////////
+    this.loadingService.show();
     this.route.params.pipe(
       take(1),
       switchMap(params => this.usuarioService.obtenerUsuarioPorId(params['id']))
     ).subscribe(
       (usuario: Usuario | null) => {
         if (usuario) {
-          console.log("Data obtenida: ", usuario);
+          //console.log("Data obtenida: ", usuario);
 
           this.usuarioForm.patchValue(usuario);
           this.idUsuario = usuario.idUsuario;
           this.usuario = usuario;
           this.usuarioOriginal = this.usuarioForm.value;
-          console.log('formularioActual:', JSON.stringify(this.usuarioForm.value));
-          console.log('usuarioOriginal:', JSON.stringify(this.usuarioOriginal));
+          //console.log('formularioActual:', JSON.stringify(this.usuarioForm.value));
+          //console.log('usuarioOriginal:', JSON.stringify(this.usuarioOriginal));
 
           // Obtener el país del usuario seleccionado
           if (usuario.idPais) {
@@ -119,9 +128,12 @@ export class EditarUsuariosComponent implements OnInit {
         } else {
           console.log("Usuario no encontrado");
         }
+        this.loading = false; // Finalizamos la carga
       },
       error => {
-        console.log(error);
+        this.loading = false;
+        console.log("Error al obtener el usuario", error);
+        this.router.navigate(['/listar-usuarios']); // En caso de error, redirigir
       }
     );
 
@@ -138,22 +150,32 @@ export class EditarUsuariosComponent implements OnInit {
     return null;
   }
   actualizarUsuario() {
-    console.log('Usuario agregado exitosamente', this.usuarioForm.value);
     const usuarioFormulario = this.usuarioForm.value;
-    this.usuario = {
+    const datosUsuarioCompleto = {
       ...usuarioFormulario,
       idUsuario: this.idUsuario
     };
-    this.usuarioService.actualizarUsuario(this.idUsuario, this.usuario).subscribe(
-      (res: any) => {
-        console.log(`Usuario con ID ${this.idUsuario} actualizado`);
-        this.router.navigate(['/listar-usuarios']);
-      },
-      (err: any) => {
-        console.log(`Error al actualizar usuario: ${err.message}`);
+    //console.log("Datos enviados a la API:", datosUsuarioCompleto);
+
+    const dialogRef = this.dialog.open(ConfirmAltaUsuarioComponent, {
+      width: '400px',
+      data: { datosUsuarioCompleto }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.usuarioService.actualizarUsuario(datosUsuarioCompleto.idUsuario, datosUsuarioCompleto).subscribe(
+          (res: any) => {
+            //console.log("✅ Respuesta de la API después de actualizar:", res);
+            this.volverAUsuario();
+          },
+          (err: any) => {
+            console.log(`Error al actualizar usuario: ${err.message}`);
+          }
+        );     
       }
-    );
-    this.detectarCambios();
+    });
+    //this.detectarCambios();
     this.hayCambios = false;
   }
   //////////////////////////////////////////////////////////////////////////////////////////
@@ -199,6 +221,10 @@ export class EditarUsuariosComponent implements OnInit {
     // Comparar los valores actuales con los valores originales
     return JSON.stringify(formularioActual) === JSON.stringify(this.usuarioOriginal);
   }
-
-
+  volverAUsuario(){
+    this.router.navigate(['/usuario',`${this.idUsuario}`]);
+  }
+  getEstado(){
+    return this.loadingService.getEstado();
+  } 
 }

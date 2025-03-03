@@ -4,7 +4,7 @@ import { Puesto } from "./puesto.model";
 import { Sector } from "./sector.model";
 import { tipo_equipo } from "./tipo_equipo.model";
 import { Incidente } from "./incidente.model";
-import { Usuario } from "./usuario.model";
+import { Usuario } from "../model/usuario.model";
 
 export interface Equipo {
   idEquipo: number;

@@ -15,7 +15,7 @@ class Incidente extends Model
     protected $fillable = [
         'idEstablecimiento', 'idSector',
         'idPrioridadIncidente', 'idCategoriaIncidente', 'idEstadoIncidente',
-        'descripcion', 'tarea', 'fechaInicio', 'fechaCierre',
+        'descripcion', 'titulo', 'fechaInicio', 'fechaCierre',
     ];
 
     public function establecimientos()

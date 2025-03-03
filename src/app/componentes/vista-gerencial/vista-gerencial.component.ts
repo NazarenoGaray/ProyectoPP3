@@ -47,7 +47,7 @@ export class VistaGerencialComponent {
 
   obtenerDetallesUsuario(idUsuario: number) {
     this.usuarioService.obtenerUsuarioPorId(idUsuario).subscribe(
-      (data: Usuario) => {
+      (data: any) => {
         console.log("Usuario Recuperado", data);
         if (data) {
           this.usuario = data;

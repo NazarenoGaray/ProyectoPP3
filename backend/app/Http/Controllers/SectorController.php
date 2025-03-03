@@ -6,6 +6,7 @@ use App\Models\Equipo;
 use App\Models\Puesto;
 use App\Models\Sector;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class SectorController extends Controller
 {
@@ -22,6 +23,7 @@ class SectorController extends Controller
             return response()->json($sectores, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -79,6 +81,7 @@ class SectorController extends Controller
 
             return response()->json($puestos, 200);
         } catch (\Exception $e) {
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -101,6 +104,7 @@ class SectorController extends Controller
 
             return response()->json($equipos, 200);
         } catch (\Exception $e) {
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -159,6 +163,7 @@ class SectorController extends Controller
             return response()->json($sector, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }

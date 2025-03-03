@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TipoEquipo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class TipoEquipoController extends Controller
 {
@@ -20,6 +21,7 @@ class TipoEquipoController extends Controller
             return response()->json($tipoEquipos, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -59,6 +61,7 @@ class TipoEquipoController extends Controller
             return response()->json($tipoEquipo, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -88,6 +91,7 @@ class TipoEquipoController extends Controller
             return response()->json($tipoEquipo, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }

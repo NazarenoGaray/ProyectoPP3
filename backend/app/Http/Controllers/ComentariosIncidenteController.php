@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ComentarioIncidente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Log;
 
 class ComentariosIncidenteController extends Controller
 {
@@ -25,6 +25,7 @@ class ComentariosIncidenteController extends Controller
             return response()->json($comentariosIncidente, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -63,6 +64,7 @@ class ComentariosIncidenteController extends Controller
 
             return response()->json($comentarioIncidente, 200);
         } catch (\Exception $e) {
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -98,6 +100,7 @@ class ComentariosIncidenteController extends Controller
             return response()->json($comentarioIncidente, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -132,6 +135,7 @@ class ComentariosIncidenteController extends Controller
             return response()->json($tipoComentario, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }

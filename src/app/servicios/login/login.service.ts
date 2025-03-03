@@ -16,9 +16,12 @@ export class LoginService {
       usuario: usuario,
       contraseña: contraseña
     };
-    console.log(`usuario enviado:`,body);
+    //console.log(`usuario enviado:`,body);
     return this.http.post(this.apiUrl, body).pipe(
-      tap((data: any) => console.log(`Inicio sesión exitosa`)),
+      tap((data: any) => 
+        console.log(`Inicio sesión exitosa`//, data
+
+        )),
       catchError(err => {
         console.log(`Error al iniciar sesión`);
         return throwError(err);

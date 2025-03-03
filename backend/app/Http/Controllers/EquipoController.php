@@ -6,6 +6,7 @@ use App\Models\Equipo;
 use App\Models\Puesto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 
 class EquipoController extends Controller
@@ -23,6 +24,7 @@ class EquipoController extends Controller
             return response()->json($equipos, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -98,6 +100,7 @@ class EquipoController extends Controller
 
             return response()->json($equipo[0], 200);
         } catch (\Exception $e) {
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -127,6 +130,7 @@ class EquipoController extends Controller
 
             return response()->json($historialComentarios, 200);
         } catch (\Exception $e) {
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -170,6 +174,7 @@ class EquipoController extends Controller
             return response()->json($equipo, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -215,6 +220,7 @@ class EquipoController extends Controller
             return response()->json($equipo, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }

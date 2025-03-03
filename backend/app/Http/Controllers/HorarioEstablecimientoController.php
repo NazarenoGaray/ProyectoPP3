@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\HorarioEstablecimiento;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class HorarioEstablecimientoController extends Controller
 {
@@ -47,6 +48,7 @@ class HorarioEstablecimientoController extends Controller
             return response()->json($horarioEstablecimiento, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -80,6 +82,7 @@ class HorarioEstablecimientoController extends Controller
             return response()->json($horario, 200);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }

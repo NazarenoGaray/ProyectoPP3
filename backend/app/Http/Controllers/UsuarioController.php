@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Usuario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class UsuarioController extends Controller
 {
@@ -26,6 +27,7 @@ class UsuarioController extends Controller
             return response()->json($usuarios, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -137,6 +139,7 @@ class UsuarioController extends Controller
             return response()->json($usuario, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -174,7 +177,7 @@ class UsuarioController extends Controller
             $usuario->apellido = $request->apellido;
             $usuario->correo = $request->correo;
             $usuario->usuario = $request->usuario;
-            $usuario->contraseña = bcrypt($request->contraseña);
+            $usuario->contraseña = $request->contraseña;
             $usuario->telefono = $request->telefono;
             $usuario->celular = $request->celular;
             $usuario->direccion = $request->direccion;
@@ -188,10 +191,11 @@ class UsuarioController extends Controller
             $usuario->save();
 
             // Retornar la respuesta con el usuario creado
-            return response()->json($usuario, 201);
+            return response()->json($usuario, 200);
             
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }

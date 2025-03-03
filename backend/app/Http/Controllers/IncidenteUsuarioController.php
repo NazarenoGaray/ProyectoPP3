@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\IncidenteUsuario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class IncidenteUsuarioController extends Controller
 {
@@ -14,6 +15,7 @@ class IncidenteUsuarioController extends Controller
 
             return response()->json($incidenteUsuarios, 200);
         } catch (\Exception $e) {
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -83,6 +85,7 @@ class IncidenteUsuarioController extends Controller
 
             return response()->json($incidenteUsuario, 201); // Puedes cambiar el código de respuesta según el caso
         } catch (\Exception $e) {
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }

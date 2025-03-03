@@ -2,7 +2,7 @@ import { Time } from "@angular/common";
 
 import { Establecimiento } from "./establecimientos.model";
 
-import { categoria_incidente } from "./categoria_incidente.model";
+import { categoria_incidente, estado_incidente, prioridad_incidente } from "./categoria_incidente.model";
 
 import { Equipo } from "./equipo.model";
 
@@ -42,11 +42,11 @@ export class Incidente {
 
   establecimientos!: Establecimiento;
 
-  estado_incidente!: categoria_incidente;
+  estado_incidente!: estado_incidente;
 
   categoria_incidente!: categoria_incidente;
 
-  prioridad_incidente!: categoria_incidente;
+  prioridad_incidente!: prioridad_incidente;
 
   equipos!: Equipo;
 

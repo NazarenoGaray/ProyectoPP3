@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 import { estado_usuarios } from 'src/app/model/estado_usuarios.model';
 import { Rol } from 'src/app/model/roles.model';
@@ -52,7 +52,11 @@ export class ListarUsuariosComponent implements OnInit {
     //     this.obtenerusuariosPorEstablecimiento(Number(idEstablecimiento));
     //   } 
     // });
-    
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.loadingService.hide()
+      }
+    });
   }
   initializeForm(): void {
     this.usuarioForm = this.formBuilder.group({
@@ -68,7 +72,7 @@ export class ListarUsuariosComponent implements OnInit {
     this.loadingService.show();
     this.usuarioService.obtenerUsuarios().subscribe(
       (response) => {
-        this.loadingService.hide()
+        this.loadingService.hide();
         this.usuarios = Object.values(response);
         this.usuariosOriginales=this.usuarios;
         //console.log("usuario obtenido:",this.usuarios);
@@ -111,7 +115,7 @@ export class ListarUsuariosComponent implements OnInit {
      this.usuarioService.obtenerUsuariosFiltro(usuario).subscribe(
        (data: Usuario[]) => {
         this.loadingService.hide();
-         console.log('Busqueda exitosa:',data); 
+         //console.log('Busqueda exitosa:',data); 
          this.usuarios = data;
          this.usuariosOriginales = data;
        },

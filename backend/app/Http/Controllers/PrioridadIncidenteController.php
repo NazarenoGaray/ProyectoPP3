@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PrioridadIncidente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class PrioridadIncidenteController extends Controller
 {
@@ -20,6 +21,7 @@ class PrioridadIncidenteController extends Controller
             return response()->json($prioridadIncidente, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -58,6 +60,7 @@ class PrioridadIncidenteController extends Controller
             return response()->json($prioridadIncidente, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -86,6 +89,7 @@ class PrioridadIncidenteController extends Controller
             return response()->json($prioridadIncidente, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }

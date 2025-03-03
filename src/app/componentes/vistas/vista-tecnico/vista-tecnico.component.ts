@@ -15,7 +15,7 @@ import { LoadingService } from 'src/app/servicios/loading.service';
 })
 export class VistaTecnicoComponent {
   usuario!: Usuario;
-  incidentes: any[] = [];
+  incidentes: Incidente[] = [];
   agenda!: incidenteAgenda;
   estadoLoading!: Observable<boolean>;
   estadoLoading2: any = false;
@@ -50,7 +50,7 @@ export class VistaTecnicoComponent {
 
   private obtenerDetallesUsuario(idUsuario: number) {
     this.usuarioService.obtenerUsuarioPorId(idUsuario).subscribe(
-      (data: Usuario) => {
+      (data: any) => {
         console.log("Usuario Recuperado", data);
         if (data) {
           this.usuario = data;

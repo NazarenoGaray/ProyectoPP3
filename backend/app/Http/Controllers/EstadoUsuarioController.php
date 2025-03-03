@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\EstadoUsuario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class EstadoUsuarioController extends Controller
 {
@@ -20,6 +21,7 @@ class EstadoUsuarioController extends Controller
             return response()->json($estadoUsuarios, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -58,6 +60,7 @@ class EstadoUsuarioController extends Controller
             return response()->json($estadoUsuario, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -87,6 +90,7 @@ class EstadoUsuarioController extends Controller
             return response()->json($estadoUsuario, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }

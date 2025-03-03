@@ -6,6 +6,7 @@ use App\Models\Establecimiento;
 use App\Models\Sector;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class EstablecimientoController extends Controller
 {
@@ -71,6 +72,7 @@ class EstablecimientoController extends Controller
 
             return response()->json($establecimientos, 200);
         } catch (\Exception $e) {
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -101,7 +103,7 @@ class EstablecimientoController extends Controller
                 'telefono' => $request->telefono,
                 'correo' => $request->correo,
                 'cuit' => $request->cuit,
-                'descripcion' => $request->descripcion,
+                'descripcion' => NULL,
                 'sitioweb' => $request->sitioweb,
                 'idPais' => $request->idPais,
                 'idProvincia' => $request->idProvincia,
@@ -115,6 +117,7 @@ class EstablecimientoController extends Controller
             return response()->json($establecimiento, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -141,6 +144,7 @@ class EstablecimientoController extends Controller
             return response()->json($sectores, 200);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -168,6 +172,8 @@ class EstablecimientoController extends Controller
                 'idPais' => 'required|exists:paises,idPais',
                 'idProvincia' => 'required|exists:provincias,idProvincia',
                 'idLocalidad' => 'required|exists:localidades,idLocalidad',
+                'horaEntrada' => 'required|string|max:8', // HH:MM:SS
+                'horaSalida' => 'required|string|max:8',
 
             ]);
 
@@ -183,14 +189,17 @@ class EstablecimientoController extends Controller
             $establecimiento->idPais = $request->idPais;
             $establecimiento->idProvincia = $request->idProvincia;
             $establecimiento->idLocalidad = $request->idLocalidad;
+            $establecimiento->horaEntrada = $request->horaEntrada;
+            $establecimiento->horaSalida = $request->horaSalida;
 
             // Guardar los cambios en la base de datos
             $establecimiento->save();
 
             // Retornar la respuesta con el establecimiento creado
-            return response()->json($establecimiento, 201);
+            return response()->json($establecimiento, 200);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }

@@ -19,65 +19,129 @@
             <form [formGroup]="establecimientoForm" class="row" (ngSubmit)="onSubmit()">
                 <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
                     <input required type="text" class="form-control" id="nombre" formControlName="nombre"
-                        placeholder="Nombre del establecimiento">
+                        placeholder="Nombre del establecimiento"
+                        [ngClass]="{ 'is-invalid': establecimientoForm.get('nombre')?.invalid && establecimientoForm.get('nombre')?.touched }"
+                        >
                     <label for="nombre">Nombre del establecimiento</label>
+                    <div *ngIf="establecimientoForm.get('nombre')?.invalid && establecimientoForm.get('nombre')?.touched"
+                        class="invalid-feedback">
+                        El nombre es obligatorio.
+                    </div>
+                </div>
+                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                    <input required type="text" class="form-control" id="cuit" formControlName="cuit"
+                        placeholder="CUIT"
+                        [ngClass]="{ 'is-invalid': establecimientoForm.get('cuit')?.invalid && establecimientoForm.get('cuit')?.touched }">
+                    <label for="cuit">CUIT</label>
+                    <div *ngIf="establecimientoForm.get('cuit')?.errors?.['required'] && establecimientoForm.get('cuit')?.touched"
+                        class="invalid-feedback">
+                        El CUIT es obligatorio.
+                    </div>
+                    <div *ngIf="establecimientoForm.get('cuit')?.errors?.['pattern'] && establecimientoForm.get('cuit')?.touched"
+                        class="invalid-feedback">
+                        Formato incorrecto. Ejemplo válido: 30-12345678-1.
+                    </div>
                 </div>
 
                 <div class="form-floating mb-3 col-2">
                     <select required class="form-select" id="floatingSelectPais"
-                        aria-label="Floating label select example" formControlName="idPais" (change)="onPaisSelected()">
+                        aria-label="Floating label select example" formControlName="idPais" (change)="onPaisSelected()"[ngClass]="{ 'is-invalid': establecimientoForm.get('idPais')?.invalid && establecimientoForm.get('idPais')?.touched }">
                         <option value="">Seleccionar país</option>
-                        <option *ngFor="let pais of paises" [value]="pais.idPais">{{ pais.Descripcion }}</option>
+                        <option *ngFor="let pais of paises" [ngValue]="pais.idPais">{{ pais.Descripcion }}</option>
                     </select>
                     <label for="floatingSelectPais">País</label>
+                    <div *ngIf="establecimientoForm.get('idPais')?.invalid && establecimientoForm.get('idPais')?.touched"
+                        class="invalid-feedback">
+                        Debes seleccionar un país.
+                    </div>
                 </div>
                 <div class="form-floating mb-3 col-2">
-                    <select required class="form-select" id="floatingSelectProvincia"
-                        aria-label="Floating label select example" formControlName="idProvincia"
-                        (change)="onProvinciaSelected()">
-                        <option value="">Seleccionar provincia</option>
-                        <option *ngFor="let provincia of provincias" [value]="provincia.idProvincia">{{
-                            provincia.Descripcion }}</option>
+                    <select required class="form-select" id="floatingSelectProvincia" aria-label="Floating label select example" 
+                        formControlName="idProvincia" (change)="onProvinciaSelected()"
+                        [ngClass]="{ 'is-invalid': establecimientoForm.get('idProvincia')?.invalid && establecimientoForm.get('idProvincia')?.touched }">
+                    <option value="">Seleccionar provincia</option>
+                    <option *ngFor="let provincia of provincias" [ngValue]="provincia.idProvincia">{{
+                        provincia.Descripcion }}</option>
                     </select>
                     <label for="floatingSelectProvincia">Provincia</label>
+                    <div *ngIf="establecimientoForm.get('idProvincia')?.invalid && establecimientoForm.get('idProvincia')?.touched"
+                        class="invalid-feedback">
+                        Debes seleccionar un provincia.
+                    </div>
                 </div>
                 <div class="form-floating mb-3 col-2">
                     <select required class="form-select" id="floatingSelectLocalidad"
-                        aria-label="Floating label select example" formControlName="idLocalidad">
-                        <option value="">Seleccionar localidad</option>
-                        <option *ngFor="let localidad of localidades" [value]="localidad.idLocalidad">{{
-                            localidad.Descripcion }}</option>
+                        aria-label="Floating label select example" formControlName="idLocalidad"
+                        [ngClass]="{ 'is-invalid': establecimientoForm.get('idLocalidad')?.invalid && establecimientoForm.get('idLocalidad')?.touched }">
+                    <option value="">Seleccionar localidad</option>
+                    <option *ngFor="let localidad of localidades" [ngValue]="localidad.idLocalidad">{{
+                        localidad.Descripcion }}</option>
                     </select>
                     <label for="floatingSelectLocalidad">Localidad</label>
+                    <div *ngIf="establecimientoForm.get('idLocalidad')?.invalid && establecimientoForm.get('idLocalidad')?.touched"
+                        class="invalid-feedback">
+                        Debes seleccionar una localidad.
+                    </div>
                 </div>
 
                 <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
                     <input required type="text" class="form-control" id="calle" formControlName="calle"
-                        placeholder="Calle">
-                    <label for="calle">Calle</label>
+                        placeholder="Calle"
+                        [ngClass]="{ 'is-invalid': establecimientoForm.get('calle')?.invalid && establecimientoForm.get('calle')?.touched }">
+                <label for="calle">Calle</label>
+                <div *ngIf="establecimientoForm.get('calle')?.invalid && establecimientoForm.get('calle')?.touched"
+                    class="invalid-feedback">
+                    La Calle es obligatorio.
+                </div>
                 </div>
                 <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
                     <input required type="text" class="form-control" id="altura" formControlName="altura"
-                        placeholder="Altura">
+                        placeholder="Altura"
+                        [ngClass]="{ 'is-invalid': establecimientoForm.get('altura')?.invalid && establecimientoForm.get('altura')?.touched }">
                     <label for="altura">Altura</label>
+                    <div *ngIf="establecimientoForm.get('altura')?.invalid && establecimientoForm.get('altura')?.touched"
+                        class="invalid-feedback">
+                        La Altura es obligatorio.
+                    </div>
                 </div>
                 <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
                     <input required type="text" class="form-control" id="telefono" formControlName="telefono"
-                        placeholder="Teléfono">
-                    <label for="telefono">Teléfono</label>
+                        placeholder="Teléfono"
+                        [ngClass]="{ 'is-invalid': establecimientoForm.get('telefono')?.invalid && establecimientoForm.get('telefono')?.touched }">
+                    <label for="telefono">Telefono</label>
+                    <div *ngIf="establecimientoForm.get('telefono')?.invalid && establecimientoForm.get('telefono')?.touched"
+                        class="invalid-feedback">
+                        El Telefono es obligatorio.
+                    </div>
                 </div>
                 <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
                     <input required type="email" class="form-control" id="correo" formControlName="correo"
-                        placeholder="Correo electrónico">
-                    <label for="correo">Correo electrónico</label>
+                        placeholder="Correo electrónico"
+                        [ngClass]="{ 'is-invalid': establecimientoForm.get('correo')?.invalid && establecimientoForm.get('correo')?.touched }">
+                    <label for="correo">Correo</label>
+                    <div *ngIf="establecimientoForm.get('correo')?.invalid && establecimientoForm.get('correo')?.touched"
+                        class="invalid-feedback">
+                        El Correo es obligatorio.
+                    </div>
                 </div>
                 <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                    <input required type="text" class="form-control" id="horaEntrada" formControlName="horaEntrada"
+                    <input required type="text" class="form-control" id="sitioweb" formControlName="sitioweb"
+                        placeholder="Sitio Web"        
+                        [ngClass]="{ 'is-invalid': establecimientoForm.get('sitioweb')?.invalid && establecimientoForm.get('sitioweb')?.touched }">
+                    <label for="sitioweb">Sitio Web</label>
+                    <div *ngIf="establecimientoForm.get('sitioweb')?.invalid && establecimientoForm.get('sitioweb')?.touched"
+                        class="invalid-feedback">
+                        La Sitio Web es obligatorio.
+                    </div>
+                </div>
+
+                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                    <input required type="time" class="form-control" id="horaEntrada" formControlName="horaEntrada"
                         placeholder="Hora de entrada">
                     <label for="horaEntrada">Hora de Apertura</label>
                 </div>
                 <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                    <input required type="text" class="form-control" id="horaSalida" formControlName="horaSalida"
+                    <input required type="time" class="form-control" id="horaSalida" formControlName="horaSalida"
                         placeholder="Hora de salida">
                     <label for="horaSalida">Hora de Cierre</label>
                 </div>
@@ -86,7 +150,7 @@
                     <button type="submit" class="btn btn-success"
                         [disabled]="establecimientoForm.invalid">Guardar</button>
 
-                    <a class="btn btn-danger" [routerLink]="['/bienvenido']">Cancelar</a>
+                    <a class="btn btn-danger" [routerLink]="['/']">Cancelar</a>
                 </div>
             </form>
         </div>

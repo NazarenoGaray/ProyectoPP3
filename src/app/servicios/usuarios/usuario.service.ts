@@ -65,7 +65,7 @@ export class UsuarioService {
         return throwError('Error al obtener el usuario');
       })
     );
-    console.log(this.usuario);
+    
   }
 
 

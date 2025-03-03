@@ -36,6 +36,8 @@ import { NotImplementedComponent } from "./componentes/globales/pagErrores/not-i
 import { BadRequestComponent } from "./componentes/globales/pagErrores/bad-request/bad-request.component";
 import { EditarSectorComponent } from "./componentes/sectores/editar-sector/editar-sector.component";
 import { ModificarIncidenteComponent } from "./componentes/incidentes/modificar-incidente/modificar-incidente.component";
+import { AltaPuestoComponent } from "./componentes/puestos/alta-puesto/alta-puesto.component";
+import { RoleGuard } from "./guards/role.guard";
 
 
 
@@ -45,39 +47,46 @@ const routes: Routes = [
   { path: 'nosotros', component: SobreNosotrosComponent },
   
   { path: 'inicio-sesion', component: InicioSesionComponent },
-  { path: 'alta-usuario', component: AltaUsuariosComponent , canActivate:[TokenGuard]},
-  { path: 'listar-usuarios', component: ListarUsuariosComponent , canActivate:[TokenGuard]},
-  { path: 'editar-usuario/:id', component: EditarUsuariosComponent , canActivate:[TokenGuard]},
-  { path: 'usuario/:idUsuario', component: UsuarioComponent , canActivate:[TokenGuard]},
+  { path: 'alta-usuario', component: AltaUsuariosComponent , canActivate:[TokenGuard, RoleGuard], data: { roles: [1] } },
+  { path: 'listar-usuarios', component: ListarUsuariosComponent, canActivate: [TokenGuard, RoleGuard], data: { roles: [1, 2] } },
+  { path: 'editar-usuario/:id', component: EditarUsuariosComponent, canActivate: [TokenGuard, RoleGuard], data: { roles: [1] } },
+  { path: 'usuario/:idUsuario', component: UsuarioComponent , canActivate:[TokenGuard, RoleGuard], data: { roles: [1, 2] } },
   
-  { path: 'alta-establecimiento', component: AltaEstablecimientosComponent , canActivate:[TokenGuard]},
-  { path: 'listar-establecimientos', component: ListarEstablecimientosComponent , canActivate:[TokenGuard]},
-  { path: 'editar-establecimiento/:idEstablecimiento', component: EditarEstablecimientosComponent , canActivate:[TokenGuard]},
-  { path: 'establecimiento/:idEstablecimiento', component: EstablecimientoComponent , canActivate:[TokenGuard]},
+  { path: 'listar-establecimientos', component: ListarEstablecimientosComponent , canActivate:[TokenGuard, RoleGuard], data: { roles: [1, 2, 3, 4] }},
+  { path: 'alta-establecimiento', component: AltaEstablecimientosComponent , canActivate:[TokenGuard, RoleGuard], data: { roles: [1, 3] } },
+  { path: 'editar-establecimiento/:idEstablecimiento', component: EditarEstablecimientosComponent , canActivate:[TokenGuard, RoleGuard], data: { roles: [1, 3] }},
+  { path: 'establecimiento/:idEstablecimiento', component: EstablecimientoComponent , canActivate:[TokenGuard, RoleGuard], data: { roles: [1, 3] }},
   
-  { path: 'alta-sector', component: AltaSectorComponent , canActivate:[TokenGuard]},
-  { path: 'alta-sector/:idEstablecimiento', component: AltaSectorComponent , canActivate:[TokenGuard]},
-  { path: 'sector/:idSector', component: SectorComponent, canActivate: [TokenGuard] },
-  { path: 'editar-sector/:idSector', component: EditarSectorComponent, canActivate: [TokenGuard] },
+  { path: 'alta-sector', component: AltaSectorComponent , canActivate:[TokenGuard, RoleGuard], data: { roles: [1, 3] }},
+  { path: 'alta-sector/:idEstablecimiento', component: AltaSectorComponent , canActivate:[TokenGuard, RoleGuard], data: { roles: [1, 3] }},
+  { path: 'sector/:idSector', component: SectorComponent, canActivate: [TokenGuard, RoleGuard], data: { roles: [1, 2, 3] } },
+  { path: 'editar-sector/:idSector', component: EditarSectorComponent, canActivate: [TokenGuard, RoleGuard], data: { roles: [1, 3] } },
   
-  { path: 'cargar-incidente', component: CargarIncidenteComponent , canActivate:[TokenGuard]},
-  { path: 'listar-incidentes',component: ListarIncidentesComponent, canActivate:[TokenGuard],
-  children: [{ path: ':idEstablecimiento', component: ListarIncidentesComponent }]},
-  { path: 'incidente/:idIncidente', component: IncidenteComponent , canActivate:[TokenGuard]},
-  { path: 'actualizar-incidente/:idIncidente', component: ModificarIncidenteComponent , canActivate:[TokenGuard]},
+  { path: 'listar-incidentes', canActivate: [TokenGuard, RoleGuard], 
+    data: { roles: [1, 2, 3, 4] }, 
+    children: [
+      { path: '', component: ListarIncidentesComponent }, // Sin parámetro, muestra todos
+      { path: ':idEstablecimiento', component: ListarIncidentesComponent }
+    ]
+  },
+  { path: 'incidente/:idIncidente', component: IncidenteComponent , canActivate:[TokenGuard, RoleGuard], data: { roles: [1, 2, 3,4] }},
+  { path: 'cargar-incidente', component: CargarIncidenteComponent, canActivate: [TokenGuard, RoleGuard], data: { roles: [1, 3, 4] } },
+  { path: 'actualizar-incidente/:idIncidente', component: ModificarIncidenteComponent , canActivate:[TokenGuard, RoleGuard], data: { roles: [1, 3, 4] }},
   
-  { path: 'equipo/:idEquipo', component: EquipoComponent , canActivate:[TokenGuard]},
-  { path: 'alta-equipo', component: AltaEquiposComponent , canActivate:[TokenGuard]},
-  { path: 'editar-equipo/:idEquipo', component: EditarEquiposComponent , canActivate:[TokenGuard]},
-  { path: 'alta-equipo/:idPuesto', component: AltaEquiposComponent, canActivate: [TokenGuard] },
-  { path: 'editar-equipo/:idEquipo', component: EditarEquiposComponent, canActivate: [TokenGuard] },
+  { path: 'equipo/:idEquipo', component: EquipoComponent , canActivate:[TokenGuard, RoleGuard], data: { roles: [1, 2, 3, 4] }},
+  { path: 'alta-equipo', component: AltaEquiposComponent , canActivate:[TokenGuard, RoleGuard], data: { roles: [1, 3] }},
+  { path: 'editar-equipo/:idEquipo', component: EditarEquiposComponent , canActivate:[TokenGuard, RoleGuard], data: { roles: [1, 3] }},
+  { path: 'alta-equipo/:idPuesto', component: AltaEquiposComponent, canActivate: [TokenGuard, RoleGuard], data: { roles: [1, 3] } },
+  { path: 'editar-equipo/:idEquipo', component: EditarEquiposComponent, canActivate: [TokenGuard, RoleGuard], data: { roles: [1, 3] } },
   
-  { path: 'vista-tecnico/:idUsuario', component: VistaTecnicoComponent, canActivate: [TokenGuard,UserIdGuard] },
-  { path: 'gestion', component: GestionComponent, canActivate: [TokenGuard] },
+  { path: 'alta-puesto/:idSector', component: AltaPuestoComponent, canActivate: [TokenGuard, RoleGuard], data: { roles: [1, 3] } },
+  { path: 'puesto/:idPuesto', component: PuestoComponent, canActivate: [TokenGuard, RoleGuard], data: { roles: [1, 2, 3, 4] } },
   
-  { path: 'puesto/:idPuesto', component: PuestoComponent, canActivate: [TokenGuard] },
+  { path: 'vista-tecnico/:idUsuario', component: VistaTecnicoComponent, canActivate: [TokenGuard, RoleGuard, UserIdGuard], data: { roles: [4] } },
+  //{ path: 'gestion', component: GestionComponent, canActivate: [TokenGuard] },
   
-  { path: 'vista-gerencial/:idUsuario', component: VistaGerencialComponent,canActivate:[TokenGuard,UserIdGuard]},
+  
+  { path: 'vista-gerencial/:idUsuario', component: VistaGerencialComponent, canActivate: [TokenGuard, RoleGuard, UserIdGuard], data: { roles: [2] } },
 
   { path: '400', component: BadRequestComponent  },
   { path: '401', component: UnauthorizedComponent },

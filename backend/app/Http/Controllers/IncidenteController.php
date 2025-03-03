@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Equipo;
 use App\Models\Incidente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+
 
 class IncidenteController extends Controller
 {
@@ -27,6 +29,7 @@ class IncidenteController extends Controller
             return response()->json($incidentes, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -71,6 +74,7 @@ class IncidenteController extends Controller
             return response()->json($incidentes, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -114,6 +118,7 @@ class IncidenteController extends Controller
     public function crearIncidente(Request $request)
     {
         try {
+            Log::info('Datos recibidos:', $request->all());
             // Validar los datos recibidos en la solicitud
             $request->validate([
                 'idEstablecimiento' => 'required|exists:establecimientos,idEstablecimiento',
@@ -121,10 +126,10 @@ class IncidenteController extends Controller
                 'idPrioridadIncidente' => 'required|exists:prioridad_incidentes,idPrioridadIncidente',
                 'idCategoriaIncidente' => 'required|exists:categoria_incidentes,idCategoriaIncidente',
                 'idEstadoIncidente' => 'required|exists:estado_incidentes,idEstadoIncidente',
-                'tarea' => 'required|string',
-                'descripcion' => 'required|string|max:80',
-                'fechaInicio'=> 'nullable|date_format:Y-m-d H:i:s',
-                'fechaCierre'=> 'nullable|date_format:Y-m-d H:i:s',
+                'titulo' => 'required|string',
+                'descripcion' => 'required|string|max:250',
+            //    'fechaInicio'=> 'nullable|date_format:Y-m-d H:i:s',
+            //    'fechaCierre'=> 'nullable|date_format:Y-m-d H:i:s',
             ]);
 
             // Crear el nuevo incidente con los datos proporcionados
@@ -135,28 +140,29 @@ class IncidenteController extends Controller
                 'idCategoriaIncidente' => $request->idCategoriaIncidente,
                 'idEstadoIncidente' => $request->idEstadoIncidente,
                 'descripcion' => $request->descripcion,
-                'tarea' => $request->tarea,
-                'fechaInicio'=> $request->fechaInicio,
-                'fechaCierre'=> $request->fechaCierre,
+                'titulo' => $request->titulo,
+                //'fechaInicio'=> $request->fechaInicio,
+                //'fechaCierre'=> $request->fechaCierre,
             ]);
             
             // Guardar el incidente en la base de datos
             $incidente->save();
 
 
-            if (!empty($request->idEquipos)) {
+            if (!empty($request->idEquipos) && is_array($request->idEquipos)) {
                 $incidente->equipos()->attach($request->idEquipos);
             }
-    
-            if (!empty($request->idUsuarios)) {
+            
+            if (!empty($request->idUsuarios) && is_array($request->idUsuarios)) {
                 $incidente->usuarios()->attach($request->idUsuarios);
-            }
+            }            
 
 
             // Retornar la respuesta con el incidente creado
             return response()->json($incidente, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -184,7 +190,7 @@ class IncidenteController extends Controller
             $incidente->idPrioridadIncidente = $request->idPrioridadIncidente;
             $incidente->idCategoriaIncidente = $request->idCategoriaIncidente;
             $incidente->idEstadoIncidente = $request->idEstadoIncidente;
-            $incidente->tarea = $request->tarea;
+            $incidente->titulo = $request->titulo;
             $incidente->descripcion = $request->descripcion;
 
 
@@ -195,6 +201,7 @@ class IncidenteController extends Controller
             return response()->json($incidente, 201);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y mostrar el mensaje de error
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }

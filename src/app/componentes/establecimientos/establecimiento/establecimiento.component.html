@@ -19,8 +19,8 @@
             <app-spinner *ngIf="getEstado() | async"></app-spinner>
 
             <div class="card">
-                <div class="card-body">
-                    <div class="row">
+                <div class="card-body row">
+                    <div class="row col-11">
                         <div class="col-md-5">
                             <h5>Contacto</h5>
                             <!-- Datos de contacto -->
@@ -46,7 +46,7 @@
                                 <span class="card-text"> {{ establecimiento.descripcion }}</span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                             <h5>Ubicación</h5>
                             <!-- Datos de ubicación -->
                             <div class="detail">
@@ -66,17 +66,29 @@
                                 <span class="card-text"> {{ establecimiento.pais.Descripcion }}</span>
                             </div>
                         </div>
-                        <div class="col-md-1">
-                            <a class="btn btn-primary"
-                                [routerLink]="['/editar-establecimiento', establecimiento.idEstablecimiento]">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    class="bi bi-pencil" viewBox="0 0 16 16">
-                                    <!-- Icono de edición -->
-                                    <path
-                                        d="M11.293 0.293a1 1 0 0 1 1.414 0l2 2a1 1 0 0 1 0 1.414L2.707 14.414a1 1 0 0 1-.424.242l-2 .5a1 1 0 0 1-1.243-1.242l.5-2a1 1 0 0 1 .242-.425L11.293.293zM13.5 2.5L12 4l1.5 1.5 1.5-1.5L13.5 2.5zm-3 3L9 7.5l-6 6V15h1.5l6-6z" />
-                                </svg>
-                            </a>
+                        <div class="col-md-2">
+                            <h5>Horario</h5>
+                            <!-- Datos de ubicación -->
+                            <div class="detail">
+                                <label class="card-subtitle mb-2 text-muted">Desde:</label>
+                                <span class="card-text"> {{ establecimiento.horaEntrada }}</span>
+                            </div>
+                            <div class="detail">
+                                <label class="card-subtitle mb-2 text-muted">Hasta:</label>
+                                <span class="card-text"> {{ establecimiento.horaSalida }}</span>
+                            </div>
                         </div>
+                    </div>
+                    <div class="col-md-1 col-1">
+                        <a class="btn btn-primary"
+                            [routerLink]="['/editar-establecimiento', establecimiento.idEstablecimiento]">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-pencil" viewBox="0 0 16 16">
+                                <!-- Icono de edición -->
+                                <path
+                                    d="M11.293 0.293a1 1 0 0 1 1.414 0l2 2a1 1 0 0 1 0 1.414L2.707 14.414a1 1 0 0 1-.424.242l-2 .5a1 1 0 0 1-1.243-1.242l.5-2a1 1 0 0 1 .242-.425L11.293.293zM13.5 2.5L12 4l1.5 1.5 1.5-1.5L13.5 2.5zm-3 3L9 7.5l-6 6V15h1.5l6-6z" />
+                            </svg>
+                        </a>
                     </div>
                 </div>
             </div>

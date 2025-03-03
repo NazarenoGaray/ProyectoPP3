@@ -5,6 +5,7 @@ import { Incidente } from "src/app/model/incidente.model";
 import { EstablecimientosService } from "../establecimientos/establecimientos.service";
 import { Usuario } from "src/app/model/usuario.model";
 import { comentarios_incidente } from "src/app/model/comentarios_incidente.model";
+import { Equipo } from "src/app/model/equipo.model";
 
 @Injectable({
   providedIn: 'root'
@@ -35,9 +36,9 @@ export class IncidentesService {
     return this.http.get<Incidente>(url);
   }
 
-  obtenerEquiposDeUnIncidente(idIncidente: number): Observable<Incidente[]> {
+  obtenerEquiposDeUnIncidente(idIncidente: number): Observable<Equipo[]> {
     const url = `${this.apiURL}/incidentes/${idIncidente}/equipos`;
-    return this.http.get<Incidente[]>(url).pipe(
+    return this.http.get<Equipo[]>(url).pipe(
       catchError((error) => {
         if (error.status === 404) {
           // Handle the 404 error here
@@ -82,7 +83,7 @@ export class IncidentesService {
 
 
   cargarIncidente(incidente: Incidente) {
-    console.log('Datos del incidente:', incidente);
+    console.log('Datos del incidente en el servicio:', incidente);
     return this.http.post(`${this.apiURL}/incidentes`, incidente).pipe(
       tap((data: any) => console.log(`incidente creado con ID ${data.idIncidente}`)),
       catchError(err => {

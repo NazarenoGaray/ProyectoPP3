@@ -28,6 +28,7 @@ export class TokenService {
 
     if (token !== null) { // Comprueba si token no es null
       this.isTokenValid = !this.jwtHelper.isTokenExpired(token);
+      
       //console.log(this.isTokenValid);
       if (this.isTokenValid) {
         // Decodifica el token si es válido.
@@ -49,7 +50,7 @@ export class TokenService {
                 (response: any) => {
                   const newToken = response.token;
                   this.setToken(newToken);
-                  console.log('Token actualizado con éxito:', newToken);
+                  //console.log('Token actualizado con éxito:', newToken);
                 },
                 (error: any) => {
                   
@@ -70,6 +71,7 @@ export class TokenService {
       } else {
         return false;
       }
+      
     } else {
       console.log('Token no encontrado o nulo');
       return false;

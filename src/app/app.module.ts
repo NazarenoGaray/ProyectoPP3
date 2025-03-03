@@ -64,6 +64,12 @@ import { AlertComponent } from './componentes/alert/alert.component';
 import { MatIconModule } from '@angular/material/icon';
 import { ModificarIncidenteComponent } from './componentes/incidentes/modificar-incidente/modificar-incidente.component';
 import { ConfirmarDialogComponent } from './componentes/globales/confirmar-dialog/confirmar-dialog.component';
+import { ConfirmAltaUsuarioComponent } from './componentes/modal/confirm-alta-usuario/confirm-alta-usuario.component';
+import { ExitoAltaUsuarioComponent } from './componentes/modal/exito-alta-usuario/exito-alta-usuario.component';
+import { ConfirmAltaEstablecimientoComponent } from './componentes/modal/confirm-alta-establecimiento/confirm-alta-establecimiento.component';
+import { ExitoAltaEstablecimientoComponent } from './componentes/modal/exito-alta-establecimiento/exito-alta-establecimiento.component';
+import { ConfirmCargarIncidenteComponent } from './componentes/modal/confirm-cargar-incidente/confirm-cargar-incidente.component';
+import { ExitoCargarIncidenteComponent } from './componentes/modal/exito-cargar-incidente/exito-cargar-incidente.component';
 
 @NgModule({
   declarations: [
@@ -111,6 +117,12 @@ import { ConfirmarDialogComponent } from './componentes/globales/confirmar-dialo
     AlertComponent,
     ModificarIncidenteComponent,
     ConfirmarDialogComponent,
+    ConfirmAltaUsuarioComponent,
+    ExitoAltaUsuarioComponent,
+    ConfirmAltaEstablecimientoComponent,
+    ExitoAltaEstablecimientoComponent,
+    ConfirmCargarIncidenteComponent,
+    ExitoCargarIncidenteComponent,
 
     
   ],

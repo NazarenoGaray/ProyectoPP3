@@ -1,6 +1,9 @@
 <app-nav-bar></app-nav-bar>
 <div class="container col-8">
-    <form [formGroup]="incidenteForm" (ngSubmit)="onSubmit()" class="row mb-3 col-12">
+    
+    <app-spinner *ngIf="isLoading"></app-spinner>
+
+    <form [formGroup]="incidenteForm" (ngSubmit)="onSubmit()" class="row mb-3 col-12" *ngIf="!isLoading && isLoading">
         <h2 class="col-xl-7 col-md-7 col-s-4 col-xs-12 mb-2">Incidente ({{idIncidente}})</h2>
         <button type="submit" class="btn btn-primary col-xl-2 col-md-2 col-xs-6 mb-2"
             [disabled]="incidenteSolucionado">Actualizar</button>
@@ -18,15 +21,15 @@
         </div>
         <div class="row col-12 mb-3">
             <div class="form-group col-12">
-                <label for="tarea">Título del Incidente</label>
-                <input type="text" id="tarea" formControlName="tarea" class="form-control" readonly>
+                <label for="titulo">Título del Incidente</label>
+                <input type="text" id="titulo" formControlName="titulo" class="form-control" readonly>
             </div>
             <div class="form-group col-12">
                 <label for="descripcion">Descripción del Incidente</label>
                 <textarea id="descripcion" formControlName="descripcion" class="form-control" readonly></textarea>
             </div>
         </div>
-        <div class="col-12 row mb-3">
+        <div class="col-12 row mb-3" *ngIf="isLoading">
             <div class="form-group col-4">
                 <label for="prioridad">Prioridad</label>
                 <select id="prioridad" formControlName="idPrioridadIncidente" class="form-control">
@@ -85,7 +88,7 @@
         </div>
     </form>
 
-    <div class="row mb-3 col-12">
+    <div class="row mb-3 col-12" *ngIf="!isLoading">
         <ul class="nav nav-tabs">
             <li class="nav-item">
                 <a class="nav-link" [class.active]="activeTab === 'comentarios'"
@@ -98,9 +101,9 @@
         </ul>
         <div class="report-card row col-12 mb-3" *ngIf="activeTab === 'comentarios'">
             <div class="container col-12">
-                <input class="mb-3 comentario-nuevo col-xl-12 col-md-12 col-s-12 col-xs-12" type="text">
+                <input class="mb-3 comentario-nuevo col-xl-12 col-md-12 col-s-12 col-xs-12" type="text" [(ngModel)]="this.comentario">
                 <button type="submit" class="btn btn-primary col-2 mb-4" (click)="publicarComentario()"
-                    [disabled]="incidenteSolucionado" [(ngModel)]="informeCierre">Publicar</button>
+                    [disabled]="incidenteSolucionado" >Publicar</button>
             </div>
             <div class=" col-12">
                 <div class="">

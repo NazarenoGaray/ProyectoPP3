@@ -3,7 +3,7 @@
     <div class="card-header row">
         <label class="h2 col-10" for="">Editar Establecimiento</label>
         <div class="col-2">
-            <a class="btn btn-secondary" [routerLink]="['/establecimiento', idEstablecimiento ]">
+            <a class="btn btn-secondary" (click)="this.volverAEstablecimiento()">
             
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                     class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
@@ -18,79 +18,151 @@
         <form [formGroup]="establecimientoForm" (ngSubmit)="actualizarEstablecimiento()" class="row">
             <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
                 <input required type="text" class="form-control" id="nombre"
-                    formControlName="nombre" placeholder="Nombre del establecimiento" (ngModelChange)="detectarCambios()">
-
+                    formControlName="nombre" placeholder="Nombre del establecimiento" (change)="detectarCambios()"
+                    [ngClass]="{ 'is-invalid': establecimientoForm.get('nombre')?.invalid && establecimientoForm.get('nombre')?.touched }"
+                    >
                 <label for="nombre">Nombre del establecimiento</label>
+                <div *ngIf="establecimientoForm.get('nombre')?.invalid && establecimientoForm.get('nombre')?.touched"
+                    class="invalid-feedback">
+                    El nombre es obligatorio.
+                </div>
             </div>
-
             <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                <input required type="text" class="form-control" id="calle" formControlName="calle" placeholder="Calle"
-                    (ngModelChange)="detectarCambios()">
-                <label for="calle">Calle</label>
-            </div>
-
-            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                <input required type="text" class="form-control" id="altura" formControlName="altura"
-                    placeholder="Altura" (ngModelChange)="detectarCambios()">
-                <label for="altura">Altura</label>
+                <input type="text" class="form-control" id="cuit" formControlName="cuit"
+                    placeholder="CUIT"
+                    [ngClass]="{ 'is-invalid': establecimientoForm.get('cuit')?.invalid && establecimientoForm.get('cuit')?.touched }">
+                <label for="cuit">CUIT</label>
+                <div *ngIf="establecimientoForm.get('cuit')?.errors?.['required'] && establecimientoForm.get('cuit')?.touched"
+                    class="invalid-feedback">
+                    El CUIT es obligatorio.
+                </div>
+                <div *ngIf="establecimientoForm.get('cuit')?.errors?.['pattern'] && establecimientoForm.get('cuit')?.touched"
+                    class="invalid-feedback">
+                    Formato incorrecto. Ejemplo válido: 30-12345678-1.
+                </div>
             </div>
             <div class="form-floating mb-3 col-2">
-                <select required class="form-select" id="floatingSelectPais" aria-label="Floating label select example"
-                    formControlName="idPais" (change)="onPaisSelected()">
+                <select required class="form-select" id="floatingSelectPais" aria-label="Floating label select example" formControlName="idPais" (change)="onPaisSelected()"
+                    [ngClass]="{ 'is-invalid': establecimientoForm.get('idPais')?.invalid && establecimientoForm.get('idPais')?.touched }">
                     <option value="">Seleccionar país</option>
-                    <option *ngFor="let pais of paises" [value]="pais.idPais">{{ pais.Descripcion }}</option>
+                    <option *ngFor="let pais of paises" [ngValue]="pais.idPais">{{ pais.Descripcion }}</option>
                 </select>
                 <label for="floatingSelectPais">País</label>
+                <div *ngIf="establecimientoForm.get('idPais')?.invalid && establecimientoForm.get('idPais')?.touched"
+                    class="invalid-feedback">
+                    Debes seleccionar un país.
+                </div>
             </div>
 
             <div class="form-floating mb-3 col-2">
-                <select required class="form-select" id="floatingSelectProvincia"
-                    aria-label="Floating label select example" formControlName="idProvincia"
-                    (change)="onProvinciaSelected()">
+                <select required class="form-select" id="floatingSelectProvincia" aria-label="Floating label select example" 
+                    formControlName="idProvincia" (change)="onProvinciaSelected()"
+                    [ngClass]="{ 'is-invalid': establecimientoForm.get('idProvincia')?.invalid && establecimientoForm.get('idProvincia')?.touched }">
                     <option value="">Seleccionar provincia</option>
-                    <option *ngFor="let provincia of provincias" [value]="provincia.idProvincia">{{
+                    <option *ngFor="let provincia of provincias" [ngValue]="provincia.idProvincia">{{
                         provincia.Descripcion }}</option>
                 </select>
                 <label for="floatingSelectProvincia">Provincia</label>
+                <div *ngIf="establecimientoForm.get('idProvincia')?.invalid && establecimientoForm.get('idProvincia')?.touched"
+                    class="invalid-feedback">
+                    Debes seleccionar un provincia.
+                </div>
             </div>
 
             <div class="form-floating mb-3 col-2">
                 <select required class="form-select" id="floatingSelectLocalidad"
-                    aria-label="Floating label select example" formControlName="idLocalidad">
+                    aria-label="Floating label select example" formControlName="idLocalidad"
+                    [ngClass]="{ 'is-invalid': establecimientoForm.get('idLocalidad')?.invalid && establecimientoForm.get('idLocalidad')?.touched }">
                     <option value="">Seleccionar localidad</option>
-                    <option *ngFor="let localidad of localidades" [value]="localidad.idLocalidad">{{
+                    <option *ngFor="let localidad of localidades" [ngValue]="localidad.idLocalidad">{{
                         localidad.Descripcion }}</option>
                 </select>
                 <label for="floatingSelectLocalidad">Localidad</label>
+                <div *ngIf="establecimientoForm.get('idLocalidad')?.invalid && establecimientoForm.get('idLocalidad')?.touched"
+                    class="invalid-feedback">
+                    Debes seleccionar una localidad.
+                </div>
             </div>
+
+            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                <input required type="text" class="form-control" id="calle" formControlName="calle" placeholder="Calle"
+                    (change)="detectarCambios()"
+                    [ngClass]="{ 'is-invalid': establecimientoForm.get('calle')?.invalid && establecimientoForm.get('calle')?.touched }">
+                <label for="calle">Calle</label>
+                <div *ngIf="establecimientoForm.get('calle')?.invalid && establecimientoForm.get('calle')?.touched"
+                    class="invalid-feedback">
+                    La Calle es obligatorio.
+                </div>
+            </div>
+
+            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                <input required type="text" class="form-control" id="altura" formControlName="altura"
+                    placeholder="Altura" (change)="detectarCambios()"
+                    [ngClass]="{ 'is-invalid': establecimientoForm.get('altura')?.invalid && establecimientoForm.get('altura')?.touched }">
+                <label for="altura">Altura</label>
+                <div *ngIf="establecimientoForm.get('altura')?.invalid && establecimientoForm.get('altura')?.touched"
+                    class="invalid-feedback">
+                    La Altura es obligatorio.
+                </div>
+            </div>
+            
             <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
                 <input required type="text" class="form-control" id="telefono" formControlName="telefono"
-                    placeholder="Teléfono" (ngModelChange)="detectarCambios()">
+                    placeholder="Teléfono" (change)="detectarCambios()"
+                    [ngClass]="{ 'is-invalid': establecimientoForm.get('telefono')?.invalid && establecimientoForm.get('telefono')?.touched }">
                 <label for="telefono">Teléfono</label>
+                <div *ngIf="establecimientoForm.get('telefono')?.errors?.['required'] && establecimientoForm.get('telefono')?.touched"
+                    class="invalid-feedback">
+                    El Telefono es obligatorio.
+                </div>
             </div>
 
             <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
                 <input required type="email" class="form-control" id="correo" formControlName="correo"
-                    placeholder="Correo electrónico" (ngModelChange)="detectarCambios()">
+                    placeholder="Correo electrónico" (change)="detectarCambios()"
+                    [ngClass]="{ 'is-invalid': establecimientoForm.get('correo')?.invalid && establecimientoForm.get('correo')?.touched }">
                 <label for="correo">Correo electrónico</label>
+                <div *ngIf="establecimientoForm.get('correo')?.errors?.['required'] && establecimientoForm.get('correo')?.touched"
+                    class="invalid-feedback">
+                    El correo es obligatorio.
+                </div>
+                <div *ngIf="establecimientoForm.get('correo')?.errors?.['pattern'] && establecimientoForm.get('correo')?.touched"
+                    class="invalid-feedback">
+                    Formato incorrecto.
+                </div>
             </div>
 
             <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                <input required type="text" class="form-control" id="horaEntrada" formControlName="horaEntrada"
-                    placeholder="Hora de entrada" (ngModelChange)="detectarCambios()">
+                <input required type="text" class="form-control" id="sitioweb" formControlName="sitioweb"
+                    placeholder="Sitio Web"        
+                    [ngClass]="{ 'is-invalid': establecimientoForm.get('sitioweb')?.invalid && establecimientoForm.get('sitioweb')?.touched }">
+                <label for="sitioweb">Sitio Web</label>
+                <div *ngIf="establecimientoForm.get('sitioweb')?.errors?.['required'] && establecimientoForm.get('sitioweb')?.touched"
+                    class="invalid-feedback">
+                    La Sitio Web es obligatorio.
+                </div>
+                <div *ngIf="establecimientoForm.get('sitioweb')?.errors?.['pattern'] && establecimientoForm.get('sitioweb')?.touched"
+                    class="invalid-feedback">
+                    Formato incorrecto. Ejemplo válido: www.misitio.com o www.misitio.com.ar
+                </div>
+            </div>
+            
+            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
+                <input required type="time" class="form-control" id="horaEntrada" formControlName="horaEntrada"
+                    placeholder="Hora de entrada" (change)="detectarCambios()" step="60">
                 <label for="horaEntrada">Hora de entrada</label>
             </div>
 
             <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                <input required type="text" class="form-control" id="horaSalida" formControlName="horaSalida"
-                    placeholder="Hora de salida" (ngModelChange)="detectarCambios()">
+                <input required type="time" class="form-control" id="horaSalida" formControlName="horaSalida"
+                    placeholder="Hora de salida" (change)="detectarCambios()">
                 <label for="horaSalida">Hora de salida</label>
             </div>
 
             <div class="form-group">
                 <button type="submit" class="btn btn-success"
                     [disabled]="!hayCambios || establecimientoForm.invalid">Guardar</button>
-                <a class="btn btn-danger" [routerLink]="['/listar-establecimientos']">Cancelar</a>
+                <a class="btn btn-danger" (click)="this.volverAEstablecimiento()">Cancelar</a>
             </div>
         </form>
     </div>

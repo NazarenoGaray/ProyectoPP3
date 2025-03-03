@@ -9,6 +9,7 @@ use Firebase\JWT\BeforeValidException;
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\SignatureInvalidException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class RenovarTokenController extends Controller
 {
@@ -37,15 +38,19 @@ class RenovarTokenController extends Controller
             return response()->json(['token' => $newToken], 200);
         } catch (SignatureInvalidException $e) {
             // Manejar error de firma no válida
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => 'Firma no válida'], 401);
         } catch (BeforeValidException $e) {
             // Manejar error antes de la fecha válida
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => 'Token no válido antes de la fecha válida'], 401);
         } catch (ExpiredException $e) {
             // Manejar token expirado
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => 'Token expirado'], 401);
         } catch (\Exception $e) {
             // Manejar otros errores
+            Log::info('error:',['error' => $e->getMessage()]);
             return response()->json(['error' => 'Token no válido'], 401);
         }
     }
