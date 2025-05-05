@@ -12,6 +12,7 @@ export class InicioSesionComponent{
   usuario!: string;
   contrasena!: string;
   token!: any;
+  idUsuario!: any;
   mostrarError = false;
   errorMensaje='';
 
@@ -44,9 +45,16 @@ export class InicioSesionComponent{
 
         //console.log('Sesión creada con éxito');
         this.token = JSON.stringify(res.token);
+        this.idUsuario = JSON.stringify(res.idUsuario);
         sessionStorage.setItem('TOKEN', this.token);
+        sessionStorage.setItem('ID_USUARIO', this.idUsuario);
+        console.log("datos de login: ",res);
         this.loadingService.hide();
-        this.router.navigate(['/']);
+        if (res.idEstadoUsuario === 5) {
+          this.router.navigate(['/cambiar-clave']);
+        } else {
+          this.router.navigate(['/']); // Página principal
+        }
       },
       error: (err: any) => {
         console.error('Error al iniciar sesión:', err);
@@ -59,7 +67,7 @@ export class InicioSesionComponent{
           this.errorMensaje = 'Usuario no encontrado';
           console.error('Usuario no encontrado');
         } else {
-          this.errorMensaje = 'Error del servidor: '+ err.message;
+          this.errorMensaje = 'Error al iniciar sesión. Intente nuevamente mas tarde.';
           console.error('Error del servidor:', err.message);
         }
       },

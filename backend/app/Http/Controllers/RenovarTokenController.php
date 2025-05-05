@@ -62,7 +62,7 @@ class RenovarTokenController extends Controller
 
         $token = [
             'iat' => $time,
-            'exp' => $time + (60*30), // 30 minutos de duración
+            'exp' => $time + (60*60), // 30 minutos de duración
             'data' => [
                 'idUsuario' => $idUsuario,
                 'usuario' => $usuario,

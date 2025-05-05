@@ -37,5 +37,7 @@ export class Usuario {
   idLocalidad!: number;
   idEstadoUsuario!: number;
 
+  message!: any;
+
 }
 

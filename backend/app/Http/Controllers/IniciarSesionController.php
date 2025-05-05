@@ -7,70 +7,59 @@ use App\Models\Usuario;
 use Firebase\JWT\JWT;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Hash;
 
 class IniciarSesionController extends Controller
 {
     public function iniciarSesion(Request $request)
     {
-        
-        try{
+        try {
+            Log::info('Intento de inicio de sesión', ['usuario' => $request->input('usuario')]);
             
+            $request->validate([
+                'usuario' => 'required|string',
+                'contraseña' => 'required|string'
+            ]);
+
             $usuario = $request->input('usuario');
             $contraseña = $request->input('contraseña');
+            
             $usuarioEncontrado = Usuario::where('usuario', $usuario)->first();
-            // En lugar de echo
-            Log::info('Usuario: ' . $usuario);
-            //Log::info('Contraseña: ' . $contraseña);
-            Log::info('usuarioEncontrado: ' . $usuarioEncontrado);
-            //Log::info('Hash almacenado en la base de datos: ' . $usuarioEncontrado->contraseña);
-            //Log::info('Contraseña ingresada: ' . $contraseña);
-            //Log::info('Hash almacenado: ' . $usuarioEncontrado->contraseña);
 
-    //$contraseñaHasheada = password_hash('121212', PASSWORD_BCRYPT);
-    //echo "Contraseña hasheada 121212: " . $contraseñaHasheada . "<br>";
-// // Actualizar la contraseña en la base de datos
-// DB::table('usuarios')
-//     ->where('usuario', 'naza')
-//     ->update(['contraseña' => $contraseñaHasheada]);
             if (!$usuarioEncontrado) {
-                // El usuario no existe en la base de datos
-                return response()->json('Usuario no encontrado', 404);
-            }
-            
-            // Ahora es seguro acceder a sus propiedades
-            Log::info('Hash almacenado en la base de datos: ' . $usuarioEncontrado->contraseña);
-
-            
-
-            // Verifica si la contraseña coincide
-            if (password_verify($contraseña,$usuarioEncontrado->contraseña)) {
-                Log::info(message: 'La contraseña coincide.');
-                //Las credenciales son válidas, el usuario ha iniciado sesión
-                $idUsuario = $usuarioEncontrado->idUsuario;
-                $rol = $usuarioEncontrado->rol;
-
-                // Generar el token JWT
-                $token = $this->generarToken($usuario, $idUsuario, $rol);
-                //lo cguardamos en base de datos
-                DB::table('usuarios')
-                    ->where('idUsuario', $usuarioEncontrado->idUsuario)
-                    ->update(['token' => $token]);
-                    Log::warning('Las credenciales son correctas.');
-                    
-                return response()->json(['token' => $token], 200);
-            } else {
-                // Las credenciales son incorrectas, el usuario no ha iniciado sesión
-                Log::warning('La contraseña no coincide.');
-                return response()->json('Credenciales incorrectas', 401);
+                Log::warning('Usuario no encontrado', ['usuario' => $usuario]);
+                return response()->json(['error' => 'Usuario no encontrado'], 404);
             }
 
-        }catch (\Exception $e) {
-            // Capturar cualquier excepción y mostrar el mensaje de error
-            Log::info('error:',['error' => $e->getMessage()]);
+            if (!Hash::check($contraseña, $usuarioEncontrado->contraseña)) {
+                Log::warning('Credenciales incorrectas', ['usuario' => $usuario]);
+                return response()->json(['error' => 'Credenciales incorrectas'], 401);
+            }
+
+            $token = $this->generarToken(
+                $usuarioEncontrado->usuario,
+                $usuarioEncontrado->idUsuario,
+                $usuarioEncontrado->rol
+            );
+
+            DB::table('usuarios')
+                ->where('idUsuario', $usuarioEncontrado->idUsuario)
+                ->update(['token' => $token]);
+
+            return response()->json([
+                'token' => $token,
+                'idEstadoUsuario' => $usuarioEncontrado->idEstadoUsuario,
+                'idUsuario' => $usuarioEncontrado->idUsuario,
+                'rol' => $usuarioEncontrado->rol
+            ], 200);
+
+        } catch (\Exception $e) {
+            Log::error('Error en inicio de sesión', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
-
     }
     private function generarToken($usuario, $idUsuario, $rol)
     {

@@ -42,7 +42,7 @@ export class IncidentesService {
       catchError((error) => {
         if (error.status === 404) {
           // Handle the 404 error here
-          console.log('No se encontraron usuarios para el incidente con ID', idIncidente);
+          console.log('No se encontraron equipos para el incidente con ID', idIncidente);
           // Puedes retornar un arreglo vacío o null, o lanzar una excepción personalizada si lo deseas
           return of([]); // Por ejemplo, retorna un arreglo vacío en caso de 404
         } else {
@@ -55,6 +55,7 @@ export class IncidentesService {
 
   obtenerUsuariosDeUnIncidente(idIncidente: number): Observable<Usuario[]> {
     const url = `${this.apiURL}/incidentes/${idIncidente}/usuarios`;
+    //console.log('idIncidente: ', idIncidente);
     return this.http.get<Usuario[]>(url).pipe(
       catchError((error) => {
         if (error.status === 404) {
@@ -94,7 +95,7 @@ export class IncidentesService {
   }
 
   actualizarIncidente(idIncidente:number,incidente: Incidente) {
-    console.log('Datos del incidente:', incidente);
+    //console.log('Datos del incidente:', incidente);
     return this.http.put(`${this.apiURL}/incidentes/${idIncidente}`, incidente).pipe(
       tap((data: any) => console.log(`incidente ID ${data.idIncidente} actualizado`)),
       catchError(err => {

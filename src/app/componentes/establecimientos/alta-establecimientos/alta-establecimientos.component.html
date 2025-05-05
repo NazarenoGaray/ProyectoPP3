@@ -2,158 +2,151 @@
 
 <div class="card container-fluid">
     <div class="container">
-        <div class="card-header lg-center row">
-            <label class="h2 col-10" for="">Agregar Establecimiento</label>
-            <div class="col-2">
-                <a class="btn btn-secondary" [routerLink]="['/']">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd"
-                            d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
-                    </svg>
-                    Atras
-                </a>
+      <div class="card-header lg-center row">
+        <h2 class="col-10">Agregar Establecimiento</h2>
+        <div class="col-2">
+            <a class="btn btn-secondary" [routerLink]="['/']">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                  class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd"
+                    d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+                </svg>
+              </a>
+        </div>
+      </div>
+      
+      <div class="container-hijo">
+        <form [formGroup]="establecimientoForm" class="form-grid" (ngSubmit)="onSubmit()">
+          <!-- Primera Columna -->
+          <div class="form-column">
+            <mat-form-field appearance="fill">
+              <mat-label>Nombre del establecimiento</mat-label>
+              <input matInput formControlName="nombre" required>
+              <mat-error *ngIf="establecimientoForm.get('nombre')?.invalid">
+                El nombre es obligatorio
+              </mat-error>
+            </mat-form-field>
+            
+            <mat-form-field appearance="fill">
+              <mat-label>CUIT</mat-label>
+              <input matInput formControlName="cuit" required>
+              <mat-error *ngIf="establecimientoForm.get('cuit')?.hasError('required')">
+                El CUIT es obligatorio
+              </mat-error>
+              <mat-error *ngIf="establecimientoForm.get('cuit')?.hasError('pattern')">
+                Formato incorrecto. Ejemplo: 30-12345678-1
+              </mat-error>
+            </mat-form-field>
+            
+            <mat-form-field appearance="fill">
+              <mat-label>Calle</mat-label>
+              <input matInput formControlName="calle" required>
+              <mat-error *ngIf="establecimientoForm.get('calle')?.invalid">
+                La calle es obligatoria
+              </mat-error>
+            </mat-form-field>
+            
+            <mat-form-field appearance="fill">
+              <mat-label>Altura</mat-label>
+              <input matInput formControlName="altura" required>
+              <mat-error *ngIf="establecimientoForm.get('altura')?.invalid">
+                La altura es obligatoria
+              </mat-error>
+            </mat-form-field>
+          </div>
+          
+          <!-- Segunda Columna -->
+          <div class="form-column">
+            <mat-form-field appearance="fill">
+              <mat-label>País</mat-label>
+              <mat-select formControlName="idPais" (selectionChange)="onPaisSelected()" required>
+                <mat-option *ngFor="let pais of paises" [value]="pais.idPais">
+                  {{ pais.Descripcion }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="establecimientoForm.get('idPais')?.invalid">
+                Debes seleccionar un país
+              </mat-error>
+            </mat-form-field>
+            
+            <mat-form-field appearance="fill">
+              <mat-label>Provincia</mat-label>
+              <mat-select formControlName="idProvincia" (selectionChange)="onProvinciaSelected()" required>
+                <mat-option *ngFor="let provincia of provincias" [value]="provincia.idProvincia">
+                  {{ provincia.Descripcion }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="establecimientoForm.get('idProvincia')?.invalid">
+                Debes seleccionar una provincia
+              </mat-error>
+            </mat-form-field>
+            
+            <mat-form-field appearance="fill">
+              <mat-label>Localidad</mat-label>
+              <mat-select formControlName="idLocalidad" required>
+                <mat-option *ngFor="let localidad of localidades" [value]="localidad.idLocalidad">
+                  {{ localidad.Descripcion }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="establecimientoForm.get('idLocalidad')?.invalid">
+                Debes seleccionar una localidad
+              </mat-error>
+            </mat-form-field>
+          </div>
+          
+          <!-- Tercera Columna -->
+          <div class="form-column">
+            <mat-form-field appearance="fill">
+              <mat-label>Teléfono</mat-label>
+              <input matInput formControlName="telefono" required>
+              <mat-error *ngIf="establecimientoForm.get('telefono')?.invalid">
+                El teléfono es obligatorio
+              </mat-error>
+            </mat-form-field>
+            
+            <mat-form-field appearance="fill">
+              <mat-label>Correo electrónico</mat-label>
+              <input matInput formControlName="correo" type="email" required>
+              <mat-error *ngIf="establecimientoForm.get('correo')?.invalid">
+                El correo es obligatorio
+              </mat-error>
+            </mat-form-field>
+            
+            <mat-form-field appearance="fill">
+              <mat-label>Sitio Web</mat-label>
+              <input matInput formControlName="sitioweb" required>
+              <mat-error *ngIf="establecimientoForm.get('sitioweb')?.invalid">
+                El sitio web es obligatorio
+              </mat-error>
+            </mat-form-field>
+            
+            <div class="time-fields">
+              <mat-form-field appearance="fill">
+                <mat-label>Hora de Apertura</mat-label>
+                <input matInput type="time" formControlName="horaEntrada" required>
+              </mat-form-field>
+              
+              <mat-form-field appearance="fill">
+                <mat-label>Hora de Cierre</mat-label>
+                <input matInput type="time" formControlName="horaSalida" required>
+              </mat-form-field>
             </div>
-        </div>
-        <div class="container-hijo">
-            <form [formGroup]="establecimientoForm" class="row" (ngSubmit)="onSubmit()">
-                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                    <input required type="text" class="form-control" id="nombre" formControlName="nombre"
-                        placeholder="Nombre del establecimiento"
-                        [ngClass]="{ 'is-invalid': establecimientoForm.get('nombre')?.invalid && establecimientoForm.get('nombre')?.touched }"
-                        >
-                    <label for="nombre">Nombre del establecimiento</label>
-                    <div *ngIf="establecimientoForm.get('nombre')?.invalid && establecimientoForm.get('nombre')?.touched"
-                        class="invalid-feedback">
-                        El nombre es obligatorio.
-                    </div>
-                </div>
-                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                    <input required type="text" class="form-control" id="cuit" formControlName="cuit"
-                        placeholder="CUIT"
-                        [ngClass]="{ 'is-invalid': establecimientoForm.get('cuit')?.invalid && establecimientoForm.get('cuit')?.touched }">
-                    <label for="cuit">CUIT</label>
-                    <div *ngIf="establecimientoForm.get('cuit')?.errors?.['required'] && establecimientoForm.get('cuit')?.touched"
-                        class="invalid-feedback">
-                        El CUIT es obligatorio.
-                    </div>
-                    <div *ngIf="establecimientoForm.get('cuit')?.errors?.['pattern'] && establecimientoForm.get('cuit')?.touched"
-                        class="invalid-feedback">
-                        Formato incorrecto. Ejemplo válido: 30-12345678-1.
-                    </div>
-                </div>
-
-                <div class="form-floating mb-3 col-2">
-                    <select required class="form-select" id="floatingSelectPais"
-                        aria-label="Floating label select example" formControlName="idPais" (change)="onPaisSelected()"[ngClass]="{ 'is-invalid': establecimientoForm.get('idPais')?.invalid && establecimientoForm.get('idPais')?.touched }">
-                        <option value="">Seleccionar país</option>
-                        <option *ngFor="let pais of paises" [ngValue]="pais.idPais">{{ pais.Descripcion }}</option>
-                    </select>
-                    <label for="floatingSelectPais">País</label>
-                    <div *ngIf="establecimientoForm.get('idPais')?.invalid && establecimientoForm.get('idPais')?.touched"
-                        class="invalid-feedback">
-                        Debes seleccionar un país.
-                    </div>
-                </div>
-                <div class="form-floating mb-3 col-2">
-                    <select required class="form-select" id="floatingSelectProvincia" aria-label="Floating label select example" 
-                        formControlName="idProvincia" (change)="onProvinciaSelected()"
-                        [ngClass]="{ 'is-invalid': establecimientoForm.get('idProvincia')?.invalid && establecimientoForm.get('idProvincia')?.touched }">
-                    <option value="">Seleccionar provincia</option>
-                    <option *ngFor="let provincia of provincias" [ngValue]="provincia.idProvincia">{{
-                        provincia.Descripcion }}</option>
-                    </select>
-                    <label for="floatingSelectProvincia">Provincia</label>
-                    <div *ngIf="establecimientoForm.get('idProvincia')?.invalid && establecimientoForm.get('idProvincia')?.touched"
-                        class="invalid-feedback">
-                        Debes seleccionar un provincia.
-                    </div>
-                </div>
-                <div class="form-floating mb-3 col-2">
-                    <select required class="form-select" id="floatingSelectLocalidad"
-                        aria-label="Floating label select example" formControlName="idLocalidad"
-                        [ngClass]="{ 'is-invalid': establecimientoForm.get('idLocalidad')?.invalid && establecimientoForm.get('idLocalidad')?.touched }">
-                    <option value="">Seleccionar localidad</option>
-                    <option *ngFor="let localidad of localidades" [ngValue]="localidad.idLocalidad">{{
-                        localidad.Descripcion }}</option>
-                    </select>
-                    <label for="floatingSelectLocalidad">Localidad</label>
-                    <div *ngIf="establecimientoForm.get('idLocalidad')?.invalid && establecimientoForm.get('idLocalidad')?.touched"
-                        class="invalid-feedback">
-                        Debes seleccionar una localidad.
-                    </div>
-                </div>
-
-                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                    <input required type="text" class="form-control" id="calle" formControlName="calle"
-                        placeholder="Calle"
-                        [ngClass]="{ 'is-invalid': establecimientoForm.get('calle')?.invalid && establecimientoForm.get('calle')?.touched }">
-                <label for="calle">Calle</label>
-                <div *ngIf="establecimientoForm.get('calle')?.invalid && establecimientoForm.get('calle')?.touched"
-                    class="invalid-feedback">
-                    La Calle es obligatorio.
-                </div>
-                </div>
-                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                    <input required type="text" class="form-control" id="altura" formControlName="altura"
-                        placeholder="Altura"
-                        [ngClass]="{ 'is-invalid': establecimientoForm.get('altura')?.invalid && establecimientoForm.get('altura')?.touched }">
-                    <label for="altura">Altura</label>
-                    <div *ngIf="establecimientoForm.get('altura')?.invalid && establecimientoForm.get('altura')?.touched"
-                        class="invalid-feedback">
-                        La Altura es obligatorio.
-                    </div>
-                </div>
-                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                    <input required type="text" class="form-control" id="telefono" formControlName="telefono"
-                        placeholder="Teléfono"
-                        [ngClass]="{ 'is-invalid': establecimientoForm.get('telefono')?.invalid && establecimientoForm.get('telefono')?.touched }">
-                    <label for="telefono">Telefono</label>
-                    <div *ngIf="establecimientoForm.get('telefono')?.invalid && establecimientoForm.get('telefono')?.touched"
-                        class="invalid-feedback">
-                        El Telefono es obligatorio.
-                    </div>
-                </div>
-                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                    <input required type="email" class="form-control" id="correo" formControlName="correo"
-                        placeholder="Correo electrónico"
-                        [ngClass]="{ 'is-invalid': establecimientoForm.get('correo')?.invalid && establecimientoForm.get('correo')?.touched }">
-                    <label for="correo">Correo</label>
-                    <div *ngIf="establecimientoForm.get('correo')?.invalid && establecimientoForm.get('correo')?.touched"
-                        class="invalid-feedback">
-                        El Correo es obligatorio.
-                    </div>
-                </div>
-                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                    <input required type="text" class="form-control" id="sitioweb" formControlName="sitioweb"
-                        placeholder="Sitio Web"        
-                        [ngClass]="{ 'is-invalid': establecimientoForm.get('sitioweb')?.invalid && establecimientoForm.get('sitioweb')?.touched }">
-                    <label for="sitioweb">Sitio Web</label>
-                    <div *ngIf="establecimientoForm.get('sitioweb')?.invalid && establecimientoForm.get('sitioweb')?.touched"
-                        class="invalid-feedback">
-                        La Sitio Web es obligatorio.
-                    </div>
-                </div>
-
-                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                    <input required type="time" class="form-control" id="horaEntrada" formControlName="horaEntrada"
-                        placeholder="Hora de entrada">
-                    <label for="horaEntrada">Hora de Apertura</label>
-                </div>
-                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                    <input required type="time" class="form-control" id="horaSalida" formControlName="horaSalida"
-                        placeholder="Hora de salida">
-                    <label for="horaSalida">Hora de Cierre</label>
-                </div>
-
-                <div class="form-group">
-                    <button type="submit" class="btn btn-success"
-                        [disabled]="establecimientoForm.invalid">Guardar</button>
-
-                    <a class="btn btn-danger" [routerLink]="['/']">Cancelar</a>
-                </div>
-            </form>
-        </div>
+          </div>
+          
+          <div class="form-actions">
+            <button mat-raised-button color="primary" type="submit" 
+                    [disabled]="establecimientoForm.invalid">
+              <mat-icon>save</mat-icon>
+              Guardar
+            </button>
+            
+            <button mat-stroked-button color="warn" type="button" routerLink="/">
+              <mat-icon>cancel</mat-icon>
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
-</div>
+  </div>
 <app-pie></app-pie>

@@ -1,9 +1,177 @@
-.sectores-container {
-  display: block;
+/* Diseño general */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+/* Cabecera */
+#content-establecimiento .card-header {
+  background-color: #007bff;
+  color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+#content-establecimiento .card-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+/* Tarjetas */
+.card {
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+/* Detalles de contacto y ubicación */
+.detail {
+  margin-bottom: 15px;
+}
+
+.detail label {
+  font-weight: bold;
+}
+
+.detail p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Acordeones */
+.accordion-button {
+  font-size: 1rem;
+  font-weight: bold;
+  background-color: #f8f9fa;
+  color: #007bff;
+  border-radius: 8px;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.accordion-item {
+  margin-bottom: 15px;
+}
+
+.accordion-body {
+  background-color: #f8f9fa;
+  padding: 15px;
+}
+
+.accordion-body ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.accordion-body ul li {
+  margin-bottom: 10px;
+}
+
+/* Tablas */
+table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+table thead {
+  background-color: #007bff;
+  color: #fff;
+}
+
+table th, table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+table th {
+  font-weight: bold;
+}
+
+table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Botones */
+.btn {
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-size: 1rem;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.btn-secondary {
+  background-color: #ffffff;
+  border-color: #000000;
+  color: #000;
+}
+
+.btn-secondary:hover {
+  background-color: #b8bfc4;
+  border-color: #545b62;
+}
+
+.btn-info {
+  background-color: #ffffff;
+  border-color: #000000;
+  color: #000;
+}
+
+.btn-info:hover {
+  background-color: #c1eaf0;
+  border-color: #117a8b;
+}
+
+.btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
+}
+
+/* Botones dentro de tarjetas */
+#todos-sectores .btn {
+  text-align: center;
+  justify-content: center;
+  width: 50%;
+
 }
 
 
-.separator {
-  margin: 0 5px;
+
+
+/* Espaciado y márgenes */
+.mt-5 {
+  margin-top: 50px;
 }
 
+.mb-4 {
+  margin-bottom: 25px;
+}
+
+.mr-4 {
+  margin-right: 20px;
+}
+
+.ml-4 {
+  margin-left: 20px;
+}

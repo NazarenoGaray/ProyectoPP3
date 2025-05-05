@@ -141,5 +141,12 @@ obtenerEquiposDeUnPuesto(idPuesto: number) {
     puesto.mostrarEquipos = !puesto.mostrarEquipos;
   }
 
-
+  getEstadoColor(estado: string): string {
+    switch(estado.toLowerCase()) {
+      case 'activo': return 'primary';
+      case 'inactivo': return 'warn';
+      case 'mantenimiento': return 'accent';
+      default: return '';
+    }
+  }
 }

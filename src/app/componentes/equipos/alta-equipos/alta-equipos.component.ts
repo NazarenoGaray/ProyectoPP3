@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { switchMap, take } from 'rxjs';
 import { Equipo } from 'src/app/model/equipo.model';
 import { Establecimiento } from 'src/app/model/establecimientos.model';
 import { estado_equipo } from 'src/app/model/estado_equipo.model';
@@ -27,6 +28,7 @@ export class AltaEquiposComponent {
   establecimientos!: Establecimiento[];
   sectores!: Sector[];
   puestos!: Puesto[];
+  idSector!: number;
 
 
   constructor(
@@ -36,6 +38,7 @@ export class AltaEquiposComponent {
     private sectorService: SectoresService,
     private puestoService: PuestosService,
     private equipoService: EquiposService,
+    private route: ActivatedRoute,
 
     // private textareaService: TexttareaService,
   ) { }
@@ -60,7 +63,23 @@ export class AltaEquiposComponent {
     this.obtenerEstadosEquipo();
     this.obtenerEstablecimientos();
     this.obtenerTipoEquipo();
-
+this.route.params.pipe(
+      take(1),
+      switchMap(params => this.sectorService.obtenerSectorPorId(params['idSector']))
+    ).subscribe(
+      (sector: Sector | null) => {
+        if (sector) {
+          console.log("Datos obtenidos: ", sector);
+          this.idSector = sector.idSector; // Asignar el idSector obtenido del parámetro de ruta
+          // Guardar una copia de los valores iniciales del formulario
+        } else {
+          console.log("sector no encontrado");
+        }
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
   obtenerTipoEquipo() {

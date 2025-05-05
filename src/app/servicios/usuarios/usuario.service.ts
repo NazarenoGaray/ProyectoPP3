@@ -99,6 +99,13 @@ export class UsuarioService {
     );
   }
 
+  cambiarClave(idUsuario: number, claveActual: string, nuevaClave: string) {
+    return this.http.post(`${this.apiURL}/cambiar-clave`, {
+      idUsuario,
+      claveActual,
+      nuevaClave
+    });
+  }
 }
 
 

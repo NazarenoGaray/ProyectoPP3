@@ -3,9 +3,9 @@
 <div class="card container-fluid" id="content-lista">
     <div class="container">
         <div class="card-header row">
-            <div class="h2 col-8" for="">Alta Puesto</div>
-            <div class="col-1">
-                <a class="btn btn-secondary" [routerLink]="['/']">
+            <div class="h2 col-10" for="">Alta Puesto</div>
+            <div class="col-2">
+                <a class="btn btn-secondary" [routerLink]="['/sector', idSector ]">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
                         <path fill-rule="evenodd"
@@ -18,88 +18,86 @@
         <br>
 
         <div class="card-body">
-            <form [formGroup]="puestoForm" class="row" (ngSubmit)="altaPuesto()">
-                <div class="form-group col-6">
-
+            <form [formGroup]="puestoForm" class="form-grid" (ngSubmit)="altaPuesto()">
+                <!-- Primera Fila -->
+                <div class="form-row">
                     <!-- Establecimiento -->
-                    <ng-autocomplete class="establecimiento" id="idEstablecimiento" formControlName="idEstablecimiento"
-                        placeholder="Seleccionar Establecimiento" [data]="establecimientos" [searchKeyword]="keyword"
-                        [itemTemplate]="itemTemplateEstablecimiento"
-                        [notFoundTemplate]="notFoundTemplateEstablecimiento"
-                        (selected)="onEstablecimientoSelect($event)">
-                    </ng-autocomplete>
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Seleccionar Establecimiento</mat-label>
+                        <input matInput [matAutocomplete]="autoEstablecimiento" formControlName="idEstablecimiento"
+                            placeholder="Buscar establecimiento...">
+                        <mat-autocomplete #autoEstablecimiento="matAutocomplete"
+                            (optionSelected)="onEstablecimientoSelect($event.option.value)">
+                            <mat-option *ngFor="let establecimiento of establecimientos" [value]="establecimiento">
+                                {{establecimiento.nombre}} - Cuit: {{establecimiento.cuit}}
+                            </mat-option>
+                        </mat-autocomplete>
+                        <mat-error *ngIf="puestoForm.get('idEstablecimiento')?.invalid">
+                            Debes seleccionar un establecimiento
+                        </mat-error>
+                    </mat-form-field>
 
-                    <ng-template #itemTemplateEstablecimiento let-item>
-                        <a>
-                            <span [innerHTML]="item.nombre"></span>
-                            - Cuit:
-                            <span [innerHTML]="item.cuit"></span>
-                        </a>
-                    </ng-template>
-
-                    <ng-template #notFoundTemplateEstablecimiento let-notFound>
-                        <div [innerHTML]="notFound"></div>
-                    </ng-template>
+                    <!-- Sector -->
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Seleccionar Sector</mat-label>
+                        <mat-select formControlName="idSector" required>
+                            <mat-option *ngFor="let sector of sectores" [value]="sector.idSector">
+                                {{ sector.nombre }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="puestoForm.get('idSector')?.invalid">
+                            Debes seleccionar un sector
+                        </mat-error>
+                    </mat-form-field>
                 </div>
 
-                <!-- Sectores -->
-                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                    <select class="form-control" id="idSector" formControlName="idSector">
-                        <option *ngFor=" let sector of sectores" [value]="sector.idSector">{{
-                            sector.nombre }}</option>
-                    </select>
-                    <label for="puestoEquipo">Seleccionar Sector (Obligatorio)</label>
+                <!-- Segunda Fila -->
+                <div class="form-row">
+                    <!-- Puesto Red -->
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Nomenclatura Puesto Red</mat-label>
+                        <textarea matInput formControlName="puestoRed" required rows="3"></textarea>
+                        <mat-error *ngIf="puestoForm.get('puestoRed')?.invalid">
+                            Este campo es obligatorio
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- Teléfono -->
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Teléfono del Equipo</mat-label>
+                        <textarea matInput formControlName="telefono" required rows="3"></textarea>
+                        <mat-error *ngIf="puestoForm.get('telefono')?.invalid">
+                            Este campo es obligatorio
+                        </mat-error>
+                    </mat-form-field>
                 </div>
 
-
-                <!-- Al parecer da error porque envia el sector como objeto y no solo el idSector -->
-                <!-- <ng-autocomplete class="" id="idSector" formControlName="idSector" placeholder="Seleccionar Sector"
-                    [data]="sectores" [searchKeyword]="keyword" [itemTemplate]="itemTemplateSector"
-                    [notFoundTemplate]="notFoundTemplateSector">
-                </ng-autocomplete>
-
-                <ng-template #itemTemplateSector let-item>
-                    <a>
-                        <span [innerHTML]="item.nombre"></span>
-                    </a>
-                </ng-template>
-
-                <ng-template #notFoundTemplateSector let-notFound>
-                    <div [innerHTML]="notFound"></div>
-                </ng-template> -->
-
-                <!-- Puesto Red -->
-                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                    <textarea required class="form-control" id="puestoRed" formControlName="puestoRed" rows="3"
-                        style="resize: vertical;"></textarea>
-                    <label class="" for="puestoRed">Escribir nomenclatura Puesto Red</label>
+                <!-- Tercera Fila -->
+                <div class="form-row">
+                    <!-- Descripción -->
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Descripción del Equipo</mat-label>
+                        <textarea matInput formControlName="descripcion" required rows="3"></textarea>
+                        <mat-error *ngIf="puestoForm.get('descripcion')?.invalid">
+                            Este campo es obligatorio
+                        </mat-error>
+                    </mat-form-field>
                 </div>
-
-                <!-- Telefono -->
-                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                    <textarea required class="form-control" id="telefono" formControlName="telefono" rows="3"
-                        style="resize: vertical;"></textarea>
-                    <label class="" for="telefono">Escribir Telefono del Equipo</label>
-
-                </div>
-
-                <!-- Descripcion Equipo -->
-                <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                    <textarea required class="form-control" id="descripcion" formControlName="descripcion" rows="3"
-                        style="resize: vertical;"></textarea>
-                    <label class="" for="descripcion">Escribir una breve descripción</label>
-                </div>
-
-
 
                 <!-- Botones -->
-                <div class="form-group">
-                    <button type="submit" class="btn btn-success" [disabled]="puestoForm.invalid">Guardar</button>
-                    <a class="btn btn-danger" (click)="cancelarEdicion()">Cancelar</a>
+                <div class="form-actions">
+                    <button mat-raised-button color="primary" type="submit" [disabled]="puestoForm.invalid">
+                        <mat-icon>save</mat-icon>
+                        Guardar
+                    </button>
+
+                    <button mat-stroked-button color="warn" type="button" [routerLink]="['/sector', idSector ]">
+                        <mat-icon>cancel</mat-icon>
+                        Cancelar
+                    </button>
                 </div>
             </form>
         </div>
-
     </div>
 </div>
 

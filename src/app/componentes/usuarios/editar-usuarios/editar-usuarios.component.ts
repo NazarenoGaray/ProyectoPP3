@@ -34,6 +34,8 @@ export class EditarUsuariosComponent implements OnInit {
   localidades: Localidad[] = [];
   hayCambios: boolean = false;
   loading: boolean = true; // Inicialmente en true para indicar que está cargando
+  hidePassword: boolean = true;
+  disabled=true;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -58,13 +60,16 @@ export class EditarUsuariosComponent implements OnInit {
       telefono: ['', Validators.required],
       correo: ['', [Validators.required, Validators.email, this.validateCorreo]],
       usuario: ['', Validators.required],
-      contraseña: ['', Validators.required],
+      contraseña: [{value: '', disabled: true}], // Cambiamos a no requerido
+      nuevaContraseña: [''], // Nuevo campo opcional
+      confirmarContraseña: [''], // Nuevo campo opcional
       idRol: ['', Validators.required],
       idPais: [{ value: '', disabled: false }, Validators.required],
       idProvincia: [{ value: '', disabled: false }, Validators.required],
       idLocalidad: [{ value: '', disabled: false }, Validators.required],
       idEstadoUsuario: ['', Validators.required]
-    });
+    }, { validator: this.passwordMatchValidator });
+
     this.rolService.obtenerRoles().subscribe(
       (res: Rol[]) => {
         this.roles = res;
@@ -151,11 +156,22 @@ export class EditarUsuariosComponent implements OnInit {
   }
   actualizarUsuario() {
     const usuarioFormulario = this.usuarioForm.value;
-    const datosUsuarioCompleto = {
+
+    const datosUsuarioCompleto: any = {
       ...usuarioFormulario,
       idUsuario: this.idUsuario
     };
     //console.log("Datos enviados a la API:", datosUsuarioCompleto);
+    // Si no se cambió la contraseña, eliminamos los campos
+
+    if (!usuarioFormulario.nuevaContraseña) {
+      delete datosUsuarioCompleto.contraseña;
+      delete datosUsuarioCompleto.nuevaContraseña;
+      delete datosUsuarioCompleto.confirmarContraseña;
+    } else {
+      // Si se cambió, usamos la nueva contraseña
+      datosUsuarioCompleto.contraseña = usuarioFormulario.nuevaContraseña;
+    }
 
     const dialogRef = this.dialog.open(ConfirmAltaUsuarioComponent, {
       width: '400px',
@@ -226,5 +242,17 @@ export class EditarUsuariosComponent implements OnInit {
   }
   getEstado(){
     return this.loadingService.getEstado();
-  } 
+  }
+
+  passwordMatchValidator(form: FormGroup) {
+    const nueva = form.get('nuevaContraseña')?.value;
+    const confirmar = form.get('confirmarContraseña')?.value;
+    
+    if (nueva && nueva !== confirmar) {
+      form.get('confirmarContraseña')?.setErrors({ mismatch: true });
+    } else {
+      form.get('confirmarContraseña')?.setErrors(null);
+    }
+    return null;
+  }
 }

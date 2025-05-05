@@ -270,5 +270,16 @@ html {
   }
 
   .error-message {
-    color: red;
+    color: #ff4444;
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: #ffebee;
+    border: 1px solid #ffcdd2;
+    animation: fadeIn 0.5s;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
   }

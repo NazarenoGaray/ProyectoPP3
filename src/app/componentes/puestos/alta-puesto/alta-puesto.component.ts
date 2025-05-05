@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { switchMap, take } from 'rxjs';
 import { Establecimiento } from 'src/app/model/establecimientos.model';
 import { Puesto } from 'src/app/model/puesto.model';
 import { Sector } from 'src/app/model/sector.model';
@@ -20,6 +21,7 @@ export class AltaPuestoComponent {
   establecimientos!: Establecimiento[];
   sectores!: Sector[];
   keyword = 'nombre';
+  idSector!: number;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -27,6 +29,8 @@ export class AltaPuestoComponent {
     private establecimientoService: EstablecimientosService,
     private sectorService: SectoresService,
     private puestoService: PuestosService,
+    private route: ActivatedRoute,
+    
   ) { }
 
   ngOnInit() {
@@ -38,6 +42,23 @@ export class AltaPuestoComponent {
       idSector: ['', Validators.required],
     });
     this.obtenerEstablecimientos();
+    this.route.params.pipe(
+      take(1),
+      switchMap(params => this.sectorService.obtenerSectorPorId(params['idSector']))
+    ).subscribe(
+      (sector: Sector | null) => {
+        if (sector) {
+          console.log("Datos obtenidos: ", sector);
+          this.idSector = sector.idSector; // Asignar el idSector obtenido del parámetro de ruta
+          // Guardar una copia de los valores iniciales del formulario
+        } else {
+          console.log("sector no encontrado");
+        }
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
   obtenerEstablecimientos() {
@@ -89,7 +110,6 @@ export class AltaPuestoComponent {
     );
   }
   
-
   cancelarEdicion() {
     // Restaurar el formulario a los valores originales
     this.puestoForm.reset();

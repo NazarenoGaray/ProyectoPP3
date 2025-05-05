@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, ɵafterNextNavigation } from '@angular/router';
+import { catchError, forkJoin, of } from 'rxjs';
 import { comentarios_incidente } from 'src/app/model/comentarios_incidente.model';
 import { Equipo } from 'src/app/model/equipo.model';
 import { Incidente } from 'src/app/model/incidente.model';
@@ -17,8 +18,6 @@ export class IncidenteComponent {
   equipos!: Equipo[];
   usuarios!: Usuario[];
   comentarios_incidente!: comentarios_incidente[];
-  columnaOrdenada: string = '';
-  ordenAscendente: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,85 +28,123 @@ export class IncidenteComponent {
 
 
   ngOnInit(): void {
+    this.loadData();
+  }
+
+  loadData(): void {
     this.loadingService.show();
-    this.route.paramMap.subscribe(params => {
-      const idIncidente = params.get('idIncidente');
-      const idTipoComentario = params.get('idIncidente');
 
-      if (idIncidente) {
-        this.obtenerDetalleIncidentePorId(Number(idIncidente));
-        this.obtenerEquiposDeUnIncidente(Number(idIncidente));
-        this.obtenerUsuariosDeUnIncidente(Number(idIncidente));
-        this.obtenerComentariosDeUnIncidente(Number(idTipoComentario));
+    this.route.paramMap.subscribe({
+      next: (params) => {
+        const idIncidente = params.get('idIncidente');
+
+        if (!idIncidente) {
+          this.loadingService.hide();
+          return;
+        }
+
+        const id = Number(idIncidente);
+
+        forkJoin({
+          incidente: this.incidenteService.obtenerDetalleIncidentePorId(id).pipe(
+            catchError(error => {
+              console.error('Error al obtener incidente:', error);
+              return of({} as Incidente); // Devuelve un objeto Incidente vacío
+            })
+          ),
+          equipos: this.incidenteService.obtenerEquiposDeUnIncidente(id).pipe(
+            catchError(error => {
+              console.error('Error al obtener equipos:', error);
+              return of([]); // Devuelve array vacío como fallback
+            })
+          ),
+          usuarios: this.incidenteService.obtenerUsuariosDeUnIncidente(id).pipe(
+            catchError(error => {
+              console.error('Error al obtener usuarios:', error);
+              return of([]); // Devuelve array vacío como fallback
+            })
+          ),
+          comentarios: this.incidenteService.obtenerComentariosDeUnIncidente(id).pipe(
+            catchError(error => {
+              console.error('Error al obtener comentarios:', error);
+              return of([]); // Devuelve array vacío como fallback
+            })
+          )
+        }).subscribe({
+          next: (responses) => {
+            // Asignar valores con comprobación de undefined
+            this.incidente = responses.incidente || {} as Incidente;
+            this.equipos = responses.equipos || [];
+
+            // Inicializar propiedades anidadas si son undefined
+            if (!this.incidente.establecimientos) {
+              this.incidente.establecimientos = {} as any;
+            }
+
+            //console.log('incidente: ', this.incidente);
+            //console.log('equipos: ', this.equipos);
+
+            // Procesar usuarios
+            // if (Array.isArray(responses.usuarios)) {
+            //   this.usuarios = responses.usuarios.map(u => ({
+            //     ...u.usuario,
+            //     esObservador: u.esObservador
+            //   }));
+            // } else {
+            //   this.usuarios = [];
+            // }
+            //console.log('Usuarios: ', this.usuarios);
+
+            this.comentarios_incidente = responses.comentarios || [];
+            
+            // Normalizar comentarios
+            this.comentarios_incidente = responses.comentarios
+            .map(c => ({
+              ...c,
+              tipoComentario: this.getTipoComentarioDisplay(c.tipoComentario)
+            }))
+            .sort((a, b) => new Date(b.fechaHora).getTime() - new Date(a.fechaHora).getTime()) || [];
+            console.log('comentarios: ', this.comentarios_incidente);
+
+            // Normalizar usuarios
+            this.usuarios = responses.usuarios
+              .filter(u => u.usuario !== null) // Filtrar usuarios nulos
+              .map(u => ({
+                ...u,
+                nombre: u.usuario ? u.usuario.nombre : u.nombre,
+                apellido: u.usuario ? u.usuario.apellido : u.apellido
+              }));
+            this.loadingService.hide();
+          },
+          error: (error) => {
+            console.error('Error en forkJoin:', error);
+            this.incidente = {} as Incidente;
+            this.equipos = [];
+            this.usuarios = [];
+            this.comentarios_incidente = [];
+            this.loadingService.hide();
+          }
+        });
+      },
+      error: (error) => {
+        console.error('Error al obtener parámetros de ruta:', error);
         this.loadingService.hide();
-
       }
     });
   }
 
-  obtenerDetalleIncidentePorId(idIncidente: number) {
-    this.incidenteService.obtenerDetalleIncidentePorId(idIncidente).subscribe(
-      (data: Incidente) => {
-        console.log('Detalle del incidente:', data);
-        if (data) {
-          this.incidente = data;
-        }
-      },
-      error => {
-        console.log('Error al obtener los detalles del incidente:', error);
-      }
-    );
-  }
-
-
-  obtenerEquiposDeUnIncidente(idIncidente: number) {
-    this.incidenteService.obtenerEquiposDeUnIncidente(idIncidente).subscribe(
-      (equipos: any[]) => {
-        this.equipos = equipos;
-        console.log('Equipos Recuperados:', this.equipos);
-      },
-      (error) => {
-        console.log('Error al obtener los equipos del incidente:', error);
-      }
-    );
-  }
-
-  obtenerUsuariosDeUnIncidente(idIncidente: number) {
-    this.incidenteService.obtenerUsuariosDeUnIncidente(idIncidente).subscribe(
-      (response: any) => {
-        if (Array.isArray(response)) {
-          // Si response es una matriz, asigna los usuarios
-          this.usuarios = response;
-          console.log('Usuarios Recuperados:', this.usuarios);
-        } else if (response.message) {
-          // Si response contiene un mensaje, muestra un mensaje o toma alguna acción
-          console.log('Mensaje del servidor:', response.message);
-          // Puedes mostrar un mensaje en tu plantilla o realizar otra acción apropiada aquí
-        } else {
-          console.error('Respuesta inesperada del servidor:', response);
-        }
-      },
-      (error) => {
-        console.log('Error al obtener los usuarios del incidente:', error);
-      }
-    );
-  }
-
-  obtenerComentariosDeUnIncidente(idTipoComentario: number) {
-    this.incidenteService.obtenerComentariosDeUnIncidente(idTipoComentario).subscribe(
-      (comentarios_incidente: any[]) => {
-        this.comentarios_incidente = comentarios_incidente;
-        console.log('comentarios_incidente Recuperados:', this.comentarios_incidente);
-      },
-      (error) => {
-        console.log('Error al obtener los comentarios_incidente del incidente:', error);
-      }
-    );
-  }
-  getEstado(){
+  getEstado() {
     return this.loadingService.getEstado();
-  } 
+  }
 
-
-
+  private getTipoComentarioDisplay(tipo: string): string {
+    const tipos: { [key: string]: string } = {
+      '1': 'Solución',
+      '2': 'Comentario',
+      '3': 'Informe',
+      '4': 'Comentario Adicional',
+      '5': 'Reapertura'
+    };
+    return tipos[tipo] || tipo;
+  }
 }

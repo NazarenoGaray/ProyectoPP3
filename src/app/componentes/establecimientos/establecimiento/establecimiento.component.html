@@ -1,216 +1,172 @@
 <app-nav-bar></app-nav-bar>
-<div *ngIf="establecimiento">
 
-    <div class="card container-fluid" id="content-establecimiento">
-        <div class="container">
-            <div class="card-header row">
-                <div class="h2 col-11">{{ establecimiento.nombre }}</div>
-                <div class="col-1">
-                    <a class="btn btn-secondary" [routerLink]="['/listar-establecimientos']">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd"
-                                d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 0 1 .708.708L5.707 7.5H11.5z" />
-                        </svg>
-                    </a>
-                </div>
+<div *ngIf="establecimiento">
+    <div class="container mt-5" id="content-establecimiento">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h2>{{ establecimiento.nombre }}</h2>
+                
+                <a class="btn btn-secondary" [routerLink]="['/editar-establecimiento', establecimiento.idEstablecimiento]">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                        <path d="M11.293 0.293a1 1 0 0 1 1.414 0l2 2a1 1 0 0 1 0 1.414L2.707 14.414a1 1 0 0 1-.424.242l-2 .5a1 1 0 0 1-1.243-1.242l.5-2a1 1 0 0 1 .242-.425L11.293.293zM13.5 2.5L12 4l1.5 1.5 1.5-1.5L13.5 2.5zm-3 3L9 7.5l-6 6V15h1.5l6-6z" />
+                    </svg> Editar
+                </a>
+
+                <!-- <a class="btn btn-outline-secondary" [routerLink]="['/listar-establecimientos']">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 0 1 .708.708L5.707 7.5H11.5z" />
+                    </svg>
+                </a> -->
             </div>
-            <br>
+
             <app-spinner *ngIf="getEstado() | async"></app-spinner>
 
-            <div class="card">
-                <div class="card-body row">
-                    <div class="row col-11">
-                        <div class="col-md-5">
-                            <h5>Contacto</h5>
-                            <!-- Datos de contacto -->
-                            <div class="detail">
-                                <label class="card-subtitle mb-2 text-muted">Telefono:</label>
-                                <span class="card-text"> {{ establecimiento.telefono }}</span>
-                            </div>
-                            <div class="detail">
-                                <label class="card-subtitle mb-2 text-muted">cuit:</label>
-                                <span class="card-text"> {{ establecimiento.cuit }}</span>
-                            </div>
-
-                            <div class="detail">
-                                <label class="card-subtitle mb-2 text-muted">Correo:</label>
-                                <span class="card-text"> {{ establecimiento.correo }}</span>
-                            </div>
-                            <div class="detail">
-                                <label class="card-subtitle mb-2 text-muted">Sitio Web:</label>
-                                <span class="card-text"> {{ establecimiento.sitioweb }}</span>
-                            </div>
-                            <div class="detail">
-                                <label class="card-subtitle mb-2 text-muted">Descripcion:</label>
-                                <span class="card-text"> {{ establecimiento.descripcion }}</span>
-                            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-5">
+                        <h3 class="mb-4">Contacto</h3>
+                        <div class="detail mb-3">
+                            <label class="text-muted">Teléfono:</label>
+                            <p>{{ establecimiento.telefono }}</p>
                         </div>
-                        <div class="col-md-5">
-                            <h5>Ubicación</h5>
-                            <!-- Datos de ubicación -->
-                            <div class="detail">
-                                <label class="card-subtitle mb-2 text-muted">Dirección:</label>
-                                <span class="card-text"> {{ establecimiento.calle }} {{ establecimiento.altura }}</span>
-                            </div>
-                            <div class="detail">
-                                <label class="card-subtitle mb-2 text-muted">Localidad:</label>
-                                <span class="card-text"> {{ establecimiento.localidad.Descripcion }}</span>
-                            </div>
-                            <div class="detail">
-                                <label class="card-subtitle mb-2 text-muted">Provincia:</label>
-                                <span class="card-text"> {{ establecimiento.provincia.Descripcion }}</span>
-                            </div>
-                            <div class="detail">
-                                <label class="card-subtitle mb-2 text-muted">País:</label>
-                                <span class="card-text"> {{ establecimiento.pais.Descripcion }}</span>
-                            </div>
+                        <div class="detail mb-3">
+                            <label class="text-muted">CUIT:</label>
+                            <p>{{ establecimiento.cuit }}</p>
                         </div>
-                        <div class="col-md-2">
-                            <h5>Horario</h5>
-                            <!-- Datos de ubicación -->
-                            <div class="detail">
-                                <label class="card-subtitle mb-2 text-muted">Desde:</label>
-                                <span class="card-text"> {{ establecimiento.horaEntrada }}</span>
-                            </div>
-                            <div class="detail">
-                                <label class="card-subtitle mb-2 text-muted">Hasta:</label>
-                                <span class="card-text"> {{ establecimiento.horaSalida }}</span>
-                            </div>
+                        <div class="detail mb-3">
+                            <label class="text-muted">Correo:</label>
+                            <p>{{ establecimiento.correo }}</p>
+                        </div>
+                        <div class="detail mb-3">
+                            <label class="text-muted">Sitio Web:</label>
+                            <p>{{ establecimiento.sitioweb }}</p>
+                        </div>
+                        <div class="detail mb-3">
+                            <label class="text-muted">Descripción:</label>
+                            <p>{{ establecimiento.descripcion }}</p>
                         </div>
                     </div>
-                    <div class="col-md-1 col-1">
-                        <a class="btn btn-primary"
-                            [routerLink]="['/editar-establecimiento', establecimiento.idEstablecimiento]">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-pencil" viewBox="0 0 16 16">
-                                <!-- Icono de edición -->
-                                <path
-                                    d="M11.293 0.293a1 1 0 0 1 1.414 0l2 2a1 1 0 0 1 0 1.414L2.707 14.414a1 1 0 0 1-.424.242l-2 .5a1 1 0 0 1-1.243-1.242l.5-2a1 1 0 0 1 .242-.425L11.293.293zM13.5 2.5L12 4l1.5 1.5 1.5-1.5L13.5 2.5zm-3 3L9 7.5l-6 6V15h1.5l6-6z" />
-                            </svg>
-                        </a>
+
+                    <div class="col-md-5">
+                        <h3 class="mb-4">Ubicación</h3>
+                        <div class="detail mb-3">
+                            <label class="text-muted">Dirección:</label>
+                            <p>{{ establecimiento.calle }} {{ establecimiento.altura }}</p>
+                        </div>
+                        <div class="detail mb-3">
+                            <label class="text-muted">Localidad:</label>
+                            <p>{{ establecimiento.localidad.Descripcion }}</p>
+                        </div>
+                        <div class="detail mb-3">
+                            <label class="text-muted">Provincia:</label>
+                            <p>{{ establecimiento.provincia.Descripcion }}</p>
+                        </div>
+                        <div class="detail mb-3">
+                            <label class="text-muted">País:</label>
+                            <p>{{ establecimiento.pais.Descripcion }}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <h3 class="mb-4">Horario</h3>
+                        <div class="detail mb-3">
+                            <label class="text-muted">Desde:</label>
+                            <p>{{ establecimiento.horaEntrada }}</p>
+                        </div>
+                        <div class="detail mb-3">
+                            <label class="text-muted">Hasta:</label>
+                            <p>{{ establecimiento.horaSalida }}</p>
+                        </div>
                     </div>
                 </div>
+
+                <!-- <div class="d-flex justify-content-end">
+                    <a class="btn btn-primary" [routerLink]="['/editar-establecimiento', establecimiento.idEstablecimiento]">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                            <path d="M11.293 0.293a1 1 0 0 1 1.414 0l2 2a1 1 0 0 1 0 1.414L2.707 14.414a1 1 0 0 1-.424.242l-2 .5a1 1 0 0 1-1.243-1.242l.5-2a1 1 0 0 1 .242-.425L11.293.293zM13.5 2.5L12 4l1.5 1.5 1.5-1.5L13.5 2.5zm-3 3L9 7.5l-6 6V15h1.5l6-6z" />
+                        </svg> Editar
+                    </a>
+                </div> -->
             </div>
-            <br>
 
-            <div class="row">
-                <div class="col-sm col-xs-12">
-                    <div class="card-columns">
-                        <div class="card">
-                            <div class="card-body">
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col">
+                        <div class="accordion" id="incidentesAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#todos-incidentes'">
+                                        Incidentes
+                                    </button>
+                                </h2>
+                                <div id="todos-incidentes" class="accordion-collapse collapse">
+                                    <div class="accordion-body">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">ID</th>
+                                                    <th scope="col">Establecimiento</th>
+                                                    <th scope="col">Prioridad</th>
+                                                    <th scope="col">Categoría</th>
+                                                    <th scope="col">Fecha Inicial</th>
+                                                    <th scope="col">Fecha Cierre</th>
+                                                    <th scope="col">Estado</th>
+                                                    <th scope="col"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let incidente of incidentes">
+                                                    <th scope="row">{{ incidente.idIncidente }}</th>
+                                                    <td>{{ incidente.establecimientos.nombre }}</td>
+                                                    <td>{{ incidente.prioridad_incidente.descripcion }}</td>
+                                                    <td>{{ incidente.categoria_incidente.descripcion }}</td>
+                                                    <td>{{ incidente.fechaInicio | date:'dd-MM-yyyy HH:mm:ss' }}</td>
+                                                    <td>{{ incidente.fechaCierre ? (incidente.fechaCierre | date:'dd-MM-yyyy HH:mm:ss') : 'Abierto' }}</td>
+                                                    <td>{{ incidente.estado_incidente.descripcion }}</td>
+                                                    <td>
+                                                        <a class="btn btn-sm btn-info" [routerLink]="['/incidente', incidente.idIncidente]">Detalles</a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-
-                                <div class="incidentes-container">
-                                    <div class="accordion">
-                                        <div class="accordion-item" *ngIf="incidentes.length > 0; else noIncidentes">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                                    [attr.data-bs-target]="'#todos-incidentes'"
-                                                    (click)="toggleSectores()">
-                                                    Incidentes
-                                                </button>
-                                            </h2>
-                                            <div [id]="'todos-incidentes'" class="accordion-collapse collapse">
-                                                <div class="accordion-body">
-                                                    <table class="table">
-                                                        <thead>
-                                                            <tr class="thNombres">
-                                                                <th scope="col">ID</th>
-                                                                <th scope="col">Establecimiento</th>
-                                                                <th scope="col">Prioridad</th>
-                                                                <th scope="col">Categoria</th>
-                                                                <th scope="col">Fecha Inicial</th>
-                                                                <th scope="col">Fecha Cierre</th>
-                                                                <th scope="col">Estado</th>
-                                                                <th scope="col"></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr *ngFor="let incidente of incidentes">
-                                                                <th scope="row">{{ incidente.idIncidente }}</th>
-                                                                <td>{{ incidente.establecimientos.nombre }}</td>
-                                                                <td>{{ incidente.prioridad_incidente.descripcion }}</td>
-                                                                <td>{{ incidente.categoria_incidente.descripcion }}</td>
-                                                                <td>{{ incidente.fechaInicio | date:'dd-MM-yyyy
-                                                                    HH:mm:ss' }}</td>
-                                                                <td>{{ incidente.fechaCierre ? (incidente.fechaCierre |
-                                                                    date:'dd-MM-yyyy HH:mm:ss') : 'Abierto' }}</td>
-                                                                <td>{{ incidente.estado_incidente.descripcion }}</td>
-                                                                <td>
-                                                                    <a class="btn btn-info"
-                                                                        [routerLink]="['/incidente', incidente.idIncidente]">Detalles</a>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <ng-template #noIncidentes>
-                                            <p>No hay incidentes asociados.</p>
+                    <div class="col">
+                        <div class="accordion" id="sectoresAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#todos-sectores'">
+                                        Sectores
+                                    </button>
+                                </h2>
+                                <div id="todos-sectores" class="accordion-collapse collapse">
+                                    <div class="accordion-body">
+                                        <a class="btn btn-success" [routerLink]="['/alta-sector', establecimiento.idEstablecimiento]">
+                                            Agregar Sector
+                                        </a>
+                                        <br><br>
+                                        <ul *ngIf="sectores.length > 0; else noSectores">
+                                            <li *ngFor="let sector of sectores">
+                                                <a class="btn btn-info" [routerLink]="['/sector', sector.idSector]">
+                                                    {{ sector.nombre }}
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <ng-template #noSectores>
+                                            <p>No hay sectores asociados.</p>
                                         </ng-template>
                                     </div>
                                 </div>
-
-
-                                <br> <br>
-
-
-                                <div class="sectores-container">
-                                    <div class="accordion">
-                                        <div class="accordion-item">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                                    [attr.data-bs-target]="'#todos-sectores'"
-                                                    (click)="toggleSectores()">
-                                                    Sectores
-                                                </button>
-
-                                            </h2>
-                                            <div [id]="'todos-sectores'" class="accordion-collapse collapse">
-                                                <div class="accordion-body">
-                                                    <ul *ngIf="sectores.length > 0; else noSectores">
-                                                        <li *ngFor="let sector of sectores">
-                                                            <a class="btn btn-info"
-                                                                [routerLink]="['/sector', sector.idSector]">
-                                                                {{ sector.nombre }}
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                    <ng-template #noSectores>
-                                                        <p>No hay sectores asociados.</p>
-                                                    </ng-template>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-
-                                <br><br>
-
-
-
-
-
-
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
-
-
-            <div class="col">
-                <a class="btn btn-primary" [routerLink]="['/alta-sector', establecimiento.idEstablecimiento]">Agregar
-                    Sector</a>
-            </div>
-
-
-            <br>
         </div>
     </div>
 </div>

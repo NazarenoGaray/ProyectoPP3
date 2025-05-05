@@ -147,56 +147,109 @@ class UsuarioController extends Controller
     public function editarUsuario(Request $request, $idUsuario)
     {
         try {
-            // Buscar el usuario existente por su ID
             $usuario = Usuario::find($idUsuario);
             if (!$usuario) {
                 abort(404, 'Usuario no encontrado');
             }
 
-            // Validar los datos recibidos en la solicitud
-            $request->validate([
+            // Validación modificada
+            $validacion = [
                 'nombre' => 'required|string|max:100',
                 'apellido' => 'required|string|max:100',
                 'correo' => 'required|string|max:100',
                 'usuario' => 'required|string|max:50',
-                'contraseña' => 'required|string|max:100',
                 'telefono' => 'nullable|string|max:20',
-                'celular' => 'nullable|string|max:20',//ver
+                'celular' => 'nullable|string|max:20',
                 'direccion' => 'nullable|string|max:100',
                 'idRol' => 'required|exists:roles,idRol',
                 'idPais' => 'required|exists:paises,idPais',
                 'idProvincia' => 'required|exists:provincias,idProvincia',
                 'idLocalidad' => 'required|exists:localidades,idLocalidad',
                 'idEstadoUsuario' => 'required|exists:estado_usuarios,idEstadoUsuario'
-                
+            ];
 
-            ]);
+            // Solo validar contraseña si viene en el request
+            if ($request->has('contraseña') && $request->contraseña) {
+                $validacion['contraseña'] = 'string|min:8';
+            }
 
-            // Actualizar los campos del Usuario con los datos proporcionados
-            $usuario->nombre = $request->nombre;
-            $usuario->apellido = $request->apellido;
-            $usuario->correo = $request->correo;
-            $usuario->usuario = $request->usuario;
-            $usuario->contraseña = $request->contraseña;
-            $usuario->telefono = $request->telefono;
-            $usuario->celular = $request->celular;
-            $usuario->direccion = $request->direccion;
-            $usuario->idRol = $request->idRol;
-            $usuario->idPais = $request->idPais;
-            $usuario->idProvincia = $request->idProvincia;
-            $usuario->idLocalidad = $request->idLocalidad;
-            $usuario->idEstadoUsuario = $request->idEstadoUsuario;
+            $request->validate($validacion);
 
-            // Guardar los cambios en la base de datos
+            // Actualizar campos básicos
+            $usuario->fill($request->except('contraseña'));
+
+            // Actualizar contraseña solo si se proporcionó
+            if ($request->contraseña) {
+                $usuario->contraseña = bcrypt($request->contraseña);
+                Log::info('Contraseña actualizada para usuario', ['idUsuario' => $idUsuario]);
+            }
+
             $usuario->save();
 
-            // Retornar la respuesta con el usuario creado
-            return response()->json($usuario, 200);
+            return response()->json($usuario->makeHidden(['contraseña']), 200);
             
         } catch (\Exception $e) {
-            // Capturar cualquier excepción y mostrar el mensaje de error
-            Log::info('error:',['error' => $e->getMessage()]);
+            Log::error('Error al editar usuario', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'idUsuario' => $idUsuario
+            ]);
             return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function cambiarClave(Request $request)
+    {
+        try {
+            // Validar los datos de entrada
+            $request->validate([
+                'idUsuario' => 'required|integer',
+                'claveActual' => 'required|string',
+                'nuevaClave' => 'required|string|min:8'
+            ]);
+
+            $idUsuario = $request->input('idUsuario');
+            $claveActual = $request->input('claveActual');
+            $nuevaClave = $request->input('nuevaClave');
+
+            // Buscar el usuario
+            $usuario = Usuario::find($idUsuario);
+            Log::debug('Contraseña almacenada:', ['hash' => $usuario->contraseña]);
+            Log::debug('Contraseña proporcionada:', ['input' => $claveActual]);
+            if (!$usuario) {
+                Log::warning('Usuario no encontrado al intentar cambiar clave', ['idUsuario' => $idUsuario]);
+                return response()->json(['error' => 'Usuario no encontrado'], 404);
+            }
+
+            // Verificar la contraseña actual
+            if (!password_verify($claveActual, $usuario->contraseña)) {
+                Log::warning('Contraseña actual incorrecta', ['idUsuario' => $idUsuario]);
+                return response()->json(['error' => 'La contraseña actual es incorrecta'], 401);
+            }
+
+            // Actualizar la contraseña
+            $usuario->contraseña = bcrypt($nuevaClave);
+        
+            // Cambiar el estado si era "nuevo" (5)
+            if ($usuario->idEstadoUsuario == 5) {
+                $usuario->idEstadoUsuario = 1; // Cambiar a "activo" (ajusta según tus IDs)
+            }
+
+            $usuario->save();
+
+            Log::info('Contraseña cambiada exitosamente', ['idUsuario' => $idUsuario]);
+
+            return response()->json([
+                'mensaje' => 'Contraseña cambiada exitosamente',
+                'nuevoEstado' => $usuario->idEstadoUsuario
+            ], 200);    
+
+        } catch (\Exception $e) {
+            Log::error('Error al cambiar contraseña', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json(['error' => 'Error al cambiar la contraseña: ' . $e->getMessage()], 500);
         }
     }
 }

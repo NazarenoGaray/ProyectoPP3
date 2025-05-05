@@ -1,7 +1,5 @@
 <app-nav-bar></app-nav-bar>
 
-
-<!--------------------------------------------------->
 <div class="container-contact100">
     <div class="wrap-contact100 card">
         <div class="card-header lg-center row edit-container-header">
@@ -72,22 +70,11 @@
 
                                 <!--  EQUIPOS  -->
                                 <mat-form-field>
-                                    <ul>
-                                        <button class="chip"
-                                            *ngFor="let equipoAgregado of equiposAgregados"
-                                            (click)="removerEquipo(equipoAgregado)">
-                                            
-                                            {{ equipoAgregado.nombre }}-
-                                            {{ equipoAgregado.modelo }}
-                                           
-                                            <!-- <mat-icon class="icon" aria-hidden="false" aria-label="Example home icon" fontIcon="close" ></mat-icon> -->
-                                        </button>
-                                    </ul>
 
                                     <input
                                         type="text"
                                         matInput
-                                        placeholder="Buscar equipos..."
+                                        placeholder="Equipos reportados: "
                                         formControlName="buscarEquipos"
                                         (input)="buscarEquiposStep()"
                                         [matAutocomplete]="buscarEquipos">
@@ -101,25 +88,25 @@
                                         </mat-option>
                                     </mat-autocomplete>
 
+                                    <ul>
+                                        <button class="chip"
+                                            *ngFor="let equipoAgregado of equiposAgregados"
+                                            (click)="removerEquipo(equipoAgregado)">
+                                            
+                                            {{ equipoAgregado.nombre }}-
+                                            {{ equipoAgregado.modelo }}
+                                           
+                                            <!-- <mat-icon class="icon" aria-hidden="false" aria-label="Example home icon" fontIcon="close" ></mat-icon> -->
+                                        </button>
+                                    </ul>
                                 </mat-form-field>
 
                                 <!-- USUARIO -->
                                 <mat-form-field>
-                                    <ul>
-                                        <button class="chip"
-                                            *ngFor="let usuarioAgregado of usuariosAgregados"
-                                            (click)="removerUsuario(usuarioAgregado)">
-                                            {{ usuarioAgregado.nombre }}
-                                            {{usuarioAgregado.apellido }}
-
-                                            <!-- <mat-icon class="icon" aria-hidden="false" aria-label="Example home icon" fontIcon="close" ></mat-icon> -->
-                                        </button>
-                                    </ul>
-
                                     <input
                                         type="text"
                                         matInput
-                                        placeholder="Buscar usuario..."
+                                        placeholder="Usuario Asignado: "
                                         formControlName="buscarUsuario"
                                         (input)="buscarUsuarioStep()"
                                         [matAutocomplete]="buscarUsuario">
@@ -135,6 +122,17 @@
                                             (click)="agregarUsuario(usuario)"></button> -->
                                         </mat-option>
                                     </mat-autocomplete>
+
+                                    <ul>
+                                        <button class="chip"
+                                            *ngFor="let usuarioAgregado of usuariosAgregados"
+                                            (click)="removerUsuario(usuarioAgregado)">
+                                            {{ usuarioAgregado.nombre }}
+                                            {{usuarioAgregado.apellido }}
+
+                                            <!-- <mat-icon class="icon" aria-hidden="false" aria-label="Example home icon" fontIcon="close" ></mat-icon> -->
+                                        </button>
+                                    </ul>
 
                                 </mat-form-field>
 

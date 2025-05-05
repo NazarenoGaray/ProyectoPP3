@@ -11,7 +11,7 @@ export class TokenService {
   constructor(
     private jwtHelper: JwtHelperService,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
   ) { }
 
   private readonly TOKEN_KEY = 'TOKEN';
@@ -19,64 +19,73 @@ export class TokenService {
   showAlert = false;
   message = '';
   apiURL = 'http://localhost:8000/api';
+  idUsuario!: number;
 
   getToken(): string | null {
     return sessionStorage.getItem(this.TOKEN_KEY);
   }
+  getIdUsuario(): number | null {
+    const userData = this.getAuthenticatedUser();
+    console.log('userData', userData);
+
+    if (!userData || typeof userData === 'boolean') {
+      throw new Error('Usuario no autenticado o token inválido');
+    }
+
+    if (!userData.idUsuario) {
+      throw new Error('Datos de usuario incompletos en el token');
+    }
+
+    this.idUsuario = userData.idUsuario;
+
+    return Number(userData.idUsuario);
+  }
+
   getAuthenticatedUser() {
     const token = this.getToken();
 
-    if (token !== null) { // Comprueba si token no es null
-      this.isTokenValid = !this.jwtHelper.isTokenExpired(token);
-      
-      //console.log(this.isTokenValid);
-      if (this.isTokenValid) {
-        // Decodifica el token si es válido.
-        const decodedToken = this.jwtHelper.decodeToken(token);
-        //console.log('Token decodificado:', decodedToken);
-
-        if (decodedToken.hasOwnProperty('data')) {
-          const usuario = decodedToken.data;
-          //console.log('ID de usuario:', idUsuario);
-
-          const expirationDate = this.jwtHelper.getTokenExpirationDate(token);
-          if (expirationDate !== null) {
-            const expirationTimeInSeconds = expirationDate.getTime() / 1000;
-            const currentTimeInSeconds = Date.now() / 1000;
-            const timeRemainingInSeconds = expirationTimeInSeconds - currentTimeInSeconds;
-
-            if (timeRemainingInSeconds < 900) { // Menos de 15 minutos
-              this.refrescarToken().subscribe(
-                (response: any) => {
-                  const newToken = response.token;
-                  this.setToken(newToken);
-                  //console.log('Token actualizado con éxito:', newToken);
-                },
-                (error: any) => {
-                  
-                  console.error('Error al actualizar el token:', error);
-                  return false;
-                }
-              );
-            }
-          } else {
-            console.log('No se pudo obtener la fecha de vencimiento del token.');
-            return false;
-          }
-          return usuario;
-        } else {
-          console.log('El campo "data" no está presente en el token.');
-          return false;
-        }
-      } else {
-        return false;
-      }
-      
-    } else {
-      console.log('Token no encontrado o nulo');
+    // 1. Verificar si el token existe
+    if (token === null) {
+      console.log('Por favor inicia sesión');
+      this.redirectToLogin();
       return false;
     }
+
+    // 2. Verificar si el token está expirado
+    if (this.jwtHelper.isTokenExpired(token)) {
+      console.log('Tu sesión ha expirado');
+      this.redirectToLogin();
+      return false;
+    }
+
+    // 3. Decodificar token válido
+    const decodedToken = this.jwtHelper.decodeToken(token);
+    if (!decodedToken?.data) {
+      console.error('Estructura de token inválida');
+      this.redirectToLogin();
+      return false;
+    }
+
+    // 4. Verificar tiempo restante y refrescar si es necesario
+    const expirationDate = this.jwtHelper.getTokenExpirationDate(token);
+    if (expirationDate) {
+      const timeRemaining = (expirationDate.getTime() - Date.now()) / 1000;
+      this.checkTokenExpiration(timeRemaining);
+
+      if (timeRemaining < 900) { // 15 minutos
+        this.refrescarToken().subscribe({
+          next: (response) => this.setToken(response.token),
+          error: (error) => {
+            console.error('Error refrescando token:', error);
+            this.redirectToLogin();
+          }
+        });
+      }
+    }
+
+    return decodedToken.data;
   }
+
   setToken(token: string): void {
     sessionStorage.setItem(this.TOKEN_KEY, token);
   }
@@ -88,6 +97,7 @@ export class TokenService {
   hasToken(): boolean {
     return !!this.getToken();
   }
+
   refrescarToken(): Observable<any> {
     const token = this.getToken();
     // const token2 = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTY3MzUzNzUsImV4cCI6MTY5NjczNzE3NSwiZGF0YSI6eyJpZFVzdWFyaW8iOjc3LCJ1c3VhcmlvIjoibmF6YS5nYXJheSIsInJvbCI6eyJpZFJvbCI6MSwibm9tYnJlIjoiQWRtaW5pc3RyYWRvciIsImRlc2NyaXBjaW9uIjoiUm9sIGNvbiBwZXJtaXNvcyBkZSBhZG1pbmlzdHJhY2lcdTAwZjNuIiwiY3JlYXRlZF9hdCI6bnVsbCwidXBkYXRlZF9hdCI6bnVsbH19fQ.zvr96KyZT0EiT80MpHKg3_diY5xP-z8NRdvHb79LcfM'
@@ -97,4 +107,22 @@ export class TokenService {
     return this.http.post(url, { token: token });
   }
 
+  private redirectToLogin(): void {
+    console.log('Tu sesión ha expirado. Por favor ingresa nuevamente.');
+    sessionStorage.setItem('redirectUrl', this.router.url);
+    this.router.navigate(['/login']);
+  }
+
+  private checkTokenExpiration(timeRemaining: number): void {
+    if (timeRemaining < 300) { // 5 minutos
+      this.showWarning('Tu sesión expirará en 5 minutos');
+    } else if (timeRemaining < 900) { // 15 minutos
+      console.log('Tu sesión expirará pronto');
+    }
+  }
+
+  private showWarning(message: string): void {
+    // Usar Toast, Snackbar, o similar
+    console.warn(message);
+  }
 }

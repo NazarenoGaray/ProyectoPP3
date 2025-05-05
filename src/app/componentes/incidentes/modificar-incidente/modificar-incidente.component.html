@@ -1,162 +1,195 @@
 <app-nav-bar></app-nav-bar>
-<div class="container col-8">
-    
+<div class="container col-12 col-md-8 border">
     <app-spinner *ngIf="isLoading"></app-spinner>
 
-    <form [formGroup]="incidenteForm" (ngSubmit)="onSubmit()" class="row mb-3 col-12" *ngIf="!isLoading && isLoading">
-        <h2 class="col-xl-7 col-md-7 col-s-4 col-xs-12 mb-2">Incidente ({{idIncidente}})</h2>
-        <button type="submit" class="btn btn-primary col-xl-2 col-md-2 col-xs-6 mb-2"
-            [disabled]="incidenteSolucionado">Actualizar</button>
-        <button type="button" class="btn btn-primary col-xl-2 col-md-2 col-xs-6 mb-2" [disabled]="!incidenteSolucionado"
-            (click)="confirmarReapertura()">Reabrir</button>
-        <div class="row col-12 mb-3">
-            <div class="form-group col-xl-6 col-md-12 col-xs-12">
-                <label for="establecimiento">Establecimiento</label>
-                <input type="text" id="establecimiento" formControlName="establecimiento" class="form-control" readonly>
-            </div>
-            <div class="form-group col-xl-6 col-md-12 col-xs-12">
-                <label for="sector">Sector</label>
-                <input type="text" id="sector" formControlName="sector" class="form-control" readonly>
-            </div>
-        </div>
-        <div class="row col-12 mb-3">
-            <div class="form-group col-12">
-                <label for="titulo">Título del Incidente</label>
-                <input type="text" id="titulo" formControlName="titulo" class="form-control" readonly>
-            </div>
-            <div class="form-group col-12">
-                <label for="descripcion">Descripción del Incidente</label>
-                <textarea id="descripcion" formControlName="descripcion" class="form-control" readonly></textarea>
+    <form *ngIf="!isLoading && incidente" [formGroup]="incidenteForm" (ngSubmit)="onSubmit()" class="row g-3 mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="mb-0">Incidente ({{idIncidente}})</h2>
+            <div>
+                <button type="submit" class="btn btn-primary me-2" [disabled]="incidenteSolucionado || incidenteForm.invalid">
+                    Actualizar
+                </button>
+                <button type="button" class="btn btn-warning me-2" [disabled]="!incidenteSolucionado" 
+                    (click)="confirmarReapertura()">
+                    Reabrir
+                </button>
+                <a class="btn btn-secondary " [routerLink]="['/listar-incidentes']">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+                        </svg>
+                        Atras
+                    <!-- Atras -->
+                </a>
             </div>
         </div>
-        <div class="col-12 row mb-3" *ngIf="isLoading">
-            <div class="form-group col-4">
-                <label for="prioridad">Prioridad</label>
-                <select id="prioridad" formControlName="idPrioridadIncidente" class="form-control">
-                    <option *ngFor="let prioridad of prioridades" [value]="prioridad.idPrioridadIncidente"
-                        [disabled]="incidenteSolucionado">
-                        {{prioridad.descripcion}}</option>
+
+        <!-- Sección de información básica -->
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-label">Establecimiento</label>
+                <input type="text" class="form-control" formControlName="establecimiento" readonly>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Sector</label>
+                <input type="text" class="form-control" formControlName="sector" readonly>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <label class="form-label">Título del Incidente</label>
+                <input type="text" class="form-control" formControlName="titulo" readonly>
+            </div>
+            <div class="col-12">
+                <label class="form-label">Descripción del Incidente</label>
+                <textarea class="form-control" formControlName="descripcion" rows="3" readonly></textarea>
+            </div>
+        </div>
+
+        <!-- Sección de selectores editables -->
+        <div class="row ">
+            <div class="col-md-4">
+                <label class="form-label">Prioridad</label>
+                <select class="form-select" formControlName="idPrioridadIncidente" [disabled]="incidenteSolucionado">
+                    <option *ngFor="let prioridad of prioridades" [value]="prioridad.idPrioridadIncidente">
+                        {{prioridad.descripcion}}
+                    </option>
                 </select>
             </div>
-            <div class="form-group col-4">
-                <label for="estado">Estado</label>
-                <select id="estado" formControlName="idEstadoIncidente" class="form-control">
-                    <option *ngFor="let estado of estados" [value]="estado.idEstadoIncidente"
-                        [disabled]="incidenteSolucionado">
+            <div class="col-md-4">
+                <label class="form-label">Estado</label>
+                <select class="form-select" formControlName="idEstadoIncidente" [disabled]="incidenteSolucionado">
+                    <option *ngFor="let estado of estados" [value]="estado.idEstadoIncidente">
                         {{estado.descripcion}}
                     </option>
                 </select>
             </div>
-            <div class="form-group col-4">
-                <label for="categorias">categoria</label>
-                <select id="categoria" formControlName="idCategoriaIncidente" class="form-control">
-                    <option *ngFor="let categoria of categorias" [value]="categoria.idCategoriaIncidente"
-                        [disabled]="incidenteSolucionado">
-                        {{categoria.descripcion}}</option>
+            <div class="col-md-4">
+                <label class="form-label">Categoría</label>
+                <select class="form-select" formControlName="idCategoriaIncidente" [disabled]="incidenteSolucionado">
+                    <option *ngFor="let categoria of categorias" [value]="categoria.idCategoriaIncidente">
+                        {{categoria.descripcion}}
+                    </option>
                 </select>
             </div>
         </div>
-        <hr class="divider">
-        <div class="col-12 row mb-3">
-            <!-- Lista de Usuarios -->
+
+        <hr class="my-4">
+
+        <!-- Sección de usuarios y equipos -->
+        <div class="row">
             <div class="col-md-6 mb-3">
-                <label>Usuarios asignados:</label>
-                <div class="padd borde row mb-3">
-                    <div class=" col-6 mb-3" *ngFor="let usuario of usuariosInc; let even = even; let odd = odd">
-                        <div class="borde">
-                            {{ usuario.usuario.nombre }} {{ usuario.usuario.apellido }}
+                <label class="form-label">Usuarios asignados:</label>
+                <div class="card p-3">
+                    <div class="d-flex flex-wrap gap-2">
+                        <div *ngFor="let usuario of usuariosInc" class="badge bg-primary p-2">
+                            <ng-container *ngIf="usuario.usuario; else directUser">
+                                {{ usuario.usuario?.nombre }} {{ usuario.usuario?.apellido }}
+                                <span *ngIf="usuario.esObservador === 1" class="ms-2">(Observador)</span>
+                            </ng-container>
+                            <ng-template #directUser>
+                                {{ usuario.nombre }} {{ usuario.apellido }}
+                                <span *ngIf="usuario.esObservador === 1" class="ms-2">(Observador)</span>
+                            </ng-template>                        </div>
+                        <div *ngIf="usuariosInc.length === 0" class="text-muted">
+                            No hay usuarios asignados
                         </div>
-                        <!-- Agregar clearfix después de cada par de elementos para evitar superposiciones -->
-                        <div class="clearfix" *ngIf="even"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Lista de Equipos -->
             <div class="col-md-6 mb-3">
-                <label>Equipos afectados:</label>
-                <div class="padd borde row mb-3">
-                    <div class="col-6 mb-3" *ngFor="let equipo of equiposInc; let even = even; let odd = odd">
-                        <div class="borde">
+                <label class="form-label">Equipos afectados:</label>
+                <div class="card p-3">
+                    <div class="d-flex flex-wrap gap-2">
+                        <div *ngFor="let equipo of equiposInc" class="badge bg-secondary p-2">
                             {{ equipo.nombre }}
                         </div>
-                        <!-- Agregar clearfix después de cada par de elementos para evitar superposiciones -->
-                        <div class="clearfix" *ngIf="even"></div>
+                        <div *ngIf="equiposInc.length === 0" class="text-muted">
+                            No hay equipos afectados
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pestañas -->
+        <div class="row">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" [class.active]="activeTab === 'comentarios'" 
+                       (click)="activeTab = 'comentarios'">Comentarios</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [class.active]="activeTab === 'informacion'" 
+                       (click)="activeTab = 'informacion'">Información de cierre</a>
+                </li>
+            </ul>
+
+            <!-- Contenido de pestañas -->
+            <div class="tab-content p-3 border border-top-0 rounded-bottom">
+                <!-- Pestaña de comentarios -->
+                <div *ngIf="activeTab === 'comentarios'" class="tab-pane fade show active">
+                    <div class="mb-3">
+                        <textarea class="form-control mb-2" [(ngModel)]="comentario" 
+                                  [ngModelOptions]="{standalone: true}"
+                                  placeholder="Escribe un comentario..." rows="3"
+                                  [disabled]="incidenteSolucionado"></textarea>
+                        <button class="btn btn-primary" (click)="publicarComentario()" 
+                                [disabled]="!comentario || incidenteSolucionado">
+                            Publicar
+                        </button>
+                    </div>
+
+                    <div class="comment-list">
+                        <div *ngFor="let comentario of comentarios" class="comment-item mb-4 p-3 border rounded">
+                            <div class="d-flex justify-content-between mb-2">
+                                <div>
+                                    <strong>{{ comentario.nombreUsuario }} {{ comentario.apellidoUsuario }}</strong>
+                                    <span class="text-muted ms-2">({{ comentario.rolUsuario }})</span>
+                                </div>
+                                <div class="text-muted">
+                                    {{ comentario.fechaHora | date:'dd/MM/yyyy HH:mm' }}
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <span class="badge" [ngClass]="{
+                                    'bg-primary': comentario.tipoComentario === 'Informe',
+                                    'bg-secondary': comentario.tipoComentario === 'Comentario Adicional',
+                                    'bg-success': comentario.tipoComentario === 'Solución',
+                                    'bg-warning': comentario.tipoComentario === 'Pendiente',
+                                    'bg-info': comentario.tipoComentario === 'Otros',
+                                }">
+                                    {{ comentario.tipoComentario }}
+                                </span>
+                            </div>
+                            <div class="comment-text">
+                                {{ comentario.comentarioIncidente }}
+                            </div>
+                        </div>
+                        <div *ngIf="comentarios.length === 0" class="text-center text-muted p-4">
+                            No hay comentarios registrados
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pestaña de información de cierre -->
+                <div *ngIf="activeTab === 'informacion'" class="tab-pane fade">
+                    <textarea class="form-control mb-3" [(ngModel)]="informeCierre" rows="5"
+                              placeholder="Describa la solución del incidente..."
+                              [ngModelOptions]="{standalone: true}"></textarea>
+                    <div *ngIf="showCierreWarning" class="alert alert-warning">
+                        Debe completar el informe de cierre para poder guardar
                     </div>
                 </div>
             </div>
         </div>
     </form>
 
-    <div class="row mb-3 col-12" *ngIf="!isLoading">
-        <ul class="nav nav-tabs">
-            <li class="nav-item">
-                <a class="nav-link" [class.active]="activeTab === 'comentarios'"
-                    (click)="activeTab = 'comentarios'">Comentarios</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" [class.active]="activeTab === 'informacion'"
-                    (click)="activeTab = 'informacion'">Informacion de cierre</a>
-            </li>
-        </ul>
-        <div class="report-card row col-12 mb-3" *ngIf="activeTab === 'comentarios'">
-            <div class="container col-12">
-                <input class="mb-3 comentario-nuevo col-xl-12 col-md-12 col-s-12 col-xs-12" type="text" [(ngModel)]="this.comentario">
-                <button type="submit" class="btn btn-primary col-2 mb-4" (click)="publicarComentario()"
-                    [disabled]="incidenteSolucionado" >Publicar</button>
-            </div>
-            <div class=" col-12">
-                <div class="">
-                    <ng-container *ngFor="let comentario of comentarios" ; else #noComent>
-                        <div class="comentario">
-                            <div class="row col-12 mb-3">
-                                <div class="col-9 mb-3">
-                                    <strong>De:</strong>
-                                    {{ comentario.nombreUsuario }} {{
-                                    comentario.apellidoUsuario }}
-                                    <strong>( </strong>{{ comentario.rolUsuario }} <strong>)</strong>
-                                </div>
-                                <div class="col-3 mb-3 ">
-                                    {{ comentario.fechaHora | date:'dd-MM-yyyy HH:mm:ss' }}
-                                </div>
-                                <div class="col-12">
-                                    <strong>Tipo:</strong>
-                                    {{ comentario.tipoComentario }}
-                                </div>
-                            </div>
-
-                            <hr class="divider">
-
-                            <div>
-                                <div class="row"> <!-- Esta celda combina tres columnas -->
-                                    <div class="col-xl-2 col-md-3 col-s-6 col-xs-6 row">
-                                        <strong class="col-12 ">Comentario:</strong>
-                                    </div>
-
-                                    <div class="comentario col-xl-10 col-md-9 col-s-6 col-xs-6">
-                                        {{ comentario.comentarioIncidente }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </ng-container>
-                    <ng-template #noComent>
-                        <div>
-                            <h3 colspan="3">No hay comentarios.</h3>
-                        </div>
-                    </ng-template>
-                </div>
-
-            </div>
-        </div>
-        <div class="report-card row col-12 mb-3" *ngIf="activeTab === 'informacion'">
-            <input class="mb-3 comentario-nuevo col-xl-12 col-md-12 col-s-12 col-xs-12" type="text"
-                [(ngModel)]="informeCierre">
-            <div
-                *ngIf="activeTab === 'informacion' && this.incidenteForm.value.idEstadoIncidente == 4 && this.informeCierre === ''">
-                <p class="text-danger col-12"> ********¡Debe completar este campo!******** </p>
-            </div>
-        </div>
+    <div *ngIf="!isLoading && !incidente" class="alert alert-danger">
+        No se pudo cargar la información del incidente
     </div>
 </div>
 <app-pie></app-pie>

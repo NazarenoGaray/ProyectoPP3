@@ -56,7 +56,8 @@ Route::get('/usuarios/{idUsuario}', [UsuarioController::class, 'usuarioPorId']);
 Route::post('/usuarios', [UsuarioController::class, 'crearUsuario']);
 // Actualizar un Usuario existente
 Route::put('/usuarios/{idUsuario}', [UsuarioController::class, 'editarUsuario']);
-
+//Cambiar clave
+Route::post('/cambiar-clave', [UsuarioController::class,'cambiarClave']);
 
 // Obtener todos los establecimientos
 Route::get('/establecimientos', [EstablecimientoController::class, 'obtenerEstablecimientos']);
@@ -189,11 +190,10 @@ Route::get('/incidentes/{idEstablecimiento}/establecimiento', [IncidenteControll
 
 Route::get('/usuario/{idUsuario}/incidentes/{fecha}', [IncidenteAgendaController::class, 'obtenerIncidentesPorUsuarioYFecha']);
 
-
 // Obtener todos los incidentes Agenda
 Route::get('/incidentesAgenda', [IncidenteAgendaController::class, 'obtenerIncidenteAgendados']);
 // Obtener un incidente Agenda especifica por su id
-Route::get('/incidentesAgenda/{idIncidenteAgenda}', [IncidenteAgendaController::class, 'obtenerIncidenteAgendaPorId']);
+Route::get('/incidentesAgenda/{idIncidenteAgenda}', [IncidenteAgendaController::class, 'obtenerIncidentesDeUnUsuario']);
 // Crear incidente Agenda
 Route::post('/incidentesAgenda', [IncidenteAgendaController::class, 'crearincidenteAgenda']);
 // Actualizar incidentes Agenda existente

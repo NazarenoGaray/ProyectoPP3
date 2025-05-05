@@ -14,66 +14,99 @@
             </a>
         </div>
     </div>
-    <div class="card-body">
-        <form [formGroup]="puestoForm" (ngSubmit)="editarPuesto()" class="row">
-
-
-            <div class="form-floating mb-3 col-2">
-                <select required class="form-select" id="floatingSelectEstablecimiento"
-                    aria-label="Floating label select example" formControlName="idEstablecimiento">
-                    <option value="">Seleccionar Establecimiento</option>
-                    <option *ngFor="let establecimiento of establecimientos"
-                        [value]="establecimiento.idEstablecimiento">{{ establecimiento.nombre }}</option>
-                </select>
-                <label for="floatingSelectEstablecimiento">Seleccionar Establecimiento</label>
+    <div class="card">
+        <div class="card-header">
+          <h2>Editar Puesto</h2>
+          <button mat-icon-button color="warn" routerLink="/listar-establecimientos">
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+        </div>
+      
+        <div class="card-body">
+          <form [formGroup]="puestoForm" (ngSubmit)="editarPuesto()" class="puesto-form">
+            <!-- Primera Fila -->
+            <div class="form-row">
+              <!-- Selector de Establecimiento -->
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Establecimiento</mat-label>
+                <mat-select formControlName="idEstablecimiento" required (selectionChange)="detectarCambios()">
+                  <mat-option value="">Seleccionar Establecimiento</mat-option>
+                  <mat-option *ngFor="let establecimiento of establecimientos" 
+                             [value]="establecimiento.idEstablecimiento">
+                    {{ establecimiento.nombre }}
+                  </mat-option>
+                </mat-select>
+                <mat-icon matSuffix>business</mat-icon>
+                <mat-error *ngIf="puestoForm.get('idEstablecimiento')?.invalid">
+                  Debe seleccionar un establecimiento
+                </mat-error>
+              </mat-form-field>
+      
+              <!-- Campo Sector -->
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Sector</mat-label>
+                <input matInput formControlName="idSector" required (input)="detectarCambios()">
+                <mat-icon matSuffix>meeting_room</mat-icon>
+                <mat-error *ngIf="puestoForm.get('idSector')?.invalid">
+                  El sector es obligatorio
+                </mat-error>
+              </mat-form-field>
             </div>
-
-            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                <input required type="text" class="form-control" id="idSector" formControlName="idSector"
-                    placeholder="sectores" (ngModelChange)="detectarCambios()">
-                <label for="sectores">Sector</label>
+      
+            <!-- Segunda Fila -->
+            <div class="form-row">
+              <!-- Nombre del Puesto -->
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Nombre del Puesto</mat-label>
+                <input matInput formControlName="puestoRed" required (input)="detectarCambios()">
+                <mat-icon matSuffix>desktop_windows</mat-icon>
+                <mat-error *ngIf="puestoForm.get('puestoRed')?.invalid">
+                  El nombre es obligatorio
+                </mat-error>
+              </mat-form-field>
+      
+              <!-- Teléfono -->
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Teléfono</mat-label>
+                <input matInput formControlName="telefono" required (input)="detectarCambios()">
+                <mat-icon matSuffix>phone</mat-icon>
+                <mat-error *ngIf="puestoForm.get('telefono')?.invalid">
+                  El teléfono es obligatorio
+                </mat-error>
+              </mat-form-field>
             </div>
-
-
-            <!-- <div class="form-floating mb-3 col-2">
-                <select required class="form-select" id="floatingSelectSector"
-                    aria-label="Floating label select example" formControlName="idSector">
-                    <option value="">Seleccionar Sector</option>
-                    <option *ngFor="let sector of sectores" [value]="sector.idSector">{{ sector.nombre }}</option>
-                </select>
-                <label for="floatingSelectSector">Sector</label>
-            </div> -->
-
-
-
-
-
-            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                <input required type="text" class="form-control" id="puestoRed" formControlName="puestoRed"
-                    placeholder="puestoRed" (ngModelChange)="detectarCambios()">
-                <label for="puestoRed">Nombre del Puesto</label>
+      
+            <!-- Tercera Fila -->
+            <div class="form-row">
+              <!-- Descripción -->
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Descripción</mat-label>
+                <textarea matInput formControlName="descripcion" required 
+                         (input)="detectarCambios()" rows="3"></textarea>
+                <mat-icon matSuffix>description</mat-icon>
+                <mat-error *ngIf="puestoForm.get('descripcion')?.invalid">
+                  La descripción es obligatoria
+                </mat-error>
+              </mat-form-field>
             </div>
-
-            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                <input required type="text" class="form-control" id="telefono" formControlName="telefono"
-                    placeholder="telefono" (ngModelChange)="detectarCambios()">
-                <label for="telefono">Telefono</label>
+      
+            <!-- Botones de acción -->
+            <div class="form-actions">
+              <button mat-raised-button color="primary" type="submit" 
+                      [disabled]="!hayCambios || puestoForm.invalid">
+                <mat-icon>save</mat-icon>
+                Guardar Cambios
+              </button>
+              
+              <button mat-stroked-button color="warn" type="button" 
+                      routerLink="/listar-establecimientos">
+                <mat-icon>close</mat-icon>
+                Cancelar
+              </button>
             </div>
-
-            <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-                <input required type="text" class="form-control" id="descripcion" formControlName="descripcion"
-                    placeholder="Escribir un breve descripcion" (ngModelChange)="detectarCambios()">
-                <label for="descripcion">Descripcion</label>
-            </div>
-
-
-            <div class="form-group">
-                <button type="submit" class="btn btn-success"
-                    [disabled]="!hayCambios || puestoForm.invalid">Guardar</button>
-                <a class="btn btn-danger" [routerLink]="['/listar-establecimientos']">Cancelar</a>
-            </div>
-        </form>
-    </div>
+          </form>
+        </div>
+      </div>
 </div>
 
 <app-pie></app-pie>

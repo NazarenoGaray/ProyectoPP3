@@ -1,97 +1,154 @@
 <app-nav-bar></app-nav-bar>
-<div class="card container-fluid p-3">
-  <div class="card-header lg-center row">
-    <label class="h2 col-10" for="">Editar Usuario</label>
-
-    <div class="col-2">
-      <a class="btn btn-secondary" (click)="this.volverAUsuario()">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
-          <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
-        </svg>
-        Atras
-      </a>
+<div class="card container-fluid">
+  <div class="container">
+    <div class="card-header lg-center row">
+      <div class="h2 col-10">Editar Usuario</div>
+      <div class="col-2">
+        <a class="btn btn-secondary" (click)="volverAUsuario()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+            class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+          </svg>
+        </a>
+      </div>
     </div>
-  </div>
-  <div class="container-hijo">
-    <app-spinner *ngIf="loading"></app-spinner>
-    <form [formGroup]="usuarioForm" class="row p-2" (ngSubmit)="actualizarUsuario()" >
-      <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-        <input required type="text" class="form-control" id="nombre" formControlName="nombre" placeholder="Marcos" (ngModelChange)="detectarCambios()">
-        <label for="nombre">Nombre</label>
-      </div>
-      <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-        <input required type="text" class="form-control" id="apellido" formControlName="apellido" placeholder="Lopez"(ngModelChange)="detectarCambios()">
-        <label for="apellido">Apellido</label>
-      </div>
-      <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-        <input required type="text" class="form-control" id="telefono" formControlName="telefono"
-          placeholder="1560603333" (ngModelChange)="detectarCambios()">
-        <label for="telefono">Telefono</label>
-      </div>
-      <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-        <input required type="email" class="form-control" id="correo" formControlName="correo"
-          placeholder="Escribe tu correo" (ngModelChange)="detectarCambios()">
-        <label for="correo">Correo</label>
-      </div>
-      <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-        <input required type="text" class="form-control" id="direccion" formControlName="direccion" placeholder="" (ngModelChange)="detectarCambios()">
-        <label for="direccion">Dirección</label>
-      </div>
-      <div class="form-floating mb-3 col-12 col-sm-12 col-md-6 col-lg-3 col-xl-6">
-        <input required type="text" class="form-control" id="nombreusuario" formControlName="usuario"
-          placeholder="m.lopez" (ngModelChange)="detectarCambios()">
-        <label for="nombreusuario">Usuario: </label>
-      </div>
-      
-      <div class="form-floating mb-3 col-2">
-        <select required class="form-select" id="floatingSelectPais" aria-label="Floating label select example"
-          formControlName="idPais" (change)="onPaisSelected()" (ngModelChange)="detectarCambios()">
-          <option value="">Seleccionar país</option>
-          <option *ngFor="let pais of paises" [value]="pais.idPais">{{ pais.Descripcion }}</option>
-        </select>
-        <label for="floatingSelectPais">País</label>
-      </div>
 
-      <div class="form-floating mb-3 col-2">
-        <select required class="form-select" id="floatingSelectProvincia" aria-label="Floating label select example"
-          formControlName="idProvincia" (change)="onProvinciaSelected()" (ngModelChange)="detectarCambios()">
-          <option value="">Seleccionar provincia</option>
-          <option *ngFor="let provincia of provincias" [value]="provincia.idProvincia">{{ provincia.Descripcion }}</option>
-        </select>
-        <label for="floatingSelectProvincia">Provincia</label>
-      </div>
+    <div class="container-hijo">
+      <app-spinner *ngIf="loading"></app-spinner>
 
-      <div class="form-floating mb-3 col-2">
-        <select required class="form-select" id="floatingSelectLocalidad" aria-label="Floating label select example"
-        formControlName="idLocalidad" (ngModelChange)="detectarCambios()">
-          <option value="">Seleccionar localidad</option>
-          <option *ngFor="let localidad of localidades" [value]="localidad.idLocalidad">{{ localidad.Descripcion }}</option>
-        </select>
-        <label for="floatingSelectLocalidad">Localidad</label>
-      </div>
-      <div class="form-floating mb-3 col-2">
-        <select required class="form-select" id="floatingSelect" aria-label="Floating label select example"
-          formControlName="idRol" (ngModelChange)="detectarCambios()">
-          <option value="">Seleccionar rol</option>
-          <option *ngFor="let rol of roles" [value]="rol.idRol">{{ rol.nombre }}</option>
-        </select>
-        <label for="floatingSelect">Rol</label>
-      </div>
+      <form [formGroup]="usuarioForm" class="form-grid" (ngSubmit)="actualizarUsuario()">
+        <!-- Primera Columna -->
+        <div class="form-column">
+          <mat-form-field appearance="fill">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="nombre" required (input)="detectarCambios()">
+          </mat-form-field>
 
-      <div class="form-floating mb-3 col-2">
-        <select required class="form-select" id="floatingSelectEstados" aria-label="Floating label select example"
-          formControlName="idEstadoUsuario" (ngModelChange)="detectarCambios()">
-          <option value="">Seleccione estado</option>
-          <option *ngFor="let estado of estados" [value]="estado.idEstadoUsuario">{{ estado.descripcion }}</option>
-        </select>
-        <label for="floatingSelectEstados">Estado</label>
-      </div>
+          <mat-form-field appearance="fill">
+            <mat-label>Apellido</mat-label>
+            <input matInput formControlName="apellido" required (input)="detectarCambios()">
+          </mat-form-field>
 
-      <div class="form-group">
-        <button type="submit" class="btn btn-success" [disabled]="!hayCambios || usuarioForm.invalid">Guardar</button>
-        <a class="btn btn-danger" (click)="this.volverAUsuario()">Cancelar</a>
-      </div>
-    </form>
+          <mat-form-field appearance="fill">
+            <mat-label>Teléfono</mat-label>
+            <input matInput formControlName="telefono" required (input)="detectarCambios()">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Correo</mat-label>
+            <input matInput formControlName="correo" type="email" required (input)="detectarCambios()">
+          </mat-form-field>
+
+        </div>
+
+        <!-- Segunda Columna -->
+        <div class="form-column">
+
+          <mat-form-field appearance="fill">
+            <mat-label>País</mat-label>
+            <mat-select formControlName="idPais" (selectionChange)="onPaisSelected()" required>
+              <mat-option *ngFor="let pais of paises" [value]="pais.idPais">
+                {{ pais.Descripcion }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Provincia</mat-label>
+            <mat-select formControlName="idProvincia" (selectionChange)="onProvinciaSelected()" required>
+              <mat-option *ngFor="let provincia of provincias" [value]="provincia.idProvincia">
+                {{ provincia.Descripcion }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Localidad</mat-label>
+            <mat-select formControlName="idLocalidad" required>
+              <mat-option *ngFor="let localidad of localidades" [value]="localidad.idLocalidad">
+                {{ localidad.Descripcion }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Dirección</mat-label>
+            <input matInput formControlName="direccion" required (input)="detectarCambios()">
+          </mat-form-field>
+
+
+        </div>
+
+        <!-- Tercera Columna -->
+        <div class="form-column">
+
+          <mat-form-field appearance="fill">
+            <mat-label>Usuario</mat-label>
+            <input matInput formControlName="usuario" required (input)="detectarCambios()">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Rol</mat-label>
+            <mat-select formControlName="idRol" required>
+              <mat-option *ngFor="let rol of roles" [value]="rol.idRol">
+                {{ rol.nombre }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Estado</mat-label>
+            <mat-select formControlName="idEstadoUsuario" required>
+              <mat-option *ngFor="let estado of estados" [value]="estado.idEstadoUsuario">
+                {{ estado.descripcion }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Contraseña Actual</mat-label>
+            <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="contraseña" placeholder="****">
+          </mat-form-field>
+
+        </div>
+
+        <div class="row col-12">
+          <label for="">Cambio de contraseña (opcional)</label>
+          <div class="col-6">
+            <mat-form-field>
+              <mat-label>Nueva Contraseña</mat-label>
+              <input matInput type="password" formControlName="nuevaContraseña"
+                placeholder="Dejar en blanco si no desea cambiar">
+            </mat-form-field>
+          </div>
+          <div class="col-6">
+
+            <mat-form-field>
+              <mat-label>Confirmar Nueva Contraseña</mat-label>
+              <input matInput type="password" formControlName="confirmarContraseña"
+                placeholder="Repita la nueva contraseña">
+              <mat-error *ngIf="usuarioForm.hasError('mismatch', 'confirmarContraseña')">
+                Las contraseñas no coinciden
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+        </div>
+
+        <div class="form-actions">
+          <button mat-raised-button color="primary" type="submit" [disabled]="!hayCambios || usuarioForm.invalid">
+            <mat-icon>save</mat-icon>
+            Guardar Cambios
+          </button>
+
+          <button mat-stroked-button color="warn" type="button" (click)="volverAUsuario()">
+            <mat-icon>cancel</mat-icon>
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
 <app-pie></app-pie>

@@ -1,0 +1,128 @@
+
+<div class="card container-fluid">
+    <div class="container">
+      <div class="card-header lg-center row">
+        <div class="h2 col-11">Mi Perfil - Cambiar Contraseña
+        </div>
+        <div class="col-1">
+          <a class="btn btn-secondary" [routerLink]="['/']">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+              class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+            </svg>
+          </a>
+        </div>
+      </div>
+      <br>
+      
+      <div class="row">
+        <!-- Sección de Datos del Usuario -->
+        <div class="col-md-6">
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5>Información del Usuario</h5>
+            </div>
+            <div class="card-body">
+              <div class="row mb-3">
+                <div class="col-sm-4 fw-bold">Nombre:</div>
+                <div class="col-sm-8">{{ usuario.nombre }} {{ usuario.apellido }}</div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-sm-4 fw-bold">Usuario:</div>
+                <div class="col-sm-8">{{ usuario.usuario }}</div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-sm-4 fw-bold">Correo:</div>
+                <div class="col-sm-8">{{ usuario.correo }}</div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-sm-4 fw-bold">Rol:</div>
+                <div class="col-sm-8">{{ getDescripcionRol(usuario.idRol) }}</div>
+            </div>
+              <div class="row mb-3">
+                <div class="col-sm-4 fw-bold">Estado:</div>
+                <div class="col-sm-8">
+                    <span [ngClass]="getEstadoClase(usuario.idEstadoUsuario)">
+                        {{ getDescripcionEstado(usuario.idEstadoUsuario) }}
+                      </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Sección de Cambio de Contraseña -->
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <h5>Cambiar Contraseña</h5>
+            </div>
+            <div class="card-body">
+              <form [formGroup]="cambioClaveForm" (ngSubmit)="cambiarClave()">
+                <div class="mb-3">
+                  <mat-form-field appearance="fill" class="w-100">
+                    <mat-label>Contraseña Actual</mat-label>
+                    <input matInput [type]="hideActual ? 'password' : 'text'" formControlName="claveActual" required>
+                    <button mat-icon-button matSuffix (click)="hideActual = !hideActual">
+                      <mat-icon>{{ hideActual ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    </button>
+                    <mat-error *ngIf="cambioClaveForm.get('claveActual')?.hasError('required')">
+                      Este campo es requerido
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+  
+                <div class="mb-3">
+                  <mat-form-field appearance="fill" class="w-100">
+                    <mat-label>Nueva Contraseña</mat-label>
+                    <input matInput [type]="hideNueva ? 'password' : 'text'" formControlName="nuevaClave" required>
+                    <button mat-icon-button matSuffix (click)="hideNueva = !hideNueva">
+                      <mat-icon>{{ hideNueva ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    </button>
+                    <mat-error *ngIf="cambioClaveForm.get('nuevaClave')?.errors">
+                      <div *ngIf="cambioClaveForm.get('nuevaClave')?.hasError('required')">Este campo es requerido</div>
+                      <div *ngIf="cambioClaveForm.get('nuevaClave')?.hasError('minlength')">
+                        Mínimo 8 caracteres
+                      </div>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+  
+                <div class="mb-3">
+                  <mat-form-field appearance="fill" class="w-100">
+                    <mat-label>Confirmar Nueva Contraseña</mat-label>
+                    <input matInput [type]="hideConfirmar ? 'password' : 'text'" formControlName="confirmarClave" required>
+                    <button mat-icon-button matSuffix (click)="hideConfirmar = !hideConfirmar">
+                      <mat-icon>{{ hideConfirmar ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    </button>
+                    <mat-error *ngIf="cambioClaveForm.get('confirmarClave')?.hasError('required')">
+                      Este campo es requerido
+                    </mat-error>
+                    <mat-error *ngIf="cambioClaveForm.hasError('noCoinciden')">
+                      Las contraseñas no coinciden
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+  
+                <div class="d-grid gap-2">
+                  <button type="submit" class="btn btn-primary" [disabled]="cambioClaveForm.invalid || cambiandoClave">
+                    <span *ngIf="!cambiandoClave">Cambiar Contraseña</span>
+                    <span *ngIf="cambiandoClave" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  </button>
+                </div>
+  
+                <div *ngIf="mensajeError" class="alert alert-danger mt-3">
+                  {{ mensajeError }}
+                </div>
+                <div *ngIf="mensajeExito" class="alert alert-success mt-3">
+                  {{ mensajeExito }}
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<app-pie></app-pie>

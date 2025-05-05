@@ -14,7 +14,7 @@ import { RolService } from 'src/app/servicios/usuarios/roles.service';
 import { EstadoUsuariosService } from 'src/app/servicios/usuarios/estado-usuarios.service';
 import { Observable } from 'rxjs';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import {map} from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { ConfirmAltaUsuarioComponent } from '../../modal/confirm-alta-usuario/confirm-alta-usuario.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ExitoAltaUsuarioComponent } from '../../modal/exito-alta-usuario/exito-alta-usuario.component';
