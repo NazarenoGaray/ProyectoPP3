@@ -1,104 +1,140 @@
 <app-nav-bar></app-nav-bar>
+<app-spinner *ngIf="loading"></app-spinner>
 
-<div class="card container-fluid" id="content-puesto" *ngIf="puesto">
+<div class="card container-fluid" id="content-puesto" *ngIf="!loading">
     <div class="container">
-        <div class="card-header row">
-            <div class="card-header">
-                <div class="h2 col-8">
-                    <a [routerLink]="'/establecimiento/' + puesto.sectores.establecimiento.idEstablecimiento">
-                        {{ puesto.sectores.establecimiento.nombre }}
-                    </a>
-                </div>
- 
-                <!-- <div class="col-1">
-          <a class="btn btn-secondary" [routerLink]="['/listar-equipos']">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-              class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
-              <path fill-rule="evenodd"
-                d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 0 1 .708.708L5.707 7.5H11.5z" />
-            </svg>
-          </a>
-        </div> -->
-
-                <div class="h5">
-                    <a [routerLink]="'/sector/' + puesto.sectores.idSector">
-                        {{ puesto.sectores.nombre }} - {{ puesto.sectores.ubicacion }}
-                    </a>
-                </div>
-                <td>
-                    <a class="btn btn-primary" [routerLink]="['/editar-puesto', puesto.idPuesto]">
-                        Editar Puesto
-                    </a>
-                </td>
-
-            </div>
+      <!-- Encabezado con navegación -->
+      <div class="card-header bg-light">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+              <a [routerLink]="'/establecimiento/' + puesto.sectores.establecimiento.idEstablecimiento">
+                {{ puesto.sectores.establecimiento.nombre }}
+              </a>
+            </li>
+            <li class="breadcrumb-item">
+              <a [routerLink]="'/sector/' + puesto.sectores.idSector">
+                {{ puesto.sectores.nombre }}
+              </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              {{ puesto.puestoRed }}
+            </li>
+          </ol>
+        </nav>
+        
+        <div class="d-flex justify-content-between align-items-center mt-2">
+          <h2 class="mb-0">{{ puesto.puestoRed }}</h2>
+          <div>
+            <a class="btn btn-primary me-2" [routerLink]="['/editar-puesto', puesto.idPuesto]">
+              <i class="bi bi-pencil"></i> Editar Puesto
+            </a>
+            <a class="btn btn-success" [routerLink]="['/alta-equipo', puesto.idPuesto]">
+              <i class="bi bi-plus-circle"></i> Agregar Equipo
+            </a>
+          </div>
         </div>
-        <br>
-
-        <div class="card-body">
-            <h4>Puesto</h4>
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th style>Puesto</th>
-                            <th style>Teléfono</th>
-                            <th style>Descripción</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{ puesto.puestoRed }}</td>
-                            <td>{{ puesto.telefono }}</td>
-                            <td>{{ puesto.descripcion }}</td>
-                        </tr>
-                    </tbody>
-                </table>
+        <small class="text-muted">{{ puesto.sectores.ubicacion }}</small>
+      </div>
+  
+      <!-- Información del puesto -->
+      <div class="card-body">
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <div class="card h-100">
+              <div class="card-header bg-light">
+                <h5 class="mb-0">Detalles del Puesto</h5>
+              </div>
+              <div class="card-body">
+                <div class="mb-3">
+                  <label class="small text-muted">Teléfono</label>
+                  <p>{{ puesto.telefono || 'No especificado' }}</p>
+                </div>
+                <div class="mb-0">
+                  <label class="small text-muted">Descripción</label>
+                  <p>{{ puesto.descripcion || 'No hay descripción disponible' }}</p>
+                </div>
+              </div>
             </div>
+          </div>
+          
+          <div class="col-md-6">
+            <div class="card h-100">
+              <div class="card-header bg-light">
+                <h5 class="mb-0">Ubicación</h5>
+              </div>
+              <div class="card-body">
+                <div class="mb-3">
+                  <label class="small text-muted">Sector</label>
+                  <p>{{ puesto.sectores.nombre }} - {{ puesto.sectores.ubicacion }}</p>
+                </div>
+                <div class="mb-0">
+                  <label class="small text-muted">Establecimiento</label>
+                  <p>{{ puesto.sectores.establecimiento.nombre }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-
-        <br>
-
-        <h4>Equipos</h4>
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th style>ID</th>
-                        <th style>Nombre</th>
-                        <th style>Marca</th>
-                        <th style>Modelo</th>
-                        <th style>Estado</th>
-                        <th style>Tipo</th>
-                        <th style>Acciones</th>
-                    </tr>
+  
+        <!-- Listado de equipos -->
+        <div class="card">
+          <div class="card-header bg-light d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Equipos en este puesto</h5>
+            <span class="badge bg-primary rounded-pill">{{ equipos.length || 0 }}</span>
+          </div>
+          
+          <div class="card-body">
+            <div *ngIf="equipos.length > 0; else noEquipos" class="table-responsive">
+              <table class="table table-hover align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Marca/Modelo</th>
+                    <th>Tipo</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                  </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let equipo of equipos">
-                        <td>{{ equipo.idEquipo }}</td>
-                        <td>{{ equipo.nombre }}</td>
-                        <td>{{ equipo.marca }}</td>
-                        <td>{{ equipo.modelo }}</td>
-                        <td>{{ equipo.estado_equipo.descripcion }}</td>
-                        <td>{{ equipo.tipo_equipo.descripcion }}</td>
-                        <td> <a [routerLink]="['/equipo', equipo.idEquipo]">Ver detalles</a>
-                        </td>
-
-                    </tr>
+                  <tr *ngFor="let equipo of equipos">
+                    <td>{{ equipo.nombre }}</td>
+                    <td>
+                      <span *ngIf="equipo.marca">{{ equipo.marca }}</span>
+                      <span *ngIf="equipo.marca && equipo.modelo"> - </span>
+                      <span *ngIf="equipo.modelo">{{ equipo.modelo }}</span>
+                      <span *ngIf="!equipo.marca && !equipo.modelo">-</span>
+                    </td>
+                    <td>{{ equipo.tipo_equipo.descripcion || 'N/A' }}</td>
+                    <td>
+                      <span class="badge" [ngClass]="{
+                        'bg-success': equipo.estado_equipo.descripcion === 'Activo',
+                        'bg-warning': equipo.estado_equipo.descripcion === 'Mantenimiento',
+                        'bg-danger': equipo.estado_equipo.descripcion === 'Inactivo'
+                      }">
+                        {{ equipo.estado_equipo.descripcion || 'Desconocido' }}
+                      </span>
+                    </td>
+                    <td>
+                      <a class="btn btn-sm btn-outline-primary" [routerLink]="['/equipo', equipo.idEquipo]">
+                        <i class="bi bi-eye"></i> Detalles
+                      </a>
+                    </td>
+                  </tr>
                 </tbody>
-            </table>
+              </table>
+            </div>
+            
+            <ng-template #noEquipos>
+              <div class="alert alert-info mb-0">
+                No hay equipos registrados en este puesto.
+              </div>
+            </ng-template>
+          </div>
         </div>
-
-        <td>
-            <a class="btn btn-primary" [routerLink]="['/alta-equipo', puesto.idPuesto]">
-                Agregar Equipo
-            </a>
-        </td>
-
-
+      </div>
     </div>
-</div>
-
+  </div>
 <br>
 
 <app-pie></app-pie>

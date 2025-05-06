@@ -1,11 +1,12 @@
 <app-nav-bar></app-nav-bar>
+<app-spinner *ngIf="!loading"></app-spinner>
 
-<div class="card container-fluid">
+<div *ngIf="loading" class="card container-fluid">
     <div class="container">
       <div class="card-header row">
         <div class="h2 col-10">Alta Sector</div>
         <div class="col-2">
-          <a class="btn btn-secondary" [routerLink]="['/listar-establecimientos']">
+          <a class="btn btn-secondary" [routerLink]="['/establecimiento/',establecimientoIdParam]">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
               class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
               <path fill-rule="evenodd"
@@ -16,15 +17,14 @@
       </div>
       
       <div class="container-hijo">
-        <form [formGroup]="sectorForm" (ngSubmit)="altaSector()">
+        <form class="row" [formGroup]="sectorForm" (ngSubmit)="altaSector()">
           <!-- Campo de Establecimiento -->
-          <mat-form-field appearance="fill" class="w-100">
-            <mat-label>Seleccionar Establecimiento</mat-label>
+          <mat-form-field appearance="fill" class="w-100 col-12">
             <input matInput 
                    [matAutocomplete]="autoEstablecimiento"
                    formControlName="establecimiento"
                    placeholder="Buscar establecimiento...">
-            <mat-autocomplete #autoEstablecimiento="matAutocomplete" (optionSelected)="onEstablecimientoSelect($event.option.value)">
+            <mat-autocomplete #autoEstablecimiento="matAutocomplete">
               <mat-option *ngFor="let establecimiento of establecimientos" [value]="establecimiento">
                 {{establecimiento.nombre}} - Cuit: {{establecimiento.cuit}}
               </mat-option>
@@ -35,7 +35,7 @@
           </mat-form-field>
   
           <!-- Campo Nombre del Sector -->
-          <mat-form-field appearance="fill" class="w-100">
+          <mat-form-field appearance="fill" class="col-6">
             <mat-label>Nombre del Sector</mat-label>
             <input matInput formControlName="nombre" required>
             <mat-error *ngIf="sectorForm.get('nombre')?.invalid">
@@ -44,7 +44,7 @@
           </mat-form-field>
   
           <!-- Campo Ubicación -->
-          <mat-form-field appearance="fill" class="w-100">
+          <mat-form-field appearance="fill" class="col-6">
             <mat-label>Ubicación</mat-label>
             <input matInput formControlName="ubicacion" required>
             <mat-error *ngIf="sectorForm.get('ubicacion')?.invalid">
@@ -59,7 +59,7 @@
               Guardar
             </button>
             
-            <button mat-stroked-button color="warn" type="button" routerLink="/">
+            <button mat-stroked-button color="warn" type="button" [routerLink]="['/establecimiento/',establecimientoIdParam]">
               <mat-icon>cancel</mat-icon>
               Cancelar
             </button>

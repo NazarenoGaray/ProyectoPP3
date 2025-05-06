@@ -29,7 +29,7 @@ export class AltaEquiposComponent {
   sectores!: Sector[];
   puestos!: Puesto[];
   idSector!: number;
-
+  puesto!: Puesto;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -63,13 +63,40 @@ export class AltaEquiposComponent {
     this.obtenerEstadosEquipo();
     this.obtenerEstablecimientos();
     this.obtenerTipoEquipo();
-this.route.params.pipe(
+    this.route.paramMap.pipe(
+      switchMap(params => {
+        const idPuesto = Number(params.get('idPuesto'));
+        
+        // Obtenemos primero los datos del sector
+        return this.puestoService.obtenerPuestoPorId(idPuesto).pipe(
+          switchMap(puesto => {
+            this.puesto = puesto;
+            console.log("puesto por id: ",puesto);
+            // Luego obtenemos los puestos de ese sector
+            return this.puestoService.obtenerPuestosPorSector(idPuesto);
+          })
+        );
+      })
+    ).subscribe({
+      // next: (puestos: Puesto[]) => {
+      //   this.puestos = puestos;
+        
+      //   // Obtenemos los equipos para cada puesto en paralelo
+      //   this.loadEquiposForPuestos();
+      // },
+      // error: (error) => {
+      //   console.error('Error al cargar datos:', error);
+      //   this.loading = false;
+      //   this.loadingService.hide();
+      // }
+    });
+    this.route.params.pipe(
       take(1),
       switchMap(params => this.sectorService.obtenerSectorPorId(params['idSector']))
     ).subscribe(
       (sector: Sector | null) => {
         if (sector) {
-          console.log("Datos obtenidos: ", sector);
+          console.log("Sector obtenidos: ", sector);
           this.idSector = sector.idSector; // Asignar el idSector obtenido del parámetro de ruta
           // Guardar una copia de los valores iniciales del formulario
         } else {

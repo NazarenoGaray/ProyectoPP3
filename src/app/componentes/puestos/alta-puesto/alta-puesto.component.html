@@ -3,7 +3,7 @@
 <div class="card container-fluid" id="content-lista">
     <div class="container">
         <div class="card-header row">
-            <div class="h2 col-10" for="">Alta Puesto</div>
+            <div class="h2 col-10" for="">Alta Puesto en Sector </div>
             <div class="col-2">
                 <a class="btn btn-secondary" [routerLink]="['/sector', idSector ]">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -19,41 +19,16 @@
 
         <div class="card-body">
             <form [formGroup]="puestoForm" class="form-grid" (ngSubmit)="altaPuesto()">
-                <!-- Primera Fila -->
+                <!-- Información del Sector (solo lectura) -->
                 <div class="form-row">
-                    <!-- Establecimiento -->
                     <mat-form-field appearance="fill" class="w-100">
-                        <mat-label>Seleccionar Establecimiento</mat-label>
-                        <input matInput [matAutocomplete]="autoEstablecimiento" formControlName="idEstablecimiento"
-                            placeholder="Buscar establecimiento...">
-                        <mat-autocomplete #autoEstablecimiento="matAutocomplete"
-                            (optionSelected)="onEstablecimientoSelect($event.option.value)">
-                            <mat-option *ngFor="let establecimiento of establecimientos" [value]="establecimiento">
-                                {{establecimiento.nombre}} - Cuit: {{establecimiento.cuit}}
-                            </mat-option>
-                        </mat-autocomplete>
-                        <mat-error *ngIf="puestoForm.get('idEstablecimiento')?.invalid">
-                            Debes seleccionar un establecimiento
-                        </mat-error>
-                    </mat-form-field>
-
-                    <!-- Sector -->
-                    <mat-form-field appearance="fill" class="w-100">
-                        <mat-label>Seleccionar Sector</mat-label>
-                        <mat-select formControlName="idSector" required>
-                            <mat-option *ngFor="let sector of sectores" [value]="sector.idSector">
-                                {{ sector.nombre }}
-                            </mat-option>
-                        </mat-select>
-                        <mat-error *ngIf="puestoForm.get('idSector')?.invalid">
-                            Debes seleccionar un sector
-                        </mat-error>
+                        <mat-label>Sector</mat-label>
+                        <input matInput [value]="sector.nombre + ' - ' + sector.ubicacion" readonly>
                     </mat-form-field>
                 </div>
 
-                <!-- Segunda Fila -->
+                <!-- Puesto Red -->
                 <div class="form-row">
-                    <!-- Puesto Red -->
                     <mat-form-field appearance="fill" class="w-100">
                         <mat-label>Nomenclatura Puesto Red</mat-label>
                         <textarea matInput formControlName="puestoRed" required rows="3"></textarea>
@@ -61,8 +36,10 @@
                             Este campo es obligatorio
                         </mat-error>
                     </mat-form-field>
+                </div>
 
-                    <!-- Teléfono -->
+                <!-- Teléfono -->
+                <div class="form-row">
                     <mat-form-field appearance="fill" class="w-100">
                         <mat-label>Teléfono del Equipo</mat-label>
                         <textarea matInput formControlName="telefono" required rows="3"></textarea>
@@ -72,9 +49,8 @@
                     </mat-form-field>
                 </div>
 
-                <!-- Tercera Fila -->
+                <!-- Descripción -->
                 <div class="form-row">
-                    <!-- Descripción -->
                     <mat-form-field appearance="fill" class="w-100">
                         <mat-label>Descripción del Equipo</mat-label>
                         <textarea matInput formControlName="descripcion" required rows="3"></textarea>
@@ -84,6 +60,9 @@
                     </mat-form-field>
                 </div>
 
+                <!-- Campo oculto para idSector -->
+                <input type="hidden" formControlName="idSector">
+
                 <!-- Botones -->
                 <div class="form-actions">
                     <button mat-raised-button color="primary" type="submit" [disabled]="puestoForm.invalid">
@@ -91,7 +70,7 @@
                         Guardar
                     </button>
 
-                    <button mat-stroked-button color="warn" type="button" [routerLink]="['/sector', idSector ]">
+                    <button mat-stroked-button color="warn" type="button" (click)="cancelarEdicion()">
                         <mat-icon>cancel</mat-icon>
                         Cancelar
                     </button>

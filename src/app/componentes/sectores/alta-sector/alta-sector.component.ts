@@ -23,7 +23,8 @@ export class AltaSectorComponent {
   establecimientoIdParam: string | null = null;
   keywordEstablecimiento = 'nombre';
   keywordCuit = 'cuit';
-  control : boolean=false;
+  control : boolean = false;
+  loading : boolean = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -63,7 +64,7 @@ export class AltaSectorComponent {
             }
             this.sectorForm.get('establecimientoSeleccionado')?.disable();
             this.sectorForm.get('establecimiento')?.disable();
-            
+            this.loading=true;
           }
           
         });
@@ -78,13 +79,7 @@ export class AltaSectorComponent {
     //   this.hayCambios = true;
     // });
   }
-  onEstablecimientoSelect(event: any) {
-    const idEstablecimiento = event.idEstablecimiento;
 
-    if (idEstablecimiento) {
-      this.sectorForm.get('nombre')?.enable();
-    }
-  }
   
   altaSector(): void {
     // Verificar la validez del formulario

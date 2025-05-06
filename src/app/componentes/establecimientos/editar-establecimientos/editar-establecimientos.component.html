@@ -1,5 +1,7 @@
 <app-nav-bar></app-nav-bar>
-<div class="card">
+<app-spinner *ngIf="!establecimiento"></app-spinner>
+
+<div *ngIf="establecimiento" class="card">
     <div class="card-header">
       <div class="row header-content">
         <h2 class="h2 col-10">Editar Establecimiento</h2>

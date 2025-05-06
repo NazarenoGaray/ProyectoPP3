@@ -7,8 +7,6 @@ body {
 
 /* Cabecera */
 #content-establecimiento .card-header {
-  background-color: #007bff;
-  color: #fff;
   padding: 15px;
   border-radius: 8px;
 }

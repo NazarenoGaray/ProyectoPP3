@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // Importar el módulo de formularios reactivos
 
 import { JwtModule } from '@auth0/angular-jwt';
@@ -14,7 +14,6 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDialogModule} from '@angular/material/dialog';
-
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -70,6 +69,10 @@ import { ConfirmAltaEstablecimientoComponent } from './componentes/modal/confirm
 import { ExitoAltaEstablecimientoComponent } from './componentes/modal/exito-alta-establecimiento/exito-alta-establecimiento.component';
 import { ConfirmCargarIncidenteComponent } from './componentes/modal/confirm-cargar-incidente/confirm-cargar-incidente.component';
 import { ExitoCargarIncidenteComponent } from './componentes/modal/exito-cargar-incidente/exito-cargar-incidente.component';
+import { CambiarClaveComponent } from './componentes/usuarios/cambiar-clave/cambiar-clave.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { TokenService } from './servicios/token/token.service';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -123,6 +126,7 @@ import { ExitoCargarIncidenteComponent } from './componentes/modal/exito-cargar-
     ExitoAltaEstablecimientoComponent,
     ConfirmCargarIncidenteComponent,
     ExitoCargarIncidenteComponent,
+    CambiarClaveComponent,
 
     
   ],
@@ -141,6 +145,7 @@ import { ExitoCargarIncidenteComponent } from './componentes/modal/exito-cargar-
     MatButtonModule,
     MatDialogModule,
     MatAutocompleteModule,
+    MatChipsModule,
     NgFor,
     AsyncPipe,
     NgIf,
@@ -158,7 +163,15 @@ import { ExitoCargarIncidenteComponent } from './componentes/modal/exito-cargar-
   ],
   exports: [JwtModule],
 
-  providers: [],
+  providers: [
+    TokenService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+    
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

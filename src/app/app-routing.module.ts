@@ -38,6 +38,7 @@ import { EditarSectorComponent } from "./componentes/sectores/editar-sector/edit
 import { ModificarIncidenteComponent } from "./componentes/incidentes/modificar-incidente/modificar-incidente.component";
 import { AltaPuestoComponent } from "./componentes/puestos/alta-puesto/alta-puesto.component";
 import { RoleGuard } from "./guards/role.guard";
+import { CambiarClaveComponent } from "./componentes/usuarios/cambiar-clave/cambiar-clave.component";
 
 
 
@@ -49,6 +50,7 @@ const routes: Routes = [
   { path: 'inicio-sesion', component: InicioSesionComponent },
   { path: 'alta-usuario', component: AltaUsuariosComponent , canActivate:[TokenGuard, RoleGuard], data: { roles: [1] } },
   { path: 'listar-usuarios', component: ListarUsuariosComponent, canActivate: [TokenGuard, RoleGuard], data: { roles: [1, 2] } },
+  { path: 'cambiar-clave', component: CambiarClaveComponent , canActivate:[TokenGuard]},
   { path: 'editar-usuario/:id', component: EditarUsuariosComponent, canActivate: [TokenGuard, RoleGuard], data: { roles: [1] } },
   { path: 'usuario/:idUsuario', component: UsuarioComponent , canActivate:[TokenGuard, RoleGuard], data: { roles: [1, 2] } },
   

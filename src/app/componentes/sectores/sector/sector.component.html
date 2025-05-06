@@ -1,7 +1,7 @@
 <app-nav-bar></app-nav-bar>
-
+<app-spinner *ngIf="loading"></app-spinner>
 <div class="card container-fluid" id="content-sector">
-  <div class="container">
+  <div class="container" *ngIf="!loading">
     <div class="card-header row">
       <div class="h2 col-8 col-lg-10">
         <a [routerLink]="'/establecimiento/' + sector.establecimiento.idEstablecimiento">
@@ -9,7 +9,7 @@
         </a>
       </div>
       <div class="col-4 col-lg-2">
-        <a class="btn btn-secondary" [routerLink]="['/listar-establecimientos']">
+        <a class="btn btn-secondary" [routerLink]="['/establecimiento/'+ sector.establecimiento.idEstablecimiento]">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
             class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
             <path fill-rule="evenodd"
@@ -30,11 +30,17 @@
       </div>
     </div>
     <br>
-    <app-spinner *ngIf="getEstado() | async"></app-spinner>
 
     <div class="card">
       <div class="card-body">
-        <h5>Puestos en el Sector</h5>
+        <div class="d-flex justify-content-between align-items-center mb-3 row">
+          <h4 class="mb-0 col-10">Puestos en el Sector</h4>
+          <div class="col-2">
+            <button class="btn btn-success" (click)="altaPuesto()">
+              <i class="bi bi-plus-circle"></i> Agregar Puesto
+            </button>
+          </div>
+        </div>
         <div class="table-responsive">
           <table class="table table-striped">
             <!-- Verifica si hay puestos en el sector -->
@@ -46,9 +52,15 @@
                   <div class="accordion-item">
                     <h2 class="accordion-header">
                       <button class="accordion-button" type="button" (click)="toggleEquiposDePuesto(puesto)">
-                        Equipos del Puesto: {{ puesto.puestoRed }}
+                        Puesto Red: {{ puesto.puestoRed }}
                       </button>
                     </h2>
+                    <button class="btn btn-sm btn-primary me-2" [routerLink]="['/puesto/'+puesto.idPuesto]">
+                      <i class="bi bi-plus-circle"></i> Detalles
+                    </button>
+                    <button class="btn btn-sm btn-success " (click)="altaEquipo(puesto.idPuesto)">
+                      <i class="bi bi-plus-circle"></i> Agregar Equipo
+                    </button>
                     <div class="accordion-collapse" [ngClass]="{'collapse': true, 'show': puesto.mostrarEquipos}">
                       <div class="accordion-body">
                         <!-- Aquí muestra la lista de equipos para este puesto -->
@@ -89,32 +101,6 @@
         </div>
       </div>
     </div>
-
-    <br>
-    <br>
-    <!-- Botones para Agregar Puestos o Equipo -->
-    <tr>
-      <!-- <td colspan="7">
-        <button class="btn btn-primary" (click)="altaPuesto()">Agregar Puesto</button>
-      </td> -->
-
-      <td>
-        <a class="btn btn-primary" [routerLink]="['/alta-puesto', sector.idSector]">
-          Agregar Puesto
-        </a>
-      </td>
-
-      <!-- <td colspan="7">
-        <button class="btn btn-primary" (click)="altaEquipo()">Agregar Equipo</button>
-      </td> -->
-      <td>
-        <a class="btn btn-primary" [routerLink]="['/alta-equipo', sector.idSector]">
-          Agregar Equipo
-        </a>
-      </td>
-
-    </tr>
-    <!-- Fin Botones para Agregar Puestos o Equipo-->
   </div>
 </div>
 <app-pie></app-pie>
