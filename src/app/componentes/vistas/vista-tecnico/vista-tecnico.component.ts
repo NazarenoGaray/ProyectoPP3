@@ -49,7 +49,7 @@ export class VistaTecnicoComponent implements OnInit {
       next: ([usuario, incidentes]) => {
         this.usuario = usuario;
         this.incidentes = incidentes || [];
-        
+        console.log("incidentes: ",incidentes);
         // Filtrar incidentes agendados (aquellos con incidente_agenda)
         this.incidentesAgendados = this.incidentes.filter(item => 
           item.incidente?.incidente_agenda !== null && 

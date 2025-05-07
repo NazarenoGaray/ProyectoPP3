@@ -55,12 +55,22 @@ class IncidenteUsuarioController extends Controller
 
     public function obtenerIncidentesDeUnUsuario($idUsuario)
     {
-        $incidenteUsuarios = IncidenteUsuario::with('incidente')->where('idUsuario', $idUsuario)->get();
-
+        $incidenteUsuarios = IncidenteUsuario::with([
+            'incidente' => function($query) {
+                $query->with([
+                    'establecimientos', // Relación con establecimiento (nota la 's' final)
+                    'EstadoIncidente',  // Relación con estado (observa mayúscula)
+                    'PrioridadIncidente', // Relación con prioridad (mayúscula)
+                    'CategoriaIncidente', // Relación con categoría (mayúscula)
+                    'sector'            // Relación con sector (sin 's')
+                ]);
+            }
+        ])->where('idUsuario', $idUsuario)->get();
+    
         if ($incidenteUsuarios->isEmpty()) {
             return response()->json(['error' => 'Usuario no encontrado'], 404);
         }
-
+    
         return response()->json($incidenteUsuarios, 200);
     }
 

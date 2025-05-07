@@ -50,4 +50,9 @@ class Incidente extends Model
     {
         return $this->belongsToMany(Usuario::class, 'incidente_usuarios', 'idIncidente', 'idUsuario');
     }
+
+    public function sector()
+    {
+        return $this->belongsTo(Sector::class, 'idSector');
+    }
 }
