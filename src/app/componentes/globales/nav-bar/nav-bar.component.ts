@@ -34,6 +34,10 @@ export class NavBarComponent {
   cargarIncidente:boolean=false;
   listarIncidente:boolean=false;
 
+//vistas
+  vistaGerencia: boolean = false;
+  vistaTecnico: boolean = false;  
+
   constructor(
     private router: Router,
     private tokenService: TokenService,
@@ -74,7 +78,8 @@ export class NavBarComponent {
         this.menuIncidentes = true;
         this.cargarIncidente = true;
         this.listarIncidente = true;
-      
+        this.vistaGerencia = false;
+        this.vistaTecnico = false;
         break;
       case 2://gerente
         this.menuUsuarios = true;
@@ -87,6 +92,8 @@ export class NavBarComponent {
         this.menuIncidentes = true;
         this.cargarIncidente = false;
         this.listarIncidente = true;
+        this.vistaGerencia = true;
+        this.vistaTecnico = false;
         break;
       case 3://mesa de ayuda  
         this.menuUsuarios = true;
@@ -99,6 +106,8 @@ export class NavBarComponent {
         this.menuIncidentes = true;
         this.cargarIncidente = true;
         this.listarIncidente = true;
+        this.vistaGerencia = false;
+        this.vistaTecnico = false;
         break;
       case 4://tecnico
         this.menuUsuarios = false;
@@ -111,6 +120,8 @@ export class NavBarComponent {
         this.menuIncidentes = true;
         this.cargarIncidente = false;
         this.listarIncidente = true;
+        this.vistaGerencia = false;
+        this.vistaTecnico = true;
 
         break;
     }

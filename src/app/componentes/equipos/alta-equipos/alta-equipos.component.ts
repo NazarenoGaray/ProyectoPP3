@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { switchMap, take } from 'rxjs';
+import { forkJoin, switchMap, take } from 'rxjs';
 import { Equipo } from 'src/app/model/equipo.model';
 import { Establecimiento } from 'src/app/model/establecimientos.model';
 import { estado_equipo } from 'src/app/model/estado_equipo.model';
@@ -24,18 +24,18 @@ export class AltaEquiposComponent {
   estadoEquipo!: estado_equipo[];
   tipoEquipo!: tipo_equipo[];
   puestoEquipo!: Puesto[];
-
+  idPuesto!: number;
   establecimientos!: Establecimiento[];
   sectores!: Sector[];
   puestos!: Puesto[];
   idSector!: number;
   puesto!: Puesto;
+  loading = true;
+  dataReady = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private establecimientoService: EstablecimientosService,
-    private sectorService: SectoresService,
     private puestoService: PuestosService,
     private equipoService: EquiposService,
     private route: ActivatedRoute,
@@ -43,187 +43,69 @@ export class AltaEquiposComponent {
     // private textareaService: TexttareaService,
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.inicializarFormulario();
+    this.cargarDatos();
+  }
+
+  inicializarFormulario(): void {
     this.equipoForm = this.formBuilder.group({
-      nombre: [''],
-      modelo: [''],
-      marca: [''],
-      numeroSerie: [''],
-      descripcion: [''],
+      nombre: ['', Validators.required],
+      modelo: ['', Validators.required],
+      marca: ['', Validators.required],
+      numeroSerie: ['', Validators.required],
+      descripcion: ['', Validators.required],
       idEstadoEquipo: ['', Validators.required],
-      // puestoEquipo: ['', Validators.required],
-      idEstablecimiento: [''],
-      idSector: [''],
-      idPuesto: [''],
-      idTipoEquipo: [''],
-
-
-
+      idTipoEquipo: ['', Validators.required],
+      idPuesto: ['', Validators.required]
     });
-    this.obtenerEstadosEquipo();
-    this.obtenerEstablecimientos();
-    this.obtenerTipoEquipo();
-    this.route.paramMap.pipe(
-      switchMap(params => {
-        const idPuesto = Number(params.get('idPuesto'));
+  }
+
+  cargarDatos(): void {
+    this.idPuesto = Number(this.route.snapshot.params['idPuesto']);
+
+    forkJoin([
+      this.puestoService.obtenerPuestoPorId(this.idPuesto),
+      this.equipoService.obtenerEstadosEquipo(),
+      this.equipoService.obtenerTipoEquipo()
+    ]).subscribe({
+      next: ([puesto, estados, tipos]) => {
+        this.puesto = puesto;
+        this.estadoEquipo = estados;
+        this.tipoEquipo = tipos;
         
-        // Obtenemos primero los datos del sector
-        return this.puestoService.obtenerPuestoPorId(idPuesto).pipe(
-          switchMap(puesto => {
-            this.puesto = puesto;
-            console.log("puesto por id: ",puesto);
-            // Luego obtenemos los puestos de ese sector
-            return this.puestoService.obtenerPuestosPorSector(idPuesto);
-          })
-        );
-      })
-    ).subscribe({
-      // next: (puestos: Puesto[]) => {
-      //   this.puestos = puestos;
-        
-      //   // Obtenemos los equipos para cada puesto en paralelo
-      //   this.loadEquiposForPuestos();
-      // },
-      // error: (error) => {
-      //   console.error('Error al cargar datos:', error);
-      //   this.loading = false;
-      //   this.loadingService.hide();
-      // }
-    });
-    this.route.params.pipe(
-      take(1),
-      switchMap(params => this.sectorService.obtenerSectorPorId(params['idSector']))
-    ).subscribe(
-      (sector: Sector | null) => {
-        if (sector) {
-          console.log("Sector obtenidos: ", sector);
-          this.idSector = sector.idSector; // Asignar el idSector obtenido del parámetro de ruta
-          // Guardar una copia de los valores iniciales del formulario
-        } else {
-          console.log("sector no encontrado");
-        }
+        // Llenar el formulario con el ID del puesto
+        this.equipoForm.patchValue({
+          idPuesto: this.idPuesto
+        });
+
+        this.loading = false;
+        this.dataReady = true;
       },
-      error => {
-        console.log(error);
+      error: (error) => {
+        console.error('Error al cargar datos:', error);
+        this.loading = false;
+        this.router.navigate(['/puesto', this.idPuesto]);
       }
-    );
+    });
   }
 
-  obtenerTipoEquipo() {
-    this.equipoService.obtenerTipoEquipo()
-      .subscribe(
-        (data: tipo_equipo[]) => {
-          this.tipoEquipo = data;
-          console.log('tipoEquipo obtenidos:', data);
-        },
-        error => {
-          console.log('Error al obtener los tipoEquipo:', error);
-        }
-      );
-  }
+  altaEquipo(): void {
+    if (this.equipoForm.invalid) return;
 
-
-
-  obtenerEstadosEquipo() {
-    this.equipoService.obtenerEstadosEquipo()
-      .subscribe(
-        (data: estado_equipo[]) => {
-          this.estadoEquipo = data;
-          console.log('Estados obtenidos:', data);
-        },
-        error => {
-          console.log('Error al obtener los Estados:', error);
-        }
-      );
-  }
-
-
-
-  obtenerEstablecimientos() {
-    this.establecimientoService.obtenerEstablecimientos()
-      .subscribe(
-        (data: Establecimiento[]) => {
-          this.establecimientos = data;
-          console.log('establecimientos obtenidos:', data);
-        },
-        error => {
-          console.log('Error al obtener los establecimientos:', error);
-        }
-      );
-  }
-
-
-
-  onEstablecimientoSelected() {
-    const idEstablecimiento = this.equipoForm.value.idEstablecimiento;
-    this.equipoForm.get('idSector')?.setValue('');
-    this.equipoForm.get('idSector')?.disable();
-    this.equipoForm.get('idPuesto')?.setValue('');
-    this.equipoForm.get('idPuesto')?.disable();
-    this.sectores = [];
-
-    if (idEstablecimiento) {
-      this.sectorService.obtenerSectoresPorEstablecimiento(idEstablecimiento).subscribe((data: Sector[]) => {
-        console.log('Sectores Obtenidos:', data);
-        this.sectores = data;
-        this.equipoForm.get('idSector')?.enable();
-      },
-        (err: any) => {
-          console.log(`Error al agregar el equipo: ${err.message}`);
-        });
-    }
-  }
-  onSectorSelected() {
-    const idSector = this.equipoForm.value.idSector;
-    this.equipoForm.get('idPuesto')?.setValue('');
-    this.equipoForm.get('idPuesto')?.disable();
-    this.puestos = [];
-
-    if (idSector) {
-      this.puestoService.obtenerPuestosPorSector(idSector).subscribe((data: Puesto[]) => {
-        console.log('Puestos Obtenidos:', data);
-        this.puestos = data;
-        this.equipoForm.get('idPuesto')?.enable();
-      },
-        (err: any) => {
-          console.log(`Error al agregar el equipo: ${err.message}`);
-        });
-    }
-  }
-
-
-
-
-
-  altaEquipo() {
-    if (this.equipoForm.invalid) {
-      return;
-    }
     this.equipo = this.equipoForm.value;
-    this.equipoService.altaEquipo(this.equipo).subscribe(
-      (res: any) => {
-        console.log('Equipo agregado exitosamente', this.equipo);
-        this.router.navigate(['/listar-equipos']);
+    this.equipoService.altaEquipo(this.equipo).subscribe({
+      next: () => {
+        console.log("equipo dado de alta: ",this.equipo);
+        this.router.navigate(['/puesto', this.idPuesto]);
       },
-      (err: any) => {
-        console.log('Equipo NO agregado', this.equipo);
-        console.log(`Error al agregar el equipo: ${err.message}`);
+      error: (error) => {
+        console.error('Error al agregar equipo:', error);
       }
-    );
+    });
   }
 
-  //script para el campo text tarea
-  // onTextareaInput(event: Event) {
-  //   const textarea = event.target as HTMLTextAreaElement;
-  //   this.textareaService.autoResizeTextarea(textarea);
-  // }
-
-  //funcion para cancelar el formulario
-  cancelarEdicion() {
-    // Restaurar el formulario a los valores originales
-    this.altaEquipo();
-
-    // Recargar la página
-    window.location.reload();
+  cancelarEdicion(): void {
+    this.router.navigate(['/puesto', this.idPuesto]);
   }
 }

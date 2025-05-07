@@ -74,8 +74,9 @@ export class IncidenteComponent {
           next: (responses) => {
             // Asignar valores con comprobación de undefined
             this.incidente = responses.incidente || {} as Incidente;
-            this.equipos = responses.equipos || [];
-
+            this.equipos = responses.equipos;
+            console.log("this.equipos: ",this.equipos);
+            console.log("this.incidente: ",this.incidente);
             // Inicializar propiedades anidadas si son undefined
             if (!this.incidente.establecimientos) {
               this.incidente.establecimientos = {} as any;

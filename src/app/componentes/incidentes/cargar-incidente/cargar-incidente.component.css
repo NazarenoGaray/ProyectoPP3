@@ -1,195 +1,69 @@
-/* Estilos generales */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+.container-fluid{
+  width: 80%;
+}
+.mat-stepper-horizontal {
+  margin-top: 8px;
 }
 
-body, html {
-  height: 100%;
-  font-family: SourceSansPro-Regular, sans-serif;
+.mat-mdc-form-field {
+  margin-top: 16px;
 }
 
-/* Contenedor principal */
-.container-contact100 {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  z-index: 1;
-  padding: 1rem;
-}
-
-.container-contact100::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: rgba(63, 91, 247, 0.137);
-  pointer-events: none;
-}
-
-/* Tarjeta contenedora */
-.wrap-contact100 {
-  width: 75%;
-  background: #fff;
-  border-radius: 10px;
-  overflow: hidden;
-  border: 1px solid #bdbdbd;
-  padding: 20px 75px 25px;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 3px 20px 0px rgba(0, 0, 0, 0.1);
-}
-
-/* Encabezado */
-.edit-container-header {
-  padding: 1rem;
-  height: 5.5rem;
-  background-color: rgba(245, 245, 245, 0.938);
-  width: 90%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1rem;
-}
-
-.btn-back {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-left: 9%;
-  border-radius: 50%;
-  width: 55px;
-  height: 55px;
-  transition: background-color 0.3s ease;
-}
-
-.btn-back:hover {
-  color: white;
-  background-color: #3981eed8;
-}
-
-/* Formulario */
-.container-form {
-  display: flex;
-  justify-content: center;
-  width: 90%;
-  height: 43rem;
-  background-color: rgba(245, 245, 245, 0.561);
-  box-shadow: 0px 0px 35px -8px rgba(237, 237, 237, 1);
-  border-radius: 12px;
-}
-
-.container-stepper {
-  width: 100%;
-  display: flex;
-  margin: 20px;
-  align-items: center;
-  justify-content: center;
-}
-
-.form-step {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  width: 100%;
-}
-
-.container-input {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Stepper */
-mat-stepper {
-  width: 100%;
-  height: 40rem;
-}
-
-mat-step {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Campos de formulario */
-mat-form-field {
+mat-form-field{
   width: 70%;
-  margin: 3px;
+  margin-left: 5rem;
+
 }
 
-.textarea {
-  height: 12rem;
-}
-
-.area {
-  resize: none;
-  height: 12rem;
-}
-
-/* Chips para equipos y usuarios */
-.chip {
-  background-color: #1965d8;
-  color: white;
-  border-radius: 120px;
-  font-size: 14px;
-  padding: 5px 15px;
-  margin: 1px;
+.form-1{
   display: flex;
-  align-items: center;
-  transition: background-color 0.5s ease;
+  justify-content: center;
+  flex-wrap:wrap;
 }
 
-.chip:hover {
-  background-color: #3981ee;
+.example-stepper {
+  margin-top: 8px;
 }
 
-ul {
+.mat-mdc-form-field {
+  margin-top: 16px;
+}
+
+.botones-final{
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  gap: 5px;
-}
-
-/* Botones */
-.botones-final {
-  display: flex;
-  align-items: center;
-  width: 100%;
   justify-content: space-evenly;
-  flex-wrap: wrap;
-  margin-top: 1rem;
+  flex-wrap:wrap;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .wrap-contact100 {
-    padding: 72px 50px 25px;
-    width: 90%;
-  }
-  
-  mat-form-field {
-    width: 90%;
-  }
+.btn-seccionUno{
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap:wrap;
+  /* background-color: red; */
+
 }
 
-@media (max-width: 576px) {
-  .wrap-contact100 {
-    padding: 72px 15px 25px;
-    width: 95%;
-  }
-  
-  .container-form {
-    height: auto;
-  }
+.btn-form{
+  margin-top: 15px;
+  background-color: blue;
+  font-size: 16px;
+  width: 8rem;
+  height:2.5rem ;
+}
+.container-hijo{
+background-color: rgba(245, 245, 245, 0.561);
+
+-webkit-box-shadow: 0px 0px 35px -8px rgba(237,237,237,1);
+-moz-box-shadow: 0px 0px 35px -8px rgba(237,237,237,1);
+box-shadow: 0px 0px 35px -8px rgba(237,237,237,1);
+
+border-radius: 12px 12px 12px 12px;
+-moz-border-radius: 12px 12px 12px 12px;
+-webkit-border-radius: 12px 12px 12px 12px;
+border: 0px solid #000000;
+
+margin-top: 1rem ;
+margin-bottom: 3rem ;
+
+
 }

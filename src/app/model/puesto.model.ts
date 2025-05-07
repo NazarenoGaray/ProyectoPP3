@@ -13,6 +13,6 @@ export class Puesto {
 
     idEstablecimiento!: number;
     idSector!: number;
-  mostrarEquipos!: boolean;
+    mostrarEquipos!: boolean;
 
 }

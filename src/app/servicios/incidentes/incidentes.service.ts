@@ -78,7 +78,7 @@ export class IncidentesService {
 
 
   obtenerIncidentesPorUsuario(idUsuario: number): Observable<Incidente[]> {
-    const url = `${this.apiURL}/incidentes/${idUsuario}`;
+    const url = `${this.apiURL}/usuarios/${idUsuario}/incidentes`;
     return this.http.get<Incidente[]>(url);
   }
 

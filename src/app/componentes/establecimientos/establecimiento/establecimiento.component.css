@@ -114,11 +114,7 @@ table tbody tr:hover {
   border-color: #0056b3;
 }
 
-.btn-secondary {
-  background-color: #ffffff;
-  border-color: #000000;
-  color: #000;
-}
+
 
 .btn-secondary:hover {
   background-color: #b8bfc4;
@@ -145,16 +141,6 @@ table tbody tr:hover {
   background-color: #218838;
   border-color: #1e7e34;
 }
-
-/* Botones dentro de tarjetas */
-#todos-sectores .btn {
-  text-align: center;
-  justify-content: center;
-  width: 50%;
-
-}
-
-
 
 
 /* Espaciado y márgenes */

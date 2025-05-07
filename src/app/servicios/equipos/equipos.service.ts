@@ -43,7 +43,11 @@ export class EquiposService {
   }
 
 
-
+  editarEquipo(idEquipo: number, equipo: Equipo): Observable<Equipo> {
+    //console.log("equipo a editar: ",equipo);
+    const url = `${this.baseUrl}/equipos/${idEquipo}`;
+    return this.http.put<Equipo>(url, equipo);
+  }
 
 
   obtenerEquiposPorSector(idSector: number): Observable<Equipo[]> {

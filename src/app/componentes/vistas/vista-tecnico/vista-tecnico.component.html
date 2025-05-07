@@ -1,6 +1,6 @@
 <app-nav-bar></app-nav-bar>
-
-<div class="container mt-5">
+<app-spinner *ngIf="loading"></app-spinner>
+<div class="container mt-5" *ngIf="!loading && dataReady">
     <div class="card">
         <div class="card-header">
             <div class="row">
@@ -8,103 +8,147 @@
                     <h3>Bienvenido</h3>
                     <div class="h5 col-11" *ngIf="usuario">
                         <a [routerLink]="'/usuario/' + usuario.idUsuario">
-                            {{ usuario.nombre }} {{ usuario.apellido }} - {{ usuario.rol.nombre }}
+                            {{ usuario.nombre }} {{ usuario.apellido }} - {{ usuario.rol.nombre || 'Sin rol' }}
                         </a>
                     </div>
                 </div>
             </div>
         </div>
 
-
-        <div class="card-body">
-            <div *ngIf="estadoLoading | async">
-                Cargando la agenda...
+        <!-- Sección de Incidentes Agendados -->
+        <div class="card mb-4">
+            <div class="card-header bg-light">
+                <h4 class="mb-0">
+                    <i class="fa fa-calendar me-2"></i>
+                    Agenda de Incidentes
+                </h4>
             </div>
-            <div *ngIf="(estadoLoading2)">
-                <p>No hay incidentes disponibles.</p>
-            </div>
-            <ng-container *ngIf="incidentes.length > 0">
-                <div *ngFor="let incidente of incidentes; let i = index">
-                    <!-- Mostrar la fecha solo cuando cambia -->
-                    <div
-                        *ngIf="!incidente.incidente_agenda || incidente.incidente_agenda.fechaAgenda !== incidentes[i - 1]?.incidente_agenda?.fechaAgenda">
-                        <h6 class="mt-4">{{ incidente?.incidente_agenda?.fechaAgenda | date:'dd-MM-yyyy' }}</h6>
-                    </div>
-                    <div class="table-responsive" *ngIf="incidente.incidente_agenda">
-                        <table class="table table-striped mt-3 fixed-table">
-                            <thead>
-                                <tr>
-                                    <th scope="col" class="fixed-col">Horario Estimado</th>
-                                    <th scope="col" class="fixed-col">Establecimiento</th>
-                                    <th scope="col" class="fixed-col">Dirección</th>
-                                    <th scope="col" class="fixed-col">Actividad</th>
-                                    <th scope="col" class="fixed-col">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>{{ incidente.incidente_agenda.horarioInicio + ' - ' + incidente.incidente_agenda.horarioFin }}</td>
-                            
-                                    
-                                    <td>
-                                        <a
-                                            [routerLink]="'/establecimiento/' + incidente.incidente.establecimientos.idEstablecimiento">
-                                            {{ incidente.incidente.establecimientos.nombre }}
+            <div class="card-body">
+                <div *ngIf="incidentesAgendados.length > 0; else noAgenda">
+                    <div *ngFor="let item of incidentesAgendados; let i = index">
+                        <div class="agenda-day" *ngIf="shouldShowDateHeader(item, i)">
+                            <h5 class="date-header">
+                                <i class="fa fa-calendar-o me-2"></i>
+                                {{ item.incidente.incidente_agenda?.fechaAgenda | date:'fullDate' }}
+                            </h5>
+                        </div>
+                        <div class="agenda-item">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6>
+                                        <a [routerLink]="'/incidente/' + item.incidente.idIncidente"
+                                            class="text-decoration-none">
+                                            {{ item.incidente.titulo || 'Incidente sin título' }}
                                         </a>
-                                    </td>
-                                    <td>{{ incidente.incidente.establecimientos.calle }} {{ incidente.incidente.establecimientos.altura }}
-                                    </td>
-                                    <td>{{ incidente.incidente.categoria_incidente.descripcion }}</td>
-                                    <td>
-                                        <a [routerLink]="'/incidente/' + incidente.incidente.idIncidente">Detalles</a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                    </h6>
+                                    <p class="mb-1">
+                                        <i class="fa fa-clock-o me-1"></i>
+                                        {{ getTimeRange(item.incidente.incidente_agenda) }}
+                                    </p>
+                                    <p class="mb-1">
+                                        <i class="fa fa-building me-1"></i>
+                                        <a [routerLink]="'/establecimiento/' + item.incidente.establecimientos?.idEstablecimiento">
+                                            {{ item.incidente.establecimientos?.nombre || 'Establecimiento no especificado' }}
+                                        </a>
+                                    </p>
+                                    <p class="mb-1">
+                                        <i class="fa fa-map-marker me-1"></i>
+                                        {{ getFullAddress(item.incidente.establecimientos) }}
+                                    </p>
+                                </div>
+                                <div>
+                                    <span class="badge me-2"
+                                        [ngClass]="getPriorityClass(item.incidente.prioridad_incidente?.descripcion)">
+                                        {{ item.incidente.prioridad_incidente?.descripcion || 'Prioridad no definida' }}
+                                    </span>
+                                    <a [routerLink]="'/incidente/' + item.incidente.idIncidente"
+                                        class="btn btn-sm btn-outline-primary">
+                                        <i class="fa fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </ng-container>
-
-            <ng-template #noIncidentes>
-
-            </ng-template>
+                <ng-template #noAgenda>
+                    <div class="alert alert-info">
+                        <i class="fa fa-info-circle me-2"></i>
+                        No tienes incidentes agendados actualmente.
+                    </div>
+                </ng-template>
+            </div>
         </div>
-    </div>
 
-    <div class="card mt-4">
-        <div class="card-body">
-            <strong>Incidentes Asociados:</strong>
-            <div class="table-responsive">
-                <table class="table table-striped mt-3">
-                    <thead>
-                        <tr>
-                            <th>Fecha</th>
-                            <th>Establecimiento</th>
-                            <th>Tarea</th>
-                            <th>Categoría</th>
-                            <th>Prioridad</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let incidente of incidentes">
-                            <td>{{ incidente.incidente.fechaInicio | date:'dd-MM-yyyy' }}</td>
-                            <td>{{ incidente.incidente.establecimientos.nombre }}</td>
-                            <td>{{ incidente.incidente.titulo }}</td>
-                            <td>{{ incidente.incidente.categoria_incidente.descripcion }}</td>
-                            <td>{{ incidente.incidente.prioridad_incidente.descripcion }}</td>
-                            <td>{{ incidente.incidente.estado_incidente.descripcion }}</td>
-                            <td>
-                                <a [routerLink]="'/incidente/' + incidente.idIncidente">Detalles</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        <!-- Sección de Todos los Incidentes Asignados -->
+        <div class="card">
+            <div class="card-header bg-light">
+                <h4 class="mb-0">
+                    <i class="fa fa-tasks me-2"></i>
+                    Todos los Incidentes Asignados
+                    <span class="badge bg-secondary ms-2">{{ incidentes.length }}</span>
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Fecha</th>
+                                <th>Establecimiento</th>
+                                <th>Título</th>
+                                <th>Prioridad</th>
+                                <th>Estado</th>
+                                <th>Rol</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of incidentes">
+                                <td>INC-{{ item.incidente.idIncidente }}</td>
+                                <td>{{ item.incidente.fechaInicio | date:'shortDate' }}</td>
+                                <td>
+                                    <a *ngIf="item.incidente.establecimientos"
+                                        [routerLink]="'/establecimiento/' + item.incidente.establecimientos.idEstablecimiento">
+                                        {{ item.incidente.establecimientos.nombre }}
+                                    </a>
+                                    <span *ngIf="!item.incidente.establecimientos">-</span>
+                                </td>
+                                <td>{{ item.incidente.titulo || '-' }}</td>
+                                <td>
+                                    <span class="badge"
+                                        [ngClass]="getPriorityClass(item.incidente.prioridad_incidente?.descripcion)">
+                                        {{ item.incidente.prioridad_incidente?.descripcion || '-' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge"
+                                        [ngClass]="getStatusClass(item.incidente.estado_incidente?.descripcion)">
+                                        {{ item.incidente.estado_incidente?.descripcion || '-' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge"
+                                        [ngClass]="{'bg-info': item.esObservador === 1, 'bg-primary': item.esObservador === 0}">
+                                        {{ item.esObservador === 1 ? 'Observador' : 'Responsable' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <a [routerLink]="'/incidente/' + item.incidente.idIncidente"
+                                        class="btn btn-sm btn-primary">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="30"
+                                            fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                                            <path
+                                                d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
+                                            <path
+                                                d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
+                                        </svg>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-<br><br>
-<app-pie></app-pie>

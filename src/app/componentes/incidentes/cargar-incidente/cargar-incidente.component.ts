@@ -348,7 +348,7 @@ export class CargarIncidenteComponent implements OnInit {
             });
             exitoDialog.afterClosed().subscribe(() => {
               console.log('Incidente agregado exitosamente', res);
-              this.router.navigate(['/incidentes',res.idIncidente]);
+              this.router.navigate(['/incidente',res.idIncidente]);
             });
           },
           (err: any) => {

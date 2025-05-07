@@ -11,5 +11,6 @@ export class Sector {
   equipos!: Equipo[];
   
   establecimiento!: Establecimiento;
+  idEstablecimiento!: number;
 
 }

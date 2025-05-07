@@ -1,46 +1,40 @@
 <app-nav-bar></app-nav-bar>
 
-<div class="container-contact100">
-    <div class="wrap-contact100 card">
+<div class="card container-fluid">
+    <div class="container ">
         <div class="card-header lg-center row edit-container-header">
-            <div class="h2 col-10">Carga Incidente
+            <div class="h2 col-11">Carga Incidente
             </div>
             <div class="col-1">
-                <a class="btn-back" [routerLink]="['/']">
-
-                    <!-- Atras -->
-                    <mat-icon class="icon" aria-hidden="false"
-                        aria-label="Example home icon" fontIcon="arrow_back"></mat-icon>
-
+                <a class="btn btn-secondary" [routerLink]="['/']">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+                    </svg>
                 </a>
             </div>
         </div>
         <div class="container-form">
             <div class="container-stepper">
-                <form class="form-step"
-                    [formGroup]="incidenteFormStepper" (ngSubmit)="onSubmitStep()">
+                <form class="form-step" [formGroup]="incidenteFormStepper" (ngSubmit)="onSubmitStep()">
 
-                    <mat-stepper #stepper   >
+                    <mat-stepper #stepper>
                         <!-- PRIMER PASO : DATOS DEL TICKET -->
-                        <mat-step  >
+                        <mat-step>
 
                             <ng-template matStepLabel>Datos del Ticket</ng-template>
 
-                            <div class="container-input"
-                                formGroupName="datosTicket">
+                            <div class="container-input" formGroupName="datosTicket">
 
                                 <!-- ESTABLECIMIENTO -->
                                 <mat-form-field>
                                     <mat-label>Establecimiento</mat-label>
-                                    <input matInput
-                                        placeholder="Ingrese establecimiento..."
-                                        formControlName="establecimiento"
-                                        (input)="filterEstablecimientos($event)"
+                                    <input matInput placeholder="Ingrese establecimiento..."
+                                        formControlName="establecimiento" (input)="filterEstablecimientos($event)"
                                         [matAutocomplete]="establecimiento">
-                                    <mat-autocomplete autoActiveFirstOption
-                                        #establecimiento="matAutocomplete">
-                                        <mat-option
-                                            *ngFor="let establecimiento of filteredEstablecimientos "
+                                    <mat-autocomplete autoActiveFirstOption #establecimiento="matAutocomplete">
+                                        <mat-option *ngFor="let establecimiento of filteredEstablecimientos "
                                             (click)="selectEstablecimientoFormStep(establecimiento)">
                                             {{ establecimiento.nombre }}
                                         </mat-option>
@@ -50,17 +44,10 @@
                                 <!-- SECTOR -->
                                 <mat-form-field>
                                     <mat-label>Sector</mat-label>
-                                    <input
-                                        type="text"
-                                        matInput
-                                        placeholder="Ingrese Sector..."
-                                        formControlName="sector"
-                                        (input)="filterSectores($event)"
-                                        [matAutocomplete]="sector">
-                                    <mat-autocomplete autoActiveFirstOption
-                                        #sector="matAutocomplete">
-                                        <mat-option
-                                            *ngFor="let sector of filteredSectores "
+                                    <input type="text" matInput placeholder="Ingrese Sector..." formControlName="sector"
+                                        (input)="filterSectores($event)" [matAutocomplete]="sector">
+                                    <mat-autocomplete autoActiveFirstOption #sector="matAutocomplete">
+                                        <mat-option *ngFor="let sector of filteredSectores "
                                             (click)="seleccionSectorStep(sector)">
                                             {{ sector.nombre }}
                                         </mat-option>
@@ -71,17 +58,11 @@
                                 <!--  EQUIPOS  -->
                                 <mat-form-field>
 
-                                    <input
-                                        type="text"
-                                        matInput
-                                        placeholder="Equipos reportados: "
-                                        formControlName="buscarEquipos"
-                                        (input)="buscarEquiposStep()"
+                                    <input type="text" matInput placeholder="Equipos reportados: "
+                                        formControlName="buscarEquipos" (input)="buscarEquiposStep()"
                                         [matAutocomplete]="buscarEquipos">
-                                    <mat-autocomplete autoActiveFirstOption
-                                        #buscarEquipos="matAutocomplete">
-                                        <mat-option
-                                            *ngFor="let equipo of resultadosBusquedaEquipo "
+                                    <mat-autocomplete autoActiveFirstOption #buscarEquipos="matAutocomplete">
+                                        <mat-option *ngFor="let equipo of resultadosBusquedaEquipo "
                                             (click)="agregarEquipo(equipo)">
                                             {{ equipo.nombre }}-
                                             {{ equipo.modelo }}
@@ -89,13 +70,12 @@
                                     </mat-autocomplete>
 
                                     <ul>
-                                        <button class="chip"
-                                            *ngFor="let equipoAgregado of equiposAgregados"
+                                        <button class="chip" *ngFor="let equipoAgregado of equiposAgregados"
                                             (click)="removerEquipo(equipoAgregado)">
-                                            
+
                                             {{ equipoAgregado.nombre }}-
                                             {{ equipoAgregado.modelo }}
-                                           
+
                                             <!-- <mat-icon class="icon" aria-hidden="false" aria-label="Example home icon" fontIcon="close" ></mat-icon> -->
                                         </button>
                                     </ul>
@@ -103,29 +83,22 @@
 
                                 <!-- USUARIO -->
                                 <mat-form-field>
-                                    <input
-                                        type="text"
-                                        matInput
-                                        placeholder="Usuario Asignado: "
-                                        formControlName="buscarUsuario"
-                                        (input)="buscarUsuarioStep()"
+                                    <input type="text" matInput placeholder="Usuario Asignado: "
+                                        formControlName="buscarUsuario" (input)="buscarUsuarioStep()"
                                         [matAutocomplete]="buscarUsuario">
-                                    <mat-autocomplete autoActiveFirstOption
-                                        #buscarUsuario="matAutocomplete">
-                                        <mat-option
-                                            (click)="agregarUsuario(usuario)"
+                                    <mat-autocomplete autoActiveFirstOption #buscarUsuario="matAutocomplete">
+                                        <mat-option (click)="agregarUsuario(usuario)"
                                             *ngFor="let usuario of resultadosBusquedaUsuario ">
-                                            {{ usuario.nombre }} 
+                                            {{ usuario.nombre }}
                                             {{usuario.apellido }}
-                                            
+
                                             <!-- <button class="buscar-btn-green"
                                             (click)="agregarUsuario(usuario)"></button> -->
                                         </mat-option>
                                     </mat-autocomplete>
 
                                     <ul>
-                                        <button class="chip"
-                                            *ngFor="let usuarioAgregado of usuariosAgregados"
+                                        <button class="chip" *ngFor="let usuarioAgregado of usuariosAgregados"
                                             (click)="removerUsuario(usuarioAgregado)">
                                             {{ usuarioAgregado.nombre }}
                                             {{usuarioAgregado.apellido }}
@@ -140,12 +113,10 @@
 
                                 <mat-form-field>
                                     <mat-label>Categoria </mat-label>
-                                    <mat-select required
-                                        formControlName="idCategoriaIncidente">
+                                    <mat-select required formControlName="idCategoriaIncidente">
                                         <mat-option value enable selected>Seleccionar
                                             categoria</mat-option>
-                                        <mat-option
-                                            *ngFor="let categoria of categorias"
+                                        <mat-option *ngFor="let categoria of categorias"
                                             [value]="categoria.idCategoriaIncidente">
                                             {{categoria.descripcion}}
                                         </mat-option>
@@ -155,29 +126,28 @@
                             </div>
 
                             <div class="botones-final">
-                                <button  type="button"  mat-flat-button matStepperNext [disabled]="incidenteFormStepper.get('datosTicket')?.invalid" color="primary">Siguiente</button>
+                                <button type="button" mat-flat-button matStepperNext
+                                    [disabled]="incidenteFormStepper.get('datosTicket')?.invalid"
+                                    color="primary">Siguiente</button>
 
                             </div>
 
                         </mat-step>
 
                         <!-- SEGUNDO PASO: DESCRIPCION DEL TICKET -->
-                        <mat-step  >
+                        <mat-step>
 
-                            <div formGroupName="descripcionTicket"
-                                class="container-input">
+                            <div formGroupName="descripcionTicket" class="container-input">
 
                                 <ng-template matStepLabel>Descripcion de Ticket</ng-template>
 
                                 <!-- PRIORIDAD -->
                                 <mat-form-field>
                                     <mat-label>Prioridad </mat-label>
-                                    <mat-select required
-                                        formControlName="idPrioridadIncidente">
+                                    <mat-select required formControlName="idPrioridadIncidente">
                                         <mat-option value enable selected>Seleccionar
                                             prioridad</mat-option>
-                                        <mat-option
-                                            *ngFor="let prioridad of prioridades"
+                                        <mat-option *ngFor="let prioridad of prioridades"
                                             [value]="prioridad.idPrioridadIncidente">
                                             {{prioridad.descripcion}}
                                         </mat-option>
@@ -187,13 +157,10 @@
                                 <!-- Estado -->
                                 <mat-form-field>
                                     <mat-label>Prioridad </mat-label>
-                                    <mat-select required
-                                        formControlName="idEstadoIncidente">
+                                    <mat-select required formControlName="idEstadoIncidente">
                                         <mat-option value enable selected>Seleccionar
                                             estado</mat-option>
-                                        <mat-option
-                                            *ngFor="let estado of estados"
-                                            [value]="estado.idEstadoIncidente">
+                                        <mat-option *ngFor="let estado of estados" [value]="estado.idEstadoIncidente">
                                             {{estado.descripcion}}
                                         </mat-option>
                                     </mat-select>
@@ -204,22 +171,16 @@
                                 <mat-form-field>
                                     <mat-label>Titulo</mat-label>
                                     <input matInput formControlName="titulo"
-                                        placeholder="Escribir Titulo del incidente..."
-                                        required>
+                                        placeholder="Escribir Titulo del incidente..." required>
                                 </mat-form-field>
 
                                 <!-- DESCRIPCION DE incidente-->
                                 <mat-form-field class="textarea">
                                     <mat-label>Descripcion</mat-label>
-                                    <textarea class="area"
-                                    #input maxlength="700"
-                                    matInput 
-                                    formControlName="descripcion"
-                                    placeholder="Escribir descripcion del incidente..."
-                                    required
-                                    ></textarea>
+                                    <textarea class="area" #input maxlength="700" matInput formControlName="descripcion"
+                                        placeholder="Escribir descripcion del incidente..." required></textarea>
                                     <mat-hint align="end">{{input.value.length}}/700</mat-hint>
-                                  </mat-form-field>
+                                </mat-form-field>
 
                                 <!-- BOTONES FINALES  -->
                                 <!-- <div class="botones-final">
@@ -231,11 +192,12 @@
                                 </div> -->
                                 <div class="botones-final">
 
-                                    <button  matStepperPrevious class="btn-form" mat-flat-button color="primary"  >Volver</button>
-                                    <button  class="btn-form" mat-flat-button color="primary" 
-                                    [disabled]="incidenteFormStepper.get('datosTicket')?.invalid || incidenteFormStepper.get('descripcionTicket')?.invalid"
-                                     type="submit">Enviar incidente</button>
-                                  
+                                    <button matStepperPrevious class="btn-form" mat-flat-button
+                                        color="primary">Volver</button>
+                                    <button class="btn-form" mat-flat-button color="primary"
+                                        [disabled]="incidenteFormStepper.get('datosTicket')?.invalid || incidenteFormStepper.get('descripcionTicket')?.invalid"
+                                        type="submit">Enviar incidente</button>
+
                                 </div>
                             </div>
                         </mat-step>
@@ -249,4 +211,3 @@
 
     </div>
 </div>
-<app-pie></app-pie>

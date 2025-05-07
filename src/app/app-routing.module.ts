@@ -39,6 +39,7 @@ import { ModificarIncidenteComponent } from "./componentes/incidentes/modificar-
 import { AltaPuestoComponent } from "./componentes/puestos/alta-puesto/alta-puesto.component";
 import { RoleGuard } from "./guards/role.guard";
 import { CambiarClaveComponent } from "./componentes/usuarios/cambiar-clave/cambiar-clave.component";
+import { EditarPuestoComponent } from "./componentes/puestos/editar-puesto/editar-puesto.component";
 
 
 
@@ -83,6 +84,7 @@ const routes: Routes = [
   
   { path: 'alta-puesto/:idSector', component: AltaPuestoComponent, canActivate: [TokenGuard, RoleGuard], data: { roles: [1, 3] } },
   { path: 'puesto/:idPuesto', component: PuestoComponent, canActivate: [TokenGuard, RoleGuard], data: { roles: [1, 2, 3, 4] } },
+  { path: 'editar-puesto/:idPuesto', component: EditarPuestoComponent, canActivate: [TokenGuard, RoleGuard], data: { roles: [1, 2, 3, 4] } },
   
   { path: 'vista-tecnico/:idUsuario', component: VistaTecnicoComponent, canActivate: [TokenGuard, RoleGuard, UserIdGuard], data: { roles: [4] } },
   //{ path: 'gestion', component: GestionComponent, canActivate: [TokenGuard] },

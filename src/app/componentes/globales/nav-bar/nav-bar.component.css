@@ -1,25 +1,31 @@
-.navbar-expand-lg {
-  max-height: 17vh;
-  /* Establece la altura máxima deseada */
-  margin-left: -30px
+/* Estilos generales del navbar */
+.navbar {
+  transition: all 0.3s ease;
+  padding: 0.5rem 1rem;
 }
 
+.navbar-expand-lg {
+  max-height: 17vh;
+  margin-left: -30px;
+}
+
+/* Logo */
 .logo-container {
   width: 17vh;
-  /* Separar logo de letras */
   margin-top: 15px;
-  /* Altura del logo */
   height: auto;
   margin-left: 0px;
+  transition: all 0.3s ease;
 }
 
 .logo-container img {
   width: 150px;
   height: 150px;
   margin-top: -10px;
+  transition: all 0.3s ease;
 }
 
-/* Efecto */
+/* Efecto shrink */
 .logo-wrapper {
   text-align: center;
   transition: all 0.7s ease;
@@ -27,4 +33,60 @@
 
 .shrink .logo-wrapper {
   transform: scale(0.7);
+}
+
+/* Estilos responsive */
+@media (max-width: 992px) {
+  .navbar-expand-lg {
+    max-height: none;
+    margin-left: 0;
+  }
+  
+  .logo-container {
+    width: auto;
+    margin-top: 0;
+  }
+  
+  .logo-container img {
+    width: 100px;
+    height: 100px;
+    margin-top: 0;
+  }
+  
+  .navbar-brand {
+    margin-left: 0 !important;
+  }
+  
+  .navbar-collapse {
+    padding-top: 1rem;
+  }
+  
+  .nav-item {
+    margin-bottom: 0.5rem;
+  }
+  
+  .dropdown-menu {
+    border: none;
+    box-shadow: none;
+  }
+  
+  .dropdown-divider {
+    margin: 0.25rem 0;
+  }
+  
+  .navbar-nav .btn {
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .logo-container img {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .navbar-brand span {
+    font-size: 1.2rem;
+  }
 }

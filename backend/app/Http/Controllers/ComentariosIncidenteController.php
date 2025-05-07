@@ -58,9 +58,9 @@ class ComentariosIncidenteController extends Controller
             ORDER BY c.updated_at
         ", [$idIncidente]);
 
-            if (empty($comentarioIncidente)) {
-                return response()->json(['error' => 'No se encontraron comentarios para el incidente especificado'], 404);
-            }
+            // if (empty($comentarioIncidente)) {
+            //     return response()->json(['error' => 'No se encontraron comentarios para el incidente especificado'], 404);
+            // }
 
             return response()->json($comentarioIncidente, 200);
         } catch (\Exception $e) {

@@ -24,7 +24,7 @@ export class PuestosService {
 
   obtenerPuestoPorId(idPuesto: number): Observable<Puesto> {
     const url = `${this.apiURL}/puestos/${idPuesto}`;
-    return this.http.get<Puesto>(url);
+    return this.http.get<any>(url);
   }
 
   // Obtener todos los puestos de un sector

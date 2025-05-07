@@ -189,39 +189,29 @@ class EquipoController extends Controller
             }
 
             // Validar los datos recibidos en la solicitud
-            $request->validate([
-                'nombre' => 'nullable|string|max:100',
-                'marca' => 'nullable|string|max:100',
-                'modelo' => 'nullable|string|max:100',
-                'numeroSerie' => 'nullable|string|max:255',
-                'descripcion' => 'nullable|string|max:255',
+            $validated = $request->validate([
+                'nombre' => 'required|string|max:100',
+                'marca' => 'required|string|max:100',
+                'modelo' => 'required|string|max:100',
+                'numeroSerie' => 'required|string|max:255',
+                'descripcion' => 'required|string|max:255',
                 'fechaAlta' => 'nullable|date_format:Y-m-d',
                 'fechaBaja' => 'nullable|date_format:Y-m-d',
                 'idEstadoEquipo' => 'required|exists:estado_equipos,idEstadoEquipo',
                 'idPuesto' => 'required|exists:puestos,idPuesto',
                 'idTipoEquipo' => 'required|exists:tipo_equipos,idTipoEquipo',
             ]);
-
-            // Actualizar los campos del Equipo con los datos proporcionados
-            $equipo->nombre = $request->nombre;
-            $equipo->marca = $request->marca;
-            $equipo->modelo = $request->modelo;
-            $equipo->numeroSerie = $request->numeroSerie;
-            $equipo->descripcion = $request->descripcion;
-            $equipo->fechaAlta = $request->fechaAlta;
-            $equipo->fechaBaja = $request->fechaBaja;
-            $equipo->idEstadoEquipo = $request->idEstadoEquipo;
-            $equipo->idPuesto = $request->idPuesto;
-            $equipo->idTipoEquipo = $request->idTipoEquipo;
             // Guardar los cambios en la base de datos
-            $equipo->save();
+            $equipo->update($validated);
 
-            // Retornar la respuesta con el tipoEquipo creado
-            return response()->json($equipo, 201);
-        } catch (\Exception $e) {
-            // Capturar cualquier excepción y mostrar el mensaje de error
-            Log::info('error:',['error' => $e->getMessage()]);
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
+        return response()->json($equipo, 200);
+        
+    } catch (\Exception $e) {
+        Log::error('Error al editar equipo:', ['error' => $e->getMessage()]);
+        return response()->json([
+            'message' => 'Error al actualizar el equipo',
+            'error' => $e->getMessage()
+        ], 500);
+    }
     }
 }

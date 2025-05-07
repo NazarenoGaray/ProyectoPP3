@@ -105,6 +105,7 @@ export class ModificarIncidenteComponent implements OnInit {
         this.equiposInc = responses.equiposInc;
         
         // Normalizar comentarios
+        console.log('comentarios', responses.comentarios);
         this.comentarios = responses.comentarios
         .map(c => ({
           ...c,
@@ -121,7 +122,6 @@ export class ModificarIncidenteComponent implements OnInit {
           apellido: u.usuario ? u.usuario.apellido : u.apellido
         }));
         
-        console.log('comentarios', this.comentarios);
         //this.usuariosInc = responses.usuariosInc;
         console.log('usuariosInc', this.usuariosInc);
         this.equiposInc = responses.equiposInc;
@@ -137,6 +137,7 @@ export class ModificarIncidenteComponent implements OnInit {
           idEstablecimiento: responses.incidente.establecimientos.idEstablecimiento,
           idSector: responses.incidente.sectores.idSector,
         });
+        //console.log("responses: ",responses);
         this.incidente = responses.incidente;
         this.incidenteSolucionado = responses.incidente.estado_incidente.idEstadoIncidente === 4;
         this.isLoading = false;

@@ -2,32 +2,37 @@
 
 <app-spinner *ngIf="!equipo"></app-spinner>
 
-<div  class="card container-fluid" id="content-equipo">
+<div class="card container-fluid" id="content-equipo">
   <div *ngIf="equipo" class="container">
     <div class="card-header row">
-      <div class="card-header row">
-        <div class="h2 col-10">
-          <a [routerLink]="'/establecimiento/' + equipo.idEstablecimiento">
-            {{ equipo.establecimientoNombre }}
-          </a>
-        </div>
-        <div class="col-2">
-          <a class="btn btn-secondary" [routerLink]="['/sector/' + equipo.idSector]">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-              class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
-              <path fill-rule="evenodd"
-                d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 0 1 .708.708L5.707 7.5H11.5z" />
-            </svg>
-          </a>
-        </div>
-
-        <div class="h5">
-          <a [routerLink]="'/sector/' + equipo.idSector">
-            {{ equipo.nombreSector }} - {{ equipo.ubicacionSector }}
-          </a>
-        </div>
-
+      <div class="h2 col-9">
+        <a [routerLink]="'/establecimiento/' + equipo.idEstablecimiento">
+          {{ equipo.establecimientoNombre }}
+        </a>
       </div>
+      <div class="col-3">
+        <a class="btn btn-secondary me-2 mb-2" [routerLink]="['/puesto/' + equipo.idPuesto]">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+            class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+          </svg> 
+        </a>
+        <a class="btn btn-primary me-2 mb-2" [routerLink]="['/editar-equipo', equipo.idEquipo]">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="14" fill="currentColor" class="bi bi-pencil"
+            viewBox="0 0 16 16">
+            <path
+              d="M11.293 0.293a1 1 0 0 1 1.414 0l2 2a1 1 0 0 1 0 1.414L2.707 14.414a1 1 0 0 1-.424.242l-2 .5a1 1 0 0 1-1.243-1.242l.5-2a1 1 0 0 1 .242-.425L11.293.293zM13.5 2.5L12 4l1.5 1.5 1.5-1.5L13.5 2.5zm-3 3L9 7.5l-6 6V15h1.5l6-6z" />
+          </svg>
+        </a>
+      </div>
+
+      <div class="h5">
+        <a [routerLink]="'/sector/' + equipo.idSector">
+          {{ equipo.nombreSector }} - {{ equipo.ubicacionSector }}
+        </a>
+      </div>
+
     </div>
     <br>
 
@@ -146,4 +151,3 @@
   </div>
 </div>
 
-<app-pie></app-pie>

@@ -1,23 +1,129 @@
 <app-nav-bar></app-nav-bar>
 
-<div class="card container-fluid" id="content-lista">
-    <div class="container">
-        <div class="card-header row">
-            <div class="h2 col-8" for="">Editar Equipo </div>
-            <div class="col-1">
-                <a class="btn btn-secondary" [routerLink]="['/']">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd"
-                            d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
-                    </svg>
-                    <!-- Atrás -->
-                </a>
-            </div>
-        </div>
-        <br>
+<app-spinner *ngIf="loading"></app-spinner>
 
-        <p>editar-equipos works!</p>
+<div class="card container-fluid" *ngIf="!loading">
+  <div class="container">
+    <div class="card-header lg-center row">
+      <div class="h2 col-11">Editar Equipo</div>
+      <div class="col-1">
+        <a class="btn btn-secondary" [routerLink]="['/equipo', this.idEquipo]">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+            class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+          </svg>
+        </a>
+      </div>
     </div>
+
+    <div class="card-body">
+      <form [formGroup]="equipoForm" (ngSubmit)="editarEquipo()" class="form-grid">
+
+        <!-- Segunda Fila -->
+        <div class="form-row">
+          <!-- Puesto -->
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Puesto</mat-label>
+            <input matInput [value]="puesto.puestoRed" readonly>
+          </mat-form-field>
+
+          <!-- Nombre -->
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Nombre del Equipo</mat-label>
+            <input matInput formControlName="nombre" required>
+            <mat-error *ngIf="equipoForm.get('nombre')?.invalid">
+              El nombre es obligatorio
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Tercera Fila -->
+        <div class="form-row">
+          <!-- Marca -->
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Marca</mat-label>
+            <input matInput formControlName="marca" required>
+            <mat-error *ngIf="equipoForm.get('marca')?.invalid">
+              La marca es obligatoria
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Modelo -->
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Modelo</mat-label>
+            <input matInput formControlName="modelo" required>
+            <mat-error *ngIf="equipoForm.get('modelo')?.invalid">
+              El modelo es obligatorio
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Cuarta Fila -->
+        <div class="form-row">
+          <!-- Número de Serie -->
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Número de Serie</mat-label>
+            <input matInput formControlName="numeroSerie" required>
+            <mat-error *ngIf="equipoForm.get('numeroSerie')?.invalid">
+              El número de serie es obligatorio
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Estado -->
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Estado del Equipo</mat-label>
+            <mat-select formControlName="idEstadoEquipo" required>
+              <mat-option *ngFor="let item of estadoEquipo" [value]="item.idEstadoEquipo">
+                {{ item.descripcion }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="equipoForm.get('idEstadoEquipo')?.invalid">
+              Debe seleccionar un estado
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Quinta Fila -->
+        <div class="form-row">
+          <!-- Tipo de Equipo -->
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Tipo de Equipo</mat-label>
+            <mat-select formControlName="idTipoEquipo" required>
+              <mat-option *ngFor="let item of tipoEquipo" [value]="item.idTipoEquipo">
+                {{ item.descripcion }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="equipoForm.get('idTipoEquipo')?.invalid">
+              Debe seleccionar un tipo
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Sexta Fila - Descripción -->
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="form-field full-width">
+            <mat-label>Descripción</mat-label>
+            <textarea matInput formControlName="descripcion" required rows="3"></textarea>
+            <mat-error *ngIf="equipoForm.get('descripcion')?.invalid">
+              La descripción es obligatoria
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Botones -->
+        <div class="form-actions">
+          <button mat-raised-button color="primary" type="submit" [disabled]="equipoForm.invalid">
+            <mat-icon>save</mat-icon>
+            Guardar Cambios
+          </button>
+
+          <button mat-stroked-button color="warn" type="button" (click)="cancelarEdicion()">
+            <mat-icon>cancel</mat-icon>
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
-<app-pie></app-pie>

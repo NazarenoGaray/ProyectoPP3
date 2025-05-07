@@ -1,118 +1,100 @@
-<nav class="navbar bg-primary navbar-expand-lg" [ngClass]="{'shrink': isNavbarShrunk}" data-bs-theme="dark">
+<nav class="navbar navbar-expand-lg bg-primary" [ngClass]="{'shrink': isNavbarShrunk}" data-bs-theme="dark">
   <div class="container-fluid">
-    <div class="logo-wrapper logo-container">
-      <img src="../../../assets/imagenes/Saved Pictures/3.png" alt="Logo de Service IT">
+    <!-- Logo y marca -->
+    <div class="d-flex align-items-center">
+      <div class="logo-wrapper logo-container me-2">
+        <img src="../../../assets/imagenes/Saved Pictures/3.png" alt="Logo de Service IT" class="d-inline-block align-top">
+      </div>
+      <a class="navbar-brand me-auto" href="/">
+        <span>Gestión365</span>
+      </a>
     </div>
 
-    <a class="navbar-brand" href="/">
-      <span style="margin-left: 30px;">Gestión365</span>
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
-      aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+    <!-- Botón hamburguesa -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" 
+            aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarText">
+
+    <!-- Contenido del navbar -->
+    <div class="collapse navbar-collapse" id="navbarContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <ng-container *ngIf="isLoggedIn()">
-          <li class="nav-item dropdown" *ngIf="menuUsuarios == true">
+          <!-- Menú Usuarios -->
+          <li class="nav-item dropdown" *ngIf="menuUsuarios">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Usuarios
             </a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" routerLink="/alta-usuario" *ngIf="altaUsuario">Alta usuario</a></li>
-              <li *ngIf="altaUsuario">
-                <hr class="dropdown-divider">
-              </li>
+              <li *ngIf="altaUsuario"><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" routerLink="/listar-usuarios" *ngIf="listarUsuario">Listar usuarios</a></li>
             </ul>
           </li>
-          <li class="nav-item dropdown" *ngIf="menuEstablecimientos == true">
+
+          <!-- Menú Establecimientos -->
+          <li class="nav-item dropdown" *ngIf="menuEstablecimientos">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Establecimientos
             </a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" routerLink="/alta-establecimiento" *ngIf="cargarEstablecimiento">Alta establecimiento</a></li>
-              <li *ngIf="cargarEstablecimiento">
-                <hr class="dropdown-divider">
-              </li>
-              <!-- <li><a class="dropdown-item" routerLink="/alta-sector" *ngIf="cargarSector">Alta Sector</a></li>
-              <li *ngIf="cargarSector">
-                <hr class="dropdown-divider">
-              </li> -->
+              <li *ngIf="cargarEstablecimiento"><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" routerLink="/listar-establecimientos" *ngIf="listarEstablecimiento">Listar establecimientos</a></li>
             </ul>
           </li>
-          <li class="nav-item dropdown" *ngIf="menuIncidentes == true">
+
+          <!-- Menú Incidentes -->
+          <li class="nav-item dropdown" *ngIf="menuIncidentes">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Incidentes
             </a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" routerLink="/cargar-incidente" *ngIf="cargarIncidente">Cargar incidente</a></li>
-              <li *ngIf="cargarIncidente">
-                <hr class="dropdown-divider">
-              </li>
+              <li *ngIf="cargarIncidente"><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" routerLink="/listar-incidentes" *ngIf="listarIncidente">Listar incidentes</a></li>
             </ul>
           </li>
-          <!--<li class="nav-item">
-            <a class="nav-link " role="button" data-bs-toggle="dropdown" aria-expanded="false"
-              [routerLink]="['/vista-tecnico', this.usuario.idUsuario]">
+
+          <!-- Enlaces directos -->
+          <li class="nav-item" *ngIf="vistaTecnico">
+            <a class="nav-link" [routerLink]="['/vista-tecnico', this.usuario.idUsuario]">
               Vista-Tecnico
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-              [routerLink]="['/vista-gerencial', this.usuario.idUsuario]">
+          
+          <li class="nav-item" *ngIf="vistaGerencia">
+            <a class="nav-link" [routerLink]="['/vista-gerencial', this.usuario.idUsuario]">
               Vista-Gerencia
             </a>
-          </li>-->
-
-          <li class="nav-item">
-            <a class="nav-link  px-4 " routerLink="/nosotros" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              Nosotros
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link  px-4 " routerLink="/contacto" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              Contacto
-            </a>
-
           </li>
         </ng-container>
 
+        <!-- Enlaces comunes -->
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/nosotros">Nosotros</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/contacto">Contacto</a>
+        </li>
+
+        <!-- Menú para no logueados -->
         <ng-container *ngIf="!isLoggedIn()">
-          <li class="nav-item  ">
-            <a class="nav-link  px-4  " routerLink="/bienvenido" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              Inicio
-            </a>
-          </li>
-
-          <li class="nav-item ">
-            <a class="nav-link  px-4 " routerLink="/nosotros" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              Nosotros
-            </a>
-          </li>
-          <li class="nav-item  ">
-            <a class="nav-link  px-4 " routerLink="/contacto" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              Contacto
-            </a>
-
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/bienvenido">Inicio</a>
           </li>
         </ng-container>
       </ul>
-      <ul class="navbar-nav me-left mb-2 mb-lg-0">
+
+      <!-- Botones de sesión -->
+      <div class="d-flex">
         <ng-container *ngIf="!isLoggedIn()">
-          <a class="btn btn-secondary  " routerLink="/inicio-sesion">Iniciar Sesión</a>
+          <a class="btn btn-secondary" routerLink="/inicio-sesion">Iniciar Sesión</a>
         </ng-container>
         <ng-container *ngIf="isLoggedIn()">
-          <button class="btn btn-danger " (click)="cerrarSesion()">Cerrar Sesión</button>
+          <button class="btn btn-danger" (click)="cerrarSesion()">Cerrar Sesión</button>
         </ng-container>
-      </ul>
+      </div>
     </div>
   </div>
 </nav>

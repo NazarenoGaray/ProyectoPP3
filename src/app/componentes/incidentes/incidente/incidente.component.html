@@ -1,15 +1,15 @@
 <app-nav-bar></app-nav-bar>
 <div>
-    <app-spinner  *ngIf="!incidente"></app-spinner>
+    <app-spinner *ngIf="!incidente"></app-spinner>
 
 
     <div *ngIf="incidente" class="card container-fluid" id="content-establecimiento">
-        
+
         <div class="container">
             <div class="card-header row">
                 <div class="h2 col-8">
                     <a [routerLink]="'/establecimiento/' + incidente.establecimientos.idEstablecimiento">
-                        {{ incidente.establecimientos.nombre || 'Establecimiento no disponible' }}                    </a>
+                        {{ incidente.establecimientos.nombre || 'Establecimiento no disponible' }} </a>
                 </div>
                 <div class="h4 col-10">
                     {{ incidente.establecimientos.calle }}
@@ -72,7 +72,8 @@
                                                     <td>{{ incidente.categoria_incidente.descripcion || 'No disponible'}}</td>
                                                     <td>{{ (incidente.fechaInicio | date:'dd-MM-yyyy HH:mm:ss') || 'No disponible'}}</td>
                                                     <td>{{ (incidente.fechaCierre ? (incidente.fechaCierre |
-                                                        date:'dd-MM-yyyy HH:mm:ss' ) : 'Abierto') || 'No disponible' }}</td>
+                                                        date:'dd-MM-yyyy HH:mm:ss' ) : 'Abierto') || 'No disponible' }}
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -155,7 +156,6 @@
                                             <h5>Sectores y Equipos Afectados:</h5>
 
                                             <table class="table table-striped">
-                                                <ng-template *ngIf="equipos && equipos.length > 1; else noEquipos">
                                                 <thead>
                                                     <tr>
                                                         <th class="column-width">Sectores Afectados:</th>
@@ -165,22 +165,23 @@
 
                                                 <tbody>
                                                     <!-- Contenido de la primera tabla -->
-                                                        <tr *ngFor="let equipo of equipos">
-                                                            <td>
-                                                                <a
-                                                                    [routerLink]="'/sector/' + incidente.sectores.idSector">
-                                                                    {{ incidente.sectores.nombre }}
-                                                                </a>
-                                                            </td>
-                                                            <td>
+                                                    <tr *ngIf="equipos && equipos.length > 0; else noEquipos">
+                                                        <td>
+                                                            <a [routerLink]="'/sector/' + incidente.sectores.idSector">
+                                                                {{ incidente.sectores.nombre }}
+                                                            </a>
+                                                        </td>
+                                                        <td>
+                                                            <div *ngFor="let equipo of equipos">
                                                                 <a [routerLink]="'/equipo/' + equipo.idEquipo">
-                                                                    {{ equipo.nombre }}
+                                                                    {{ equipo.nombre }} ({{ equipo.marca }} {{
+                                                                    equipo.modelo }})
                                                                 </a>
-                                                            </td>
-                                                        </tr>
-                                                        
-                                                    </tbody>
-                                                </ng-template>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+                                                </tbody>
                                                 <ng-template #noEquipos>
                                                     <tr>
                                                         <td colspan="2">No hay equipos asociados.</td>
@@ -203,12 +204,14 @@
                                 <h5>Historial de Comentarios</h5>
                             </div>
                             <div class="report-body">
-                                <div *ngIf="comentarios_incidente.length > 0; else noInforme" class="comments-container">
+                                <div *ngIf="comentarios_incidente.length > 0; else noInforme"
+                                    class="comments-container">
                                     <div *ngFor="let comentario of comentarios_incidente" class="comment-item">
                                         <div class="comment-header">
                                             <div class="user-info">
                                                 <div class="user-details">
-                                                    <span class="user-name">{{ comentario.nombreUsuario }} {{ comentario.apellidoUsuario }}</span>
+                                                    <span class="user-name">{{ comentario.nombreUsuario }} {{
+                                                        comentario.apellidoUsuario }}</span>
                                                     <span class="user-role">{{ comentario.rolUsuario }}</span>
                                                 </div>
                                             </div>
@@ -228,7 +231,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                
                                 <ng-template #noInforme>
                                     <div class="no-comments">
                                         <i class="bi bi-chat-square-text"></i>
@@ -237,14 +239,9 @@
                                 </ng-template>
                             </div>
                         </div>
-
-                        <br>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
-<app-pie></app-pie>

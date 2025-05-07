@@ -233,5 +233,5 @@ export class SectorComponent implements OnInit {
 //       case 'mantenimiento': return 'accent';
 //       default: return '';
 //     }
-//   }
+//   }        
 }
