@@ -131,11 +131,11 @@
                                                         *ngIf="usuarios && usuarios.length > 1; else noUsuarios">
                                                         <tr *ngFor="let usuario of usuarios">
                                                             <td>
-                                                                <a [routerLink]="'/usuario/' + usuario.idUsuario">
+                                                                <a [routerLink]="'/usuario/' + usuario.usuario.idUsuario">
                                                                     {{ usuario.nombre }} {{ usuario.apellido }}
                                                                 </a>
                                                             </td>
-                                                            <td>{{ usuario?.rol?.nombre }}</td>
+                                                            <td>{{ usuario.usuario.rol.nombre }}</td>
                                                             <td>{{ usuario.esObservador === 0 ? 'Asignado' :
                                                                 'Observador' }}</td>
                                                         </tr>
