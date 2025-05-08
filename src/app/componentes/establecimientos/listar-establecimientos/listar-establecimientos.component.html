@@ -1,55 +1,48 @@
 <app-nav-bar></app-nav-bar>
 
-<div class="card container-fluid" id="content-lista">
+<div class="card container-fluid px-3 py-3" id="content-lista">
   <div class="container">
-    <div class="card-header row">
-      <div class="h2 col-11">Lista de Establecimientos</div>
-      <div class="col-1">
+    <div class="card-header row align-items-center">
+      <div class="h2 col-10 col-sm-11">Lista de Establecimientos</div>
+      <div class="col-2 col-sm-1 text-end">
         <a class="btn btn-secondary" [routerLink]="['/']">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
             class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
-            <!-- Icono de flecha hacia atrás -->
             <path fill-rule="evenodd"
               d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
           </svg>
         </a>
       </div>
     </div>
+
     <br>
     <app-spinner *ngIf="getEstado() | async"></app-spinner>
-    <div class="row">
-      <div class="col-sm col-xs-12">
-        <div class="row">
-          <div class="col-4" *ngFor="let establecimiento of listaEstablecimiento; let i = index">
-            <!-- Limita la cantidad de establecimientos mostrados por el límite establecimientosIniciales -->
-            <div class="card" *ngIf="i < establecimientosIniciales">
-              <div class="card-header row">
-                <h3 class="card-title col-10">{{ establecimiento.nombre }}</h3>
-                <a class="btn btn-primary col-2" [routerLink]="['/establecimiento', establecimiento.idEstablecimiento]">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="30" fill="currentColor" class="bi bi-eye"
-                    viewBox="0 0 16 16">
-                    <path
-                      d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
-                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
-                  </svg>
-                </a>
-              </div>
-              <div class="card-body">
-                <p class="card-text">{{ establecimiento.calle }} {{ establecimiento.altura }}</p>
-                <p class="card-text">{{ establecimiento.provinciaEstablecimiento }} - {{
-                  establecimiento.localidadEstablecimiento }}</p>
-                <h6 class="card-subtitle mb-2 text-muted">{{ establecimiento.paisEstablecimiento }}</h6>
-              </div>
-            </div>
-            <br>
+
+    <div class="row g-3">
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let establecimiento of listaEstablecimiento; let i = index">
+        <div class="card h-100" *ngIf="i < establecimientosIniciales">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0">{{ establecimiento.nombre }}</h5>
+            <a class="btn btn-primary btn-sm" [routerLink]="['/establecimiento', establecimiento.idEstablecimiento]">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                class="bi bi-eye" viewBox="0 0 16 16">
+                <path
+                  d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
+                <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
+              </svg>
+            </a>
+          </div>
+          <div class="card-body">
+            <p class="card-text mb-1">{{ establecimiento.calle }} {{ establecimiento.altura }}</p>
+            <p class="card-text mb-1">{{ establecimiento.provinciaEstablecimiento }} - {{ establecimiento.localidadEstablecimiento }}</p>
+            <h6 class="card-subtitle text-muted">{{ establecimiento.paisEstablecimiento }}</h6>
           </div>
         </div>
       </div>
     </div>
-    <!-- Agrega un botón "Ver Más" para cargar más establecimientos -->
-    <div class="text-center">
+
+    <div class="text-center mt-4">
       <button class="btn btn-primary" (click)="verMasEstablecimientos()">Ver Más</button>
     </div>
   </div>
 </div>
-

@@ -91,13 +91,13 @@ export class ListarIncidentesComponent implements OnInit {
     this.incidenteService.obtenerIncidentes(incidente).subscribe(
       (data: Incidente[]) => {
         this.loadingService.hide();
-        console.log('Busqueda exitosa:', data);
+        //console.log('Busqueda exitosa:', data);
         this.incidentes = data;
         this.incidentesOriginales = data;
       },
       (error: any) => {
         this.loadingService.hide();
-        console.log(`Error al buscar el/los incidente/s: ${error.message}`);
+        console.error(`Error al buscar el/los incidente/s: ${error.message}`);
       }
     );
   }
@@ -106,10 +106,10 @@ export class ListarIncidentesComponent implements OnInit {
       incidentes => {
         this.incidentes = incidentes;
 
-        console.log('Lista de incidentes por establecimiento:', this.incidentes);
+        //console.log('Lista de incidentes por establecimiento:', this.incidentes);
       },
       error => {
-        console.log('Error al obtener los incidentes:', error);
+        console.error('Error al obtener los incidentes:', error);
       }
     );
   }

@@ -137,21 +137,21 @@ export class CargarIncidenteComponent implements OnInit {
     });
 
     this.prioridadService.obtenerPrioridades().subscribe((data: Prioridad[]) => {
-      console.log("prioridades", data);
+      //console.log("prioridades", data);
       this.prioridades = data;
     });
 
     this.categoriaService.obtenerCategorias().subscribe((data: Categoria[]) => {
-      console.log("categorias", data);
+      //console.log("categorias", data);
       this.categorias = data;
     });
     this.estadoIncidenteService.obtenerEstadosIncidentes().subscribe((data: estado_incidente[]) => {
-      console.log("estados incidentes:", data);
+      //console.log("estados incidentes:", data);
       this.estados = data;
     });
     this.usuariosService.obtenerUsuarios().subscribe((data: Usuario[]) => {
       this.usuarios = data;
-      console.log("usuarios obtenidos:", this.usuarios)
+      //console.log("usuarios obtenidos:", this.usuarios)
     });
   }
   //***********************ESTABLECIMIENTO******************
@@ -181,7 +181,7 @@ export class CargarIncidenteComponent implements OnInit {
 
   //--  SELECT_ESTABLECIMIENTO --- FORMULARIO STEP -- DEL html se pasa la variable seleccionada y la setea en el form step
   selectEstablecimientoFormStep(auxEstablecimiento: Establecimiento): void {
-    console.log(auxEstablecimiento.nombre);
+    //console.log(auxEstablecimiento.nombre);
     this.incidenteFormStepper
       .get('datosTicket.establecimiento')
       ?.setValue(auxEstablecimiento.nombre);
@@ -190,7 +190,7 @@ export class CargarIncidenteComponent implements OnInit {
     this.sectoresService
       .obtenerSectoresPorEstablecimiento(auxEstablecimiento.idEstablecimiento)
       .subscribe((auxSector: Sector[]) => {
-        console.log('muestrra la data traida ', auxSector);
+        //console.log('muestrra la data traida ', auxSector);
         this.sectores = auxSector;
         this.incidenteFormStepper.get('datosTicket.sector')?.enable();
         this.incidenteFormStepper.get('datosTicket.sector')?.setValue('');
@@ -229,7 +229,7 @@ export class CargarIncidenteComponent implements OnInit {
     this.filteredSectores = [];
     this.idSector = auxSector.idSector;
     this.equipoService.obtenerEquiposPorSector(auxSector.idSector).subscribe((auxEquipo: Equipo[]) => {
-      console.log("equipos del sector : ", this.equipos);
+      //console.log("equipos del sector : ", this.equipos);
       this.equipos = auxEquipo;
       this.incidenteFormStepper.get('datosTicket.equipos')?.enable();
       this.incidenteFormStepper.get('datosTicket.equipos')?.setValue('');
@@ -255,7 +255,7 @@ export class CargarIncidenteComponent implements OnInit {
     incidente.idEstablecimiento = this.idEstablecimiento;
     incidente.idSector = this.idSector;
 
-    console.log("datos a enviar del incidente:", this.incidenteForm.value);
+    //console.log("datos a enviar del incidente:", this.incidenteForm.value);
 
     const dialogRef = this.dialog.open(ConfirmCargarIncidenteComponent,{
       width: '400px',
@@ -270,12 +270,12 @@ export class CargarIncidenteComponent implements OnInit {
               data: { res, modo: 'alta' }
             });
             exitoDialog.afterClosed().subscribe(() => {
-              console.log('Incidente agregado exitosamente', res);
+              //console.log('Incidente agregado exitosamente', res);
               this.router.navigate(['/listar-Incidentes']);
             });
           },
           (error: any) => {
-            console.log(`Error al agregar el incidente: ${error.message}`);
+            console.error(`Error al agregar el incidente: ${error.message}`);
           }
         );
       }
@@ -331,7 +331,7 @@ export class CargarIncidenteComponent implements OnInit {
     };
     
 
-    console.log("datos enviados: ", incidenteCompleto);
+    //console.log("datos enviados: ", incidenteCompleto);
 
     const dialogRef = this.dialog.open(ConfirmCargarIncidenteComponent,{
       width: '400px',
@@ -347,13 +347,13 @@ export class CargarIncidenteComponent implements OnInit {
               data: { res, modo: 'alta' }
             });
             exitoDialog.afterClosed().subscribe(() => {
-              console.log('Incidente agregado exitosamente', res);
+              //console.log('Incidente agregado exitosamente', res);
               this.router.navigate(['/incidente',res.idIncidente]);
             });
           },
           (err: any) => {
-            console.log(`Error al agregar el incidente: ${err.message}`);
-            console.log('error: ', err.message);
+            console.error(`Error al agregar el incidente: ${err.message}`);
+            console.error('error: ', err.message);
           }
         );
       }

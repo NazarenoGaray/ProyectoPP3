@@ -65,7 +65,7 @@ export class EditarEstablecimientosComponent implements OnInit {
     ).subscribe(
       (establecimiento: Establecimiento | null) => {
         if (establecimiento) {
-          console.log("Data esta obtenida: ", establecimiento);
+          //console.log("Data esta obtenida: ", establecimiento);
           this.establecimientoForm.patchValue(establecimiento);
           this.establecimiento = this.establecimientoForm.value;
           this.establecimientoOriginal = establecimiento;// cuardamos una copia del establecimiento
@@ -154,7 +154,7 @@ export class EditarEstablecimientosComponent implements OnInit {
             });
           },
           (err: any) => {
-            console.log(`Error al actualizar establecimiento: ${err.message}`);
+            console.error(`Error al actualizar establecimiento: ${err.message}`);
           }
         );
       }
@@ -173,8 +173,8 @@ export class EditarEstablecimientosComponent implements OnInit {
     // Obtener los valores actuales del formulario
     const formularioActual = this.establecimientoForm.value;
     //Comparar los valores actuales con los valores originales
-    console.log("Actual: ",formularioActual);
-    console.log("Original: ",this.establecimientoOriginal);
+    //console.log("Actual: ",formularioActual);
+    //console.log("Original: ",this.establecimientoOriginal);
     return JSON.stringify(formularioActual) === JSON.stringify(this.establecimientoOriginal);
   }
   onPaisSelected() {
@@ -192,7 +192,7 @@ export class EditarEstablecimientosComponent implements OnInit {
         this.establecimientoForm.get('idProvincia')?.enable();
       },
         (err: any) => {
-          console.log(`Error al agregar el usuario: ${err.message}`);
+          console.error(`Error al agregar el usuario: ${err.message}`);
         });
     }
   }

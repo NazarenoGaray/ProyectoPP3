@@ -148,6 +148,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     MatChipsModule,
     NgFor,
     AsyncPipe,
+    
     NgIf,
     NgSwitch,
     NgSwitchCase,

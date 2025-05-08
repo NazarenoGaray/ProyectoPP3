@@ -42,7 +42,7 @@ export class IncidentesService {
       catchError((error) => {
         if (error.status === 404) {
           // Handle the 404 error here
-          console.log('No se encontraron equipos para el incidente con ID', idIncidente);
+          console.error('No se encontraron equipos para el incidente con ID', idIncidente);
           // Puedes retornar un arreglo vacío o null, o lanzar una excepción personalizada si lo deseas
           return of([]); // Por ejemplo, retorna un arreglo vacío en caso de 404
         } else {
@@ -60,7 +60,7 @@ export class IncidentesService {
       catchError((error) => {
         if (error.status === 404) {
           // Handle the 404 error here
-          console.log('No se encontraron usuarios para el incidente con ID', idIncidente);
+          console.error('No se encontraron usuarios para el incidente con ID', idIncidente);
           // Puedes retornar un arreglo vacío o null, o lanzar una excepción personalizada si lo deseas
           return of([]); // Por ejemplo, retorna un arreglo vacío en caso de 404
         } else {
@@ -88,7 +88,7 @@ export class IncidentesService {
     return this.http.post(`${this.apiURL}/incidentes`, incidente).pipe(
       tap((data: any) => console.log(`incidente creado con ID ${data.idIncidente}`)),
       catchError(err => {
-        console.log(`Error al crear incidente: ${err.message}`);
+        console.error(`Error al crear incidente: ${err.message}`);
         return throwError(err);
       })
     );
@@ -96,7 +96,12 @@ export class IncidentesService {
 
   actualizarIncidente(idIncidente:number,incidente: Incidente) {
     //console.log('Datos del incidente:', incidente);
-    return this.http.put(`${this.apiURL}/incidentes/${idIncidente}`, incidente).pipe(
+    const payload = {
+      ...incidente,
+      usuarios: incidente.usuarios || [],
+      equipos: incidente.equipos || []
+    };
+    return this.http.put(`${this.apiURL}/incidentes/${idIncidente}`, payload).pipe(
       tap((data: any) => console.log(`incidente ID ${data.idIncidente} actualizado`)),
       catchError(err => {
         console.log(`Error al actualizar incidente: ${err.message}`);

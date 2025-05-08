@@ -6,6 +6,7 @@ use App\Models\Equipo;
 use App\Models\Incidente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB; // Agregar esta línea
 
 
 class IncidenteController extends Controller
@@ -171,40 +172,65 @@ class IncidenteController extends Controller
     public function editarIncidente(Request $request, $idIncidente)
     {
         try {
-            // Buscar el incidente existente por su ID
-            $incidente = Incidente::find($idIncidente);
-            if (!$incidente) {
-                abort(404, 'incidente no encontrado');
-            }
+            DB::beginTransaction();
+            
+            $incidente = Incidente::findOrFail($idIncidente);
 
-            // Validar los datos recibidos en la solicitud
-            $request->validate([
+            $validated = $request->validate([
                 'idPrioridadIncidente' => 'required|exists:prioridad_incidentes,idPrioridadIncidente',
                 'idCategoriaIncidente' => 'required|exists:categoria_incidentes,idCategoriaIncidente',
                 'idEstadoIncidente' => 'required|exists:estado_incidentes,idEstadoIncidente',
+                'usuarios' => 'nullable|array',
+                'usuarios.*.idUsuario' => 'required|exists:usuarios,idUsuario',
+                'usuarios.*.esObservador' => 'sometimes|boolean',
+                'equipos' => 'nullable|array',
+                'equipos.*' => 'exists:equipos,idEquipo'
             ]);
 
-            // Actualizar los campos del incidente con los datos proporcionados
-            $incidente->idEstablecimiento = $request->idEstablecimiento;
-            $incidente->idSector = $request->idSector;
-            $incidente->idPrioridadIncidente = $request->idPrioridadIncidente;
-            $incidente->idCategoriaIncidente = $request->idCategoriaIncidente;
-            $incidente->idEstadoIncidente = $request->idEstadoIncidente;
-            $incidente->titulo = $request->titulo;
-            $incidente->descripcion = $request->descripcion;
+            $incidente->update([
+                'idPrioridadIncidente' => $validated['idPrioridadIncidente'],
+                'idCategoriaIncidente' => $validated['idCategoriaIncidente'],
+                'idEstadoIncidente' => $validated['idEstadoIncidente'],
+                'titulo' => $request->titulo,
+                'descripcion' => $request->descripcion,
+            ]);
 
+            // Sincronizar usuarios
+            $usuariosSync = [];
+            if ($request->has('usuarios')) {
+                foreach ($request->usuarios as $usuario) {
+                    $usuariosSync[$usuario['idUsuario']] = ['esObservador' => $usuario['esObservador'] ?? 0];
+                }
+            }
+            $incidente->usuarios()->sync($usuariosSync);
 
-            // Guardar los cambios en la base de datos
-            $incidente->save();
+            // Sincronizar equipos
+            $equiposSync = $request->has('equipos') ? $request->equipos : [];
+            $incidente->equipos()->sync($equiposSync);
 
-            // Retornar la respuesta con el incidente creado
-            return response()->json($incidente, 201);
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'data' => $incidente->load('usuarios', 'equipos')
+            ], 200);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'errors' => $e->errors()
+            ], 422);
         } catch (\Exception $e) {
-            // Capturar cualquier excepción y mostrar el mensaje de error
-            Log::info('error:',['error' => $e->getMessage()]);
-            return response()->json(['error' => $e->getMessage()], 500);
+            DB::rollBack();
+            Log::error('Error al editar incidente: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error interno del servidor'
+            ], 500);
         }
     }
+
     public function buscar(Request $request) {
         // Obtener los valores de búsqueda desde la solicitud
         $id = $request->id;

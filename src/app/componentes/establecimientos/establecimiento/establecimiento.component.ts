@@ -43,7 +43,7 @@ export class EstablecimientoComponent implements OnInit {
 
         
       } else {
-        console.log("***** NO SE ENCONTRÓ EL ESTABLECIMIENTO *****");
+        console.error("***** NO SE ENCONTRÓ EL ESTABLECIMIENTO *****");
       }
     });
   }
@@ -57,14 +57,14 @@ export class EstablecimientoComponent implements OnInit {
           this.loadingService.hide();
 
           this.establecimiento = data;
-          console.log('Datos del establecimiento:', data);
+          //console.log('Datos del establecimiento:', data);
         } else {
-          console.log('Datos del establecimiento incompletos:', data);
+          console.error('Datos del establecimiento incompletos:', data);
         }
       },
       (error: any) => {
         this.loadingService.hide();
-        console.log('Error al obtener los detalles del establecimiento:', error);
+        console.error('Error al obtener los detalles del establecimiento:', error);
       }
     );
   }
@@ -83,7 +83,7 @@ export class EstablecimientoComponent implements OnInit {
         error => {
           this.loadingService.hide();
 
-          console.log('Error al obtener los sectores por establecimiento:', error);
+          console.error('Error al obtener los sectores por establecimiento:', error);
         }
       );
     } else {
@@ -115,10 +115,10 @@ export class EstablecimientoComponent implements OnInit {
     this.incidentesService.obtenerIncidentesPorEstablecimiento(idEstablecimiento).subscribe(
       incidentes => {
         this.incidentes = incidentes;
-        console.log('Lista de incidentes por establecimiento:', this.incidentes);
+        //console.log('Lista de incidentes por establecimiento:', this.incidentes);
       },
       error => {
-        console.log('Error al obtener los incidentes:', error);
+        console.error('Error al obtener los incidentes:', error);
       }
     );
   }
@@ -128,10 +128,10 @@ export class EstablecimientoComponent implements OnInit {
     this.sectoresService.obtenerSectoresPorEstablecimiento(idEstablecimiento).subscribe(
       sectores => {
         this.sectores = sectores;
-        console.log('Lista de sectores por establecimiento:', this.sectores);
+        //console.log('Lista de sectores por establecimiento:', this.sectores);
       },
       error => {
-        console.log('Error al obtener los sectores:', error);
+        console.error('Error al obtener los sectores:', error);
       }
     );
   }
@@ -142,11 +142,11 @@ export class EstablecimientoComponent implements OnInit {
         (incidentes: Incidente[]) => {
           this.incidentes = incidentes;
           this.mostrarIncidentes = true;
-          console.log('Lista de incidentes por establecimiento:', this.incidentes);
+          //console.log('Lista de incidentes por establecimiento:', this.incidentes);
 
         },
         error => {
-          console.log('Error al obtener los Incidentes por establecimiento:', error);
+          console.error('Error al obtener los Incidentes por establecimiento:', error);
         }
       );
     } else {

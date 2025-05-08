@@ -26,7 +26,7 @@ export class TokenService {
   }
   getIdUsuario(): number | null {
     const userData = this.getAuthenticatedUser();
-    console.log('userData', userData);
+    //console.log('userData', userData);
 
     if (!userData || typeof userData === 'boolean') {
       throw new Error('Usuario no autenticado o token inválido');
@@ -46,14 +46,14 @@ export class TokenService {
 
     // 1. Verificar si el token existe
     if (token === null) {
-      console.log('Por favor inicia sesión');
+      console.info('Por favor inicia sesión');
       this.redirectToLogin();
       return false;
     }
 
     // 2. Verificar si el token está expirado
     if (this.jwtHelper.isTokenExpired(token)) {
-      console.log('Tu sesión ha expirado');
+      console.error('Tu sesión ha expirado');
       this.redirectToLogin();
       return false;
     }
@@ -108,7 +108,7 @@ export class TokenService {
   }
 
   private redirectToLogin(): void {
-    console.log('Tu sesión ha expirado. Por favor ingresa nuevamente.');
+    console.error('Tu sesión ha expirado. Por favor ingresa nuevamente.');
     sessionStorage.setItem('redirectUrl', this.router.url);
     this.router.navigate(['/login']);
   }
@@ -117,7 +117,7 @@ export class TokenService {
     if (timeRemaining < 300) { // 5 minutos
       this.showWarning('Tu sesión expirará en 5 minutos');
     } else if (timeRemaining < 900) { // 15 minutos
-      console.log('Tu sesión expirará pronto');
+      console.error('Tu sesión expirará pronto');
     }
   }
 

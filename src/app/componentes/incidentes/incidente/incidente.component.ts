@@ -75,8 +75,8 @@ export class IncidenteComponent {
             // Asignar valores con comprobación de undefined
             this.incidente = responses.incidente || {} as Incidente;
             this.equipos = responses.equipos;
-            console.log("this.equipos: ",this.equipos);
-            console.log("this.incidente: ",this.incidente);
+            //console.log("this.equipos: ",this.equipos);
+            //console.log("this.incidente: ",this.incidente);
             // Inicializar propiedades anidadas si son undefined
             if (!this.incidente.establecimientos) {
               this.incidente.establecimientos = {} as any;
@@ -105,7 +105,7 @@ export class IncidenteComponent {
               tipoComentario: this.getTipoComentarioDisplay(c.tipoComentario)
             }))
             .sort((a, b) => new Date(b.fechaHora).getTime() - new Date(a.fechaHora).getTime()) || [];
-            console.log('comentarios: ', this.comentarios_incidente);
+            //('comentarios: ', this.comentarios_incidente);
 
             // Normalizar usuarios
             this.usuarios = responses.usuarios

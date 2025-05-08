@@ -70,7 +70,17 @@ export class EditarEquiposComponent implements OnInit {
         this.estadoEquipo = estados;
         this.tipoEquipo = tipos;
         this.puesto = puesto;
-               
+
+        // Encontrar el estado que coincide con el texto del equipo
+        const estadoSeleccionado = this.estadoEquipo.find(
+          e => e.descripcion === equipo.estadoEquipo
+        );
+
+        // Encontrar el tipo que coincide con el texto del equipo
+        const tipoSeleccionado = this.tipoEquipo.find(
+          t => t.descripcion === equipo.tipoEquipo
+        );
+
         // Llenar el formulario con los datos del equipo
         this.equipoForm.patchValue({
           nombre: equipo.nombre,
@@ -78,8 +88,8 @@ export class EditarEquiposComponent implements OnInit {
           marca: equipo.marca,
           numeroSerie: equipo.numeroSerie,
           descripcion: equipo.descripcion,
-          idEstadoEquipo: equipo.estadoEquipo,
-          idTipoEquipo: equipo.tipoEquipo,
+          idEstadoEquipo: estadoSeleccionado?.idEstadoEquipo || '',
+          idTipoEquipo: tipoSeleccionado?.idTipoEquipo || '',
           idPuesto: equipo.idPuesto
         });
 

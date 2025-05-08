@@ -16,7 +16,7 @@
             class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
             <path fill-rule="evenodd"
               d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
-          </svg> 
+          </svg>
         </a>
         <a class="btn btn-primary me-2 mb-2" [routerLink]="['/editar-equipo', equipo.idEquipo]">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="14" fill="currentColor" class="bi bi-pencil"
@@ -36,27 +36,28 @@
     </div>
     <br>
 
-    <div class="card">
+    <!-- Sección 1: Datos básicos del equipo -->
+    <div class="card mb-4">
       <div class="card-body">
-        <h5>Datos del Equipo</h5>
+        <h5>Información del Equipo</h5>
         <div class="table-responsive">
           <table class="table table-striped">
             <thead>
               <tr>
-                <th style>ID</th>
-                <th style>Nombre Equipo</th>
-                <th style>Descripción</th>
-                <th style>Marca</th>
-                <th style>Modelo</th>
-                <th style>Estado</th>
-                <th style>Número de Serie</th>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Tipo</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Estado</th>
+                <th>N° Serie</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>{{ equipo.idEquipo }}</td>
                 <td>{{ equipo.nombre }}</td>
-                <td>{{ equipo.descripcion }}</td>
+                <td>{{ equipo.tipoEquipo }}</td>
                 <td>{{ equipo.marca }}</td>
                 <td>{{ equipo.modelo }}</td>
                 <td>{{ equipo.estadoEquipo }}</td>
@@ -65,32 +66,42 @@
             </tbody>
           </table>
         </div>
-      </div>
 
+        <h5>Descripción del Equipo</h5>
+        <div class="p-3 bg-light rounded">
+          <p class="mb-0">{{ equipo.descripcion }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección 3: Información de ubicación -->
+    <div class="card mb-4">
       <div class="card-body">
+        <h5>Ubicación del Equipo</h5>
         <div class="table-responsive">
           <table class="table table-striped">
             <thead>
               <tr>
-                <th style>Puesto</th>
-                <th style>Descripción Puesto</th>
-                <th style>Teléfono</th>
-                <th style>Fecha de Alta</th>
-                <th style>Fecha de Baja</th>
-                <th style>Tipo Equipo</th>
+                <th>Puesto</th>
+                <th>Teléfono</th>
+                <th>Fecha Alta</th>
+                <th>Fecha Baja</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>{{ equipo.puestoRed }}</td>
-                <td>{{ equipo.puestoDescripcion }}</td>
                 <td>{{ equipo.puestoTelefono }}</td>
-                <td>{{ equipo.fechaAlta }}</td>
-                <td>{{ equipo.fechaBaja }}</td>
-                <td>{{ equipo.tipoEquipo }}</td>
+                <td>{{ equipo.fechaAlta | date:'dd/MM/yyyy' }}</td>
+                <td>{{ (equipo.fechaBaja | date:'dd/MM/yyyy') || 'N/A' }}</td>
               </tr>
             </tbody>
           </table>
+
+          <h5>Descripción del Puesto</h5>
+          <div class="p-3 bg-light rounded">
+            <p class="mb-0">{{ equipo.puestoDescripcion }}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -150,4 +161,3 @@
     <br>
   </div>
 </div>
-

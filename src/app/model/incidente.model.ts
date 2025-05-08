@@ -11,6 +11,7 @@ import { Sector } from "./sector.model";
 import { comentarios_incidente } from "./comentarios_incidente.model";
 
 import { incidenteAgenda } from "./incidente_agenda.model";
+import { Usuario } from "./usuario.model";
 
 
 
@@ -49,6 +50,7 @@ export class Incidente {
   prioridad_incidente!: prioridad_incidente;
 
   equipos!: Equipo;
+  usuarios!: Usuario;
 
   sectores!: Sector;
 

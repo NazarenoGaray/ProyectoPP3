@@ -1,4 +1,7 @@
 /* En tu archivo de estilos del componente */
+.container-fluid{
+  width: 80%;
+}
 .container-hijo {
   padding: 20px;
 }

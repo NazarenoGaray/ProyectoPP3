@@ -6,10 +6,11 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h2 class="mb-0">Incidente ({{idIncidente}})</h2>
             <div>
-                <button type="submit" class="btn btn-primary me-2" [disabled]="incidenteSolucionado || incidenteForm.invalid">
+                <button type="submit" class="btn btn-primary me-2"
+                    [disabled]="incidenteSolucionado || incidenteForm.invalid">
                     Actualizar
                 </button>
-                <button type="button" class="btn btn-warning me-2" [disabled]="!incidenteSolucionado" 
+                <button type="button" class="btn btn-warning me-2" [disabled]="!incidenteSolucionado"
                     (click)="confirmarReapertura()">
                     Reabrir
                 </button>
@@ -18,8 +19,8 @@
                         class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
                         <path fill-rule="evenodd"
                             d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
-                        </svg>
-                        Atras
+                    </svg>
+                    Atras
                     <!-- Atras -->
                 </a>
             </div>
@@ -40,11 +41,11 @@
         <div class="row mb-4">
             <div class="col-12">
                 <label class="form-label">Título del Incidente</label>
-                <input type="text" class="form-control" formControlName="titulo" readonly>
+                <input type="text" class="form-control" formControlName="titulo">
             </div>
             <div class="col-12">
                 <label class="form-label">Descripción del Incidente</label>
-                <textarea class="form-control" formControlName="descripcion" rows="3" readonly></textarea>
+                <textarea class="form-control" formControlName="descripcion" rows="3"></textarea>
             </div>
         </div>
 
@@ -52,7 +53,7 @@
         <div class="row ">
             <div class="col-md-4">
                 <label class="form-label">Prioridad</label>
-                <select class="form-select" formControlName="idPrioridadIncidente" [disabled]="incidenteSolucionado">
+                <select class="form-select" formControlName="idPrioridadIncidente" >
                     <option *ngFor="let prioridad of prioridades" [value]="prioridad.idPrioridadIncidente">
                         {{prioridad.descripcion}}
                     </option>
@@ -60,7 +61,7 @@
             </div>
             <div class="col-md-4">
                 <label class="form-label">Estado</label>
-                <select class="form-select" formControlName="idEstadoIncidente" [disabled]="incidenteSolucionado">
+                <select class="form-select" formControlName="idEstadoIncidente" >
                     <option *ngFor="let estado of estados" [value]="estado.idEstadoIncidente">
                         {{estado.descripcion}}
                     </option>
@@ -68,7 +69,7 @@
             </div>
             <div class="col-md-4">
                 <label class="form-label">Categoría</label>
-                <select class="form-select" formControlName="idCategoriaIncidente" [disabled]="incidenteSolucionado">
+                <select class="form-select" formControlName="idCategoriaIncidente" >
                     <option *ngFor="let categoria of categorias" [value]="categoria.idCategoriaIncidente">
                         {{categoria.descripcion}}
                     </option>
@@ -77,23 +78,41 @@
         </div>
 
         <hr class="my-4">
-
-        <!-- Sección de usuarios y equipos -->
+        <!-- Sección de usuarios y equipos - MODIFICADA -->
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label class="form-label">Usuarios asignados:</label>
+                <div class="mb-3" >
+                    <input type="text" class="form-control" placeholder="Buscar usuario..."
+                        (input)="buscarUsuario($event)" [value]="incidenteForm.get('buscarUsuario')?.value">
+                    <div *ngIf="resultadosBusquedaUsuario.length > 0" class="list-group mt-2">
+                        <button *ngFor="let usuario of resultadosBusquedaUsuario" href="#"
+                            class="list-group-item list-group-item-action" (click)="agregarUsuario(usuario)">
+                            {{ usuario.nombre }} {{ usuario.apellido }}
+                        </button>
+                    </div>
+                </div>
                 <div class="card p-3">
                     <div class="d-flex flex-wrap gap-2">
-                        <div *ngFor="let usuario of usuariosInc" class="badge bg-primary p-2">
-                            <ng-container *ngIf="usuario.usuario; else directUser">
+                        <div *ngFor="let usuario of usuariosAgregados" class="badge bg-primary p-2">
+
+                            <ng-container *ngIf="usuario.usuario; else directUser"
+                                class="badge bg-primary p-2 d-flex align-items-center">
                                 {{ usuario.usuario?.nombre }} {{ usuario.usuario?.apellido }}
                                 <span *ngIf="usuario.esObservador === 1" class="ms-2">(Observador)</span>
+                                <button type="button" class="btn-close btn-close-white ms-2"
+                                    (click)="removerUsuario(usuario)" aria-label="Remove">
+                                </button>
                             </ng-container>
-                            <ng-template #directUser>
+                            <ng-template #directUser class="badge bg-primary p-2 d-flex align-items-center">
                                 {{ usuario.nombre }} {{ usuario.apellido }}
                                 <span *ngIf="usuario.esObservador === 1" class="ms-2">(Observador)</span>
-                            </ng-template>                        </div>
-                        <div *ngIf="usuariosInc.length === 0" class="text-muted">
+                                <button type="button" class="btn-close btn-close-white ms-2"
+                                    (click)="removerUsuario(usuario)" aria-label="Remove">
+                                </button>
+                            </ng-template>
+                        </div>
+                        <div *ngIf="usuariosAgregados.length === 0" class="text-muted">
                             No hay usuarios asignados
                         </div>
                     </div>
@@ -102,14 +121,29 @@
 
             <div class="col-md-6 mb-3">
                 <label class="form-label">Equipos afectados:</label>
+                <div class="mb-3">
+                    <input type="text" class="form-control" placeholder="Buscar equipo..."
+                        (input)="buscarEquipo($event)" [value]="incidenteForm.get('buscarEquipos')?.value">
+                    <div *ngIf="resultadosBusquedaEquipo.length > 0" class="list-group mt-2">
+                        <button *ngFor="let equipo of resultadosBusquedaEquipo" href="#"
+                            class="list-group-item list-group-item-action" (click)="agregarEquipo(equipo)">
+                            {{ equipo.nombre }} - {{ equipo.modelo }}
+                        </button>
+                    </div>
+                </div>
                 <div class="card p-3">
                     <div class="d-flex flex-wrap gap-2">
-                        <div *ngFor="let equipo of equiposInc" class="badge bg-secondary p-2">
-                            {{ equipo.nombre }}
+                        <div *ngFor="let equipo of equiposAgregados"
+                            class="badge bg-secondary p-2 d-flex align-items-center">
+                            {{ equipo.nombre }} - {{ equipo.modelo }}
+                            <button type="button" class="btn-close btn-close-white ms-2" (click)="removerEquipo(equipo)"
+                                aria-label="Remove"></button>
                         </div>
-                        <div *ngIf="equiposInc.length === 0" class="text-muted">
+
+                        <div *ngIf="equiposAgregados.length === 0" class="text-muted">
                             No hay equipos afectados
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -119,12 +153,12 @@
         <div class="row">
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a class="nav-link" [class.active]="activeTab === 'comentarios'" 
-                       (click)="activeTab = 'comentarios'">Comentarios</a>
+                    <a class="nav-link" [class.active]="activeTab === 'comentarios'"
+                        (click)="activeTab = 'comentarios'">Comentarios</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" [class.active]="activeTab === 'informacion'" 
-                       (click)="activeTab = 'informacion'">Información de cierre</a>
+                    <a class="nav-link" [class.active]="activeTab === 'informacion'"
+                        (click)="activeTab = 'informacion'">Información de cierre</a>
                 </li>
             </ul>
 
@@ -133,12 +167,11 @@
                 <!-- Pestaña de comentarios -->
                 <div *ngIf="activeTab === 'comentarios'" class="tab-pane fade show active">
                     <div class="mb-3">
-                        <textarea class="form-control mb-2" [(ngModel)]="comentario" 
-                                  [ngModelOptions]="{standalone: true}"
-                                  placeholder="Escribe un comentario..." rows="3"
-                                  [disabled]="incidenteSolucionado"></textarea>
-                        <button class="btn btn-primary" (click)="publicarComentario()" 
-                                [disabled]="!comentario || incidenteSolucionado">
+                        <textarea class="form-control mb-2" [(ngModel)]="comentario"
+                            [ngModelOptions]="{standalone: true}" placeholder="Escribe un comentario..." rows="3"
+                            ></textarea>
+                        <button class="btn btn-primary" (click)="publicarComentario()"
+                            [disabled]="!comentario || incidenteSolucionado">
                             Publicar
                         </button>
                     </div>
@@ -156,10 +189,10 @@
                             </div>
                             <div class="mb-2">
                                 <span class="badge" [ngClass]="{
-                                    'bg-primary': comentario.tipoComentario === 'Informe',
-                                    'bg-secondary': comentario.tipoComentario === 'Comentario Adicional',
                                     'bg-success': comentario.tipoComentario === 'Solución',
                                     'bg-warning': comentario.tipoComentario === 'Pendiente',
+                                    'bg-secondary': comentario.tipoComentario === 'Comentario Adicional',
+                                    'bg-primary': comentario.tipoComentario === 'Reapertura',
                                     'bg-info': comentario.tipoComentario === 'Otros',
                                 }">
                                     {{ comentario.tipoComentario }}
@@ -176,12 +209,14 @@
                 </div>
 
                 <!-- Pestaña de información de cierre -->
-                <div *ngIf="activeTab === 'informacion'" class="tab-pane fade">
-                    <textarea class="form-control mb-3" [(ngModel)]="informeCierre" rows="5"
-                              placeholder="Describa la solución del incidente..."
-                              [ngModelOptions]="{standalone: true}"></textarea>
-                    <div *ngIf="showCierreWarning" class="alert alert-warning">
-                        Debe completar el informe de cierre para poder guardar
+                <div *ngIf="activeTab === 'informacion'" class="tab-pane fade show active">
+                    <div class="mb-3">
+                        <textarea class="form-control mb-3" formControlName="informeCierre" rows="5"
+                            placeholder="Describa detalladamente la solución del incidente..."
+                            ></textarea>
+                        <div *ngIf="showCierreWarning" class="alert alert-warning">
+                            Debe completar el informe de cierre para poder marcar el incidente como solucionado
+                        </div>
                     </div>
                 </div>
             </div>

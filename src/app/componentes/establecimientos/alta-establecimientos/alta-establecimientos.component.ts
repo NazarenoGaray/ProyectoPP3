@@ -56,7 +56,7 @@ export class AltaEstablecimientosComponent implements OnInit {
     });
     this.ubicacionService.obtenerPaises().subscribe((data: any[]) => {
       this.paises = data;
-      console.log('paisdata:',data);
+      //console.log('paisdata:',data);
     });
   }
 
@@ -70,12 +70,12 @@ export class AltaEstablecimientosComponent implements OnInit {
 
     if (paisId) {
       this.ubicacionService.obtenerProvinciaPorId(paisId).subscribe((data: any[]) => {
-        console.log('provinciadata:',data);
+        //console.log('provinciadata:',data);
         this.provincias = data;
         this.establecimientoForm.get('idProvincia')?.enable();
       },
       (err: any) => {
-        console.log(`Error al agregar el usuario: ${err.message}`);
+        console.error(`Error al agregar el usuario: ${err.message}`);
       });
     }
   }
@@ -116,7 +116,7 @@ export class AltaEstablecimientosComponent implements OnInit {
     };
 
     //console.log("establecimiento: ",establecimiento);
-    console.log("this.establecimiento: ",this.establecimiento);
+    //console.log("this.establecimiento: ",this.establecimiento);
 
     const dialogRef = this.dialog.open(ConfirmAltaEstablecimientoComponent,{
       width: '400px',
@@ -137,7 +137,7 @@ export class AltaEstablecimientosComponent implements OnInit {
             });
           },
           (err: any) => {
-            console.log(`Error al agregar el establecimiento: ${err.message}`);
+            console.error(`Error al agregar el establecimiento: ${err.message}`);
           }
         );
       }

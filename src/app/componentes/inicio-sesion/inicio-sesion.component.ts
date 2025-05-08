@@ -48,7 +48,7 @@ export class InicioSesionComponent{
         this.idUsuario = JSON.stringify(res.idUsuario);
         sessionStorage.setItem('TOKEN', this.token);
         sessionStorage.setItem('ID_USUARIO', this.idUsuario);
-        console.log("datos de login: ",res);
+        //console.log("datos de login: ",res);
         this.loadingService.hide();
         if (res.idEstadoUsuario === 5) {
           this.router.navigate(['/cambiar-clave']);

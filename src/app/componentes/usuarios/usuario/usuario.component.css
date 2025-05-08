@@ -1,3 +1,6 @@
+.container-fluid{
+  width: 80%;
+}
 .sectores-container {
     display: flex;
     align-items: center;

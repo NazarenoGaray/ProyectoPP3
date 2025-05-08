@@ -96,9 +96,9 @@ export class NavBarComponent {
         this.vistaTecnico = false;
         break;
       case 3://mesa de ayuda  
-        this.menuUsuarios = true;
+        //this.menuUsuarios = true;
         this.altaUsuario = false;
-        this.listarUsuario = true;
+        this.listarUsuario = false;
         this.menuEstablecimientos = true;
         this.cargarSector = false;
         this.listarEstablecimiento = true;

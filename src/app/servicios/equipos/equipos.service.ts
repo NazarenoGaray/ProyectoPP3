@@ -51,6 +51,7 @@ export class EquiposService {
 
 
   obtenerEquiposPorSector(idSector: number): Observable<Equipo[]> {
+    //console.log("idSector: ",idSector);
     const url = `${this.baseUrl}/sectores/${idSector}/equipos`;
     return this.http.get<Equipo[]>(url);
   }

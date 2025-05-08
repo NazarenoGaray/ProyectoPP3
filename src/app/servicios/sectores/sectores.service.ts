@@ -21,7 +21,7 @@ export class SectoresService {
     return this.http.get<any>(url).pipe(
       tap((response) => {
         this.sectores = response;
-        console.log('Sectores.service sector por establecimiento:', this.sectores);
+        //console.log('Sectores.service sector por establecimiento:', this.sectores);
       })
     );
   }
@@ -49,7 +49,7 @@ export class SectoresService {
 
   crearSector(sector: Sector): Observable<Sector> {
     const url = `${this.apiURL}/sectores`;
-    console.log("lo que va al php", sector);
+    //console.log("lo que va al php", sector);
     return this.http.post<Sector>(url, sector);
   }
 

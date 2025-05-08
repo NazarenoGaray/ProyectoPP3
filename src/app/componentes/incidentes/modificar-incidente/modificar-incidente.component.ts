@@ -45,7 +45,15 @@ export class ModificarIncidenteComponent implements OnInit {
   incidenteSolucionado = false;
   isLoading = true;
   showCierreWarning = false;
-  idUsuarioAct: number | null = null; // Acepta number o null
+  idUsuarioAct: number | null = null;
+
+  usuariosAgregados: any[] = [];
+  equiposAgregados: Equipo[] = [];
+  resultadosBusquedaUsuario: any[] = [];
+  resultadosBusquedaEquipo: Equipo[] = [];
+  allUsuarios: any[] = [];
+  equiposDelSector: Equipo[] = [];
+
 
   constructor(
     private fb: FormBuilder,
@@ -54,22 +62,28 @@ export class ModificarIncidenteComponent implements OnInit {
     private incidenteService: IncidentesService,
     private prioridadService: PrioridadService,
     private categoriaService: CategoriaService,
+    private usuarioService: UsuarioService,
+    private equipoService: EquiposService,
     private estadoIncidenteService: EstadoIncidenteService,
     private dialog: MatDialog,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    //private snackBar: MatSnackBar
   ) {
     this.idUsuarioAct = this.tokenService.getIdUsuario();
 
     this.incidenteForm = this.fb.group({
-      establecimiento: ['', Validators.required],
-      sector: ['', Validators.required],
+      establecimiento: [{ value: '', disabled: true }, Validators.required],
+      sector: [{ value: '', disabled: true }, Validators.required],
       titulo: ['', Validators.required],
       descripcion: ['', Validators.required],
       idPrioridadIncidente: ['', Validators.required],
       idCategoriaIncidente: ['', Validators.required],
       idEstadoIncidente: ['', Validators.required],
       idEstablecimiento: ['', Validators.required],
-      idSector: ['', Validators.required]
+      idSector: ['', Validators.required],
+      buscarUsuario: [''],
+      buscarEquipos: [''],
+      informeCierre: ['']
     });
   }
 
@@ -85,100 +99,233 @@ export class ModificarIncidenteComponent implements OnInit {
     }
     this.loadData();
   }
+  updateFormDisabledState(): void {
+    const isSolved = this.incidenteSolucionado;
+
+    const controlsToDisable = [
+      'titulo', 'descripcion', 'idPrioridadIncidente',
+      'idCategoriaIncidente', 'idEstadoIncidente',
+    ];
+
+    controlsToDisable.forEach(controlName => {
+      const control = this.incidenteForm.get(controlName);
+      if (control) {
+        isSolved ? control.disable() : control.enable();
+      }
+    });
+  }
 
   loadData(): void {
-    forkJoin({
-      incidente: this.incidenteService.obtenerDetalleIncidentePorId(this.idIncidente),
-      prioridades: this.prioridadService.obtenerPrioridades(),
-      categorias: this.categoriaService.obtenerCategorias(),
-      estados: this.estadoIncidenteService.obtenerEstadosIncidentes(),
-      comentarios: this.incidenteService.obtenerComentariosDeUnIncidente(this.idIncidente),
-      usuariosInc: this.incidenteService.obtenerUsuariosDeUnIncidente(this.idIncidente),
-      equiposInc: this.incidenteService.obtenerEquiposDeUnIncidente(this.idIncidente)
-    }).subscribe({
-      next: (responses) => {
-        console.log('responses', responses);
-        this.prioridades = responses.prioridades;
-        this.categorias = responses.categorias;
-        this.estados = responses.estados;
-        //this.comentarios = responses.comentarios;
-        this.equiposInc = responses.equiposInc;
-        
-        // Normalizar comentarios
-        console.log('comentarios', responses.comentarios);
-        this.comentarios = responses.comentarios
-        .map(c => ({
-          ...c,
-          tipoComentario: this.getTipoComentarioDisplay(c.tipoComentario)
-        }))
-        .sort((a, b) => new Date(b.fechaHora).getTime() - new Date(a.fechaHora).getTime());
-        
-        // Normalizar usuarios
-        this.usuariosInc = responses.usuariosInc
-        .filter(u => u.usuario !== null) // Filtrar usuarios nulos
-        .map(u => ({
-          ...u,
-          nombre: u.usuario ? u.usuario.nombre : u.nombre,
-          apellido: u.usuario ? u.usuario.apellido : u.apellido
-        }));
-        
-        //this.usuariosInc = responses.usuariosInc;
-        console.log('usuariosInc', this.usuariosInc);
-        this.equiposInc = responses.equiposInc;
-        // Actualizar el formulario con los datos necesarios
+    // Primero obtenemos solo los datos básicos del incidente
+    this.incidenteService.obtenerDetalleIncidentePorId(this.idIncidente).subscribe({
+      next: (incidente) => {
+        // Guardamos el incidente y actualizamos el formulario
+        this.incidente = incidente;
         this.incidenteForm.patchValue({
-          establecimiento: responses.incidente.establecimientos.nombre,
-          sector: responses.incidente.sectores.nombre,
-          titulo: responses.incidente.titulo,
-          descripcion: responses.incidente.descripcion,
-          idPrioridadIncidente: responses.incidente.prioridad_incidente.idPrioridadIncidente,
-          idCategoriaIncidente: responses.incidente.categoria_incidente.idCategoriaIncidente,
-          idEstadoIncidente: responses.incidente.estado_incidente.idEstadoIncidente,
-          idEstablecimiento: responses.incidente.establecimientos.idEstablecimiento,
-          idSector: responses.incidente.sectores.idSector,
+          establecimiento: incidente.establecimientos.nombre,
+          sector: incidente.sectores.nombre,
+          titulo: incidente.titulo,
+          descripcion: incidente.descripcion,
+          idPrioridadIncidente: incidente.prioridad_incidente.idPrioridadIncidente,
+          idCategoriaIncidente: incidente.categoria_incidente.idCategoriaIncidente,
+          idEstadoIncidente: incidente.estado_incidente.idEstadoIncidente,
+          idEstablecimiento: incidente.establecimientos.idEstablecimiento,
+          idSector: incidente.sectores.idSector,
         });
-        //console.log("responses: ",responses);
-        this.incidente = responses.incidente;
-        this.incidenteSolucionado = responses.incidente.estado_incidente.idEstadoIncidente === 4;
-        this.isLoading = false;
+
+        // Ahora que tenemos el idSector, cargamos el resto de los datos
+        forkJoin({
+          prioridades: this.prioridadService.obtenerPrioridades(),
+          categorias: this.categoriaService.obtenerCategorias(),
+          estados: this.estadoIncidenteService.obtenerEstadosIncidentes(),
+          comentarios: this.incidenteService.obtenerComentariosDeUnIncidente(this.idIncidente),
+          usuariosInc: this.incidenteService.obtenerUsuariosDeUnIncidente(this.idIncidente),
+          equiposInc: this.incidenteService.obtenerEquiposDeUnIncidente(this.idIncidente),
+          allUsuarios: this.usuarioService.obtenerUsuarios(),
+          equiposSector: this.equipoService.obtenerEquiposPorSector(incidente.sectores.idSector),
+        }).subscribe({
+          next: (responses) => {
+            this.prioridades = responses.prioridades;
+            this.categorias = responses.categorias;
+            this.estados = responses.estados;
+            this.equiposInc = responses.equiposInc;
+
+            // Normalizar comentarios
+            this.comentarios = responses.comentarios
+              .map(c => ({
+                ...c,
+                tipoComentario: this.getTipoComentarioDisplay(c.tipoComentario)
+              }))
+              .sort((a, b) => new Date(b.fechaHora).getTime() - new Date(a.fechaHora).getTime());
+
+            // Normalizar usuarios
+            this.usuariosInc = responses.usuariosInc
+              .filter(u => u.usuario !== null)
+              .map(u => ({
+                ...u,
+                nombre: u.usuario ? u.usuario.nombre : u.nombre,
+                apellido: u.usuario ? u.usuario.apellido : u.apellido
+              }));
+
+            // Asignar usuarios y equipos iniciales
+            this.usuariosAgregados = responses.usuariosInc;
+            //console.log("this.usuariosAgregados: ", this.usuariosAgregados);
+            this.equiposAgregados = responses.equiposInc;
+
+            // Asignar listas completas
+            this.allUsuarios = responses.allUsuarios;
+            this.equiposDelSector = responses.equiposSector;
+
+            this.incidenteSolucionado = incidente.estado_incidente.idEstadoIncidente === 4;
+            this.updateFormDisabledState();
+            this.isLoading = false;
+
+
+          },
+          error: (error) => {
+            console.error('Error al cargar los datos adicionales:', error);
+            this.isLoading = false;
+          }
+        });
       },
       error: (error) => {
-        console.error('Error al cargar los datos:', error);
+        console.error('Error al cargar el incidente:', error);
         this.isLoading = false;
       }
     });
   }
 
+  // Métodos para buscar usuarios
+  buscarUsuario(event: any): void {
+    const keyword = event.target.value.toLowerCase();
+    if (keyword.trim() === '') {
+      this.resultadosBusquedaUsuario = [];
+    } else {
+      this.resultadosBusquedaUsuario = this.allUsuarios
+        .filter(usuario =>
+          usuario.nombre.toLowerCase().includes(keyword) ||
+          usuario.apellido.toLowerCase().includes(keyword)
+        )
+        .map(usuario => ({
+          idUsuario: usuario.idUsuario,
+          nombre: usuario.nombre,
+          apellido: usuario.apellido,
+          correo: usuario.correo,
+          telefono: usuario.telefono,
+          esObservador: 0
+        }));
+    }
+  }
+
+  // Métodos para buscar equipos
+  buscarEquipo(event: any): void {
+    const keyword = event.target.value.toLowerCase();
+    if (keyword.trim() === '') {
+      this.resultadosBusquedaEquipo = [];
+    } else {
+      this.resultadosBusquedaEquipo = this.equiposDelSector.filter(
+        equipo =>
+          equipo.nombre.toLowerCase().includes(keyword) ||
+          equipo.modelo.toLowerCase().includes(keyword)
+      );
+    }
+  }
+
+  // Agregar y quitar usuarios
+  agregarUsuario(usuario: any): void {
+    if (!this.usuariosAgregados.some(u => u.usuario.idUsuario === usuario.idUsuario)) {
+      this.usuariosAgregados.push(usuario);
+      //console.log("usuariosAgregados ", this.usuariosAgregados)
+    }
+    this.incidenteForm.get('buscarUsuario')?.setValue('');
+    this.resultadosBusquedaUsuario = [];
+  }
+
+  removerUsuario(usuario: any): void {
+    //console.log("usuario: ",usuario.usuario);
+    this.usuariosAgregados = this.usuariosAgregados.filter(u => u.usuario.idUsuario !== usuario.usuario.idUsuario);
+  }
+
+  // Agregar y quitar equipos
+  agregarEquipo(equipo: Equipo): void {
+    if (!this.equiposAgregados.some(e => e.idEquipo === equipo.idEquipo)) {
+      this.equiposAgregados.push(equipo);
+    }
+    this.resultadosBusquedaEquipo = [];
+    this.incidenteForm.get('buscarEquipos')?.setValue('');
+  }
+
+  removerEquipo(equipo: Equipo): void {
+    this.equiposAgregados = this.equiposAgregados.filter(e => e.idEquipo !== equipo.idEquipo);
+  }
+
+  // Actualizar el incidente con los usuarios y equipos
   onSubmit(): void {
     if (this.incidenteForm.invalid) {
       return;
     }
 
     const estado = this.incidenteForm.value.idEstadoIncidente;
+    const comentarioCierre = this.incidenteForm.value.informeCierre;
 
-    if (estado === 4 && !this.informeCierre) {
+    if (estado === 4 && !comentarioCierre) {
       this.activeTab = 'informacion';
       this.showCierreWarning = true;
       return;
     }
 
-    this.incidenteService.actualizarIncidente(this.idIncidente, this.incidenteForm.value)
+    // Preparar datos para enviar
+    const datosActualizacion = {
+      ...this.incidenteForm.value,
+      usuarios: this.usuariosAgregados.map(u => ({
+        idUsuario: u.idUsuario || u.usuario.idUsuario,
+        esObservador: u.esObservador || 0
+      })),
+      equipos: this.equiposAgregados.map(e => e.idEquipo)
+    };
+
+    this.isLoading = true;
+
+    this.incidenteService.actualizarIncidente(this.idIncidente, datosActualizacion)
       .subscribe({
         next: () => {
           if (estado === 4) {
-            this.publicarComentario(1, this.informeCierre);
+            this.publicarComentario(1, comentarioCierre);
           }
-          this.router.navigate(['/incidente', this.idIncidente]);
+          // this.snackBar.open('Incidente actualizado correctamente', 'Cerrar', {
+          //   duration: 3000
+          // });
+
+          // Recargar los datos para asegurar consistencia
+          this.loadData();
         },
         error: (error) => {
           console.error('Error al actualizar el incidente:', error);
+          // this.snackBar.open('Error al actualizar el incidente', 'Cerrar', {
+          //   duration: 3000
+          // });
+          this.isLoading = false;
         }
       });
   }
 
   publicarComentario(tipo?: number, texto?: string): void {
     const comentario = texto || this.comentario;
-    const tipoComentario = tipo || (this.incidenteForm.value.idEstadoIncidente === 3 ? 2 : 3);
+    const estadoId = Number(this.incidenteForm.value.idEstadoIncidente);
+    let tipoComentarioFinal: number;
+    //console.log("estadoId: ", estadoId);
+    switch (estadoId) {
+      case 4:
+        tipoComentarioFinal = 1; // Solución
+        break;
+      case 3:
+        tipoComentarioFinal = 2; // Pendiente
+        break;
+      default:
+        tipoComentarioFinal = 4; // Comentario Adicional
+        break;
+    }
+
 
     if (!comentario) return;
 
@@ -186,9 +333,9 @@ export class ModificarIncidenteComponent implements OnInit {
       comentario,
       idUsuario: this.idUsuarioAct,
       idIncidente: this.idIncidente,
-      idTipoComentario: tipoComentario
+      idTipoComentario: tipoComentarioFinal
     };
-
+    //console.log("comentarioObj: ", comentarioObj);
     this.incidenteService.enviarComentario(comentarioObj).subscribe({
       next: () => {
         this.comentario = '';
@@ -223,28 +370,60 @@ export class ModificarIncidenteComponent implements OnInit {
   }
 
   private reabrirIncidente(): void {
-    this.incidenteForm.patchValue({ idEstadoIncidente: 3 });
-    this.onSubmit();
-
-    const comentarioReapertura = {
-      comentario: 'El incidente ha sido reabierto',
-      idUsuario: this.idUsuarioAct,
-      idIncidente: this.idIncidente,
-      idTipoComentario: 5
+    // 1. Primero preparamos los datos para la reapertura
+    const datosReapertura = {
+      ...this.incidenteForm.getRawValue(), // Obtener todos los valores incluyendo disabled
+      idEstadoIncidente: 3, // Estado "En curso"
+      informeCierre: '', // Limpiar informe de cierre
+      usuarios: this.usuariosAgregados.map(u => ({
+        idUsuario: u.idUsuario || u.usuario.idUsuario,
+        esObservador: u.esObservador || 0
+      })),
+      equipos: this.equiposAgregados.map(e => e.idEquipo)
     };
 
-    this.incidenteService.enviarComentario(comentarioReapertura).subscribe({
-      next: () => this.obtenerComentariosDeUnIncidente(),
-      error: (error) => console.error('Error al reabrir el incidente:', error)
-    });
+    this.isLoading = true;
+
+    // 2. Primero actualizamos el estado del incidente
+    this.incidenteService.actualizarIncidente(this.idIncidente, datosReapertura)
+      .subscribe({
+        next: (response) => {
+          // 3. Si la actualización fue exitosa, enviamos el comentario
+          const comentarioReapertura = {
+            comentario: 'El incidente ha sido reabierto',
+            idUsuario: this.idUsuarioAct,
+            idIncidente: this.idIncidente,
+            idTipoComentario: 4 // Cambiado a tipo 2 (Comentario) en lugar de 5
+          };
+
+          this.incidenteService.enviarComentario(comentarioReapertura).subscribe({
+            next: () => {
+              // 4. Actualizamos el estado local y recargamos datos
+              this.incidenteSolucionado = false;
+              this.updateFormDisabledState();
+              this.loadData();
+            },
+            error: (error) => {
+              console.error('Error al enviar comentario de reapertura:', error);
+              this.isLoading = false;
+              // Recargamos datos aunque falle el comentario
+              this.loadData();
+            }
+          });
+        },
+        error: (error) => {
+          console.error('Error al actualizar el incidente:', error);
+          this.isLoading = false;
+        }
+      });
   }
 
   private obtenerComentariosDeUnIncidente(): void {
     this.incidenteService.obtenerComentariosDeUnIncidente(this.idIncidente)
-      .subscribe(comentarios=> {
+      .subscribe(comentarios => {
         // Ordenamos los comentarios de más nuevo a más viejo
         this.comentarios = comentarios.sort((a, b) => {
-            return new Date(b.fechaHora).getTime() - new Date(a.fechaHora).getTime();
+          return new Date(b.fechaHora).getTime() - new Date(a.fechaHora).getTime();
         });
       });
   }

@@ -33,11 +33,11 @@ export class ListarEstablecimientosComponent implements OnInit {
       (data: Establecimiento[]) => {
         this.loadingService.hide();
         this.listaEstablecimiento = data;
-        console.log(data);
+        //console.log(data);
       },
       (error) => {
         this.loadingService.hide();
-        console.log('Error al obtener los establecimientos:', error);
+        console.error('Error al obtener los establecimientos:', error);
       }
     );
   }

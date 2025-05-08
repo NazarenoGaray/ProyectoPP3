@@ -52,18 +52,18 @@ export class EditarSectorComponent {
     ).subscribe(
       (sector: Sector | null) => {
         if (sector) {
-          console.log("Datos obtenidos: ", sector);
+          //console.log("Datos obtenidos: ", sector);
           this.sector = sector;
           this.idSector = sector.idSector; // Asignar el idSector obtenido del parámetro de ruta
           this.llenarFormulario();
           // Guardar una copia de los valores iniciales del formulario
           this.sectorFormInicial = this.sectorForm.value;
         } else {
-          console.log("sector no encontrado");
+          console.error("sector no encontrado");
         }
       },
       error => {
-        console.log(error);
+        console.error(error);
       }
     );
 
@@ -96,16 +96,16 @@ export class EditarSectorComponent {
     };
 
 
-    console.log('Datos enviados al PHP:', this.sector);
+    //console.log('Datos enviados al PHP:', this.sector);
 
     // Llamar al servicio para editar el sector en el backend
     this.sectorService.editarSector(this.idSector, this.sector).subscribe(
       (res: any) => {
-        console.log(`sector con ID ${this.idSector} actualizado`);
+        //console.log(`sector con ID ${this.idSector} actualizado`);
         this.router.navigate(['/sector', this.sector.idSector]);
       },
       (err: any) => {
-        console.log(`Error al actualizar sector: ${err.message}`);
+        console.error(`Error al actualizar sector: ${err.message}`);
       }
     );
 
