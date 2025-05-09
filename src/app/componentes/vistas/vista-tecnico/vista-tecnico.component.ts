@@ -19,6 +19,8 @@ export class VistaTecnicoComponent implements OnInit {
   incidentesAgendados: any[] = [];
   loading: boolean = true;
   dataReady: boolean = false;
+  idUsuarioActual!: number;
+  incidente_agenda!: incidenteAgenda;
 
   constructor(
     private route: ActivatedRoute,
@@ -42,6 +44,7 @@ export class VistaTecnicoComponent implements OnInit {
   }
 
   private loadUserData(idUsuario: number): void {
+    this.idUsuarioActual = idUsuario;
     forkJoin([
       this.usuarioService.obtenerUsuarioPorId(idUsuario),
       this.incidentesService.obtenerIncidentesPorUsuario(idUsuario)
@@ -49,13 +52,15 @@ export class VistaTecnicoComponent implements OnInit {
       next: ([usuario, incidentes]) => {
         this.usuario = usuario;
         this.incidentes = incidentes || [];
-        console.log("incidentes: ",incidentes);
-        // Filtrar incidentes agendados (aquellos con incidente_agenda)
-        this.incidentesAgendados = this.incidentes.filter(item => 
-          item.incidente?.incidente_agenda !== null && 
-          item.incidente?.incidente_agenda !== undefined
+
+        // Filtrar SOLO incidentes que tengan al menos una agenda
+        this.incidentesAgendados = this.incidentes.filter(item =>
+          item.incidente.agendas &&
+          item.incidente.agendas.length > 0
         );
-        
+
+        console.log('Incidentes agendados:', this.incidentesAgendados); // Para depuración
+
         this.dataReady = true;
         this.loading = false;
         this.loadingService.hide();
@@ -63,7 +68,7 @@ export class VistaTecnicoComponent implements OnInit {
       error: (error) => {
         console.error('Error al cargar datos:', error);
         this.loading = false;
-        this.dataReady = true; // Mostrar UI incluso con error
+        this.dataReady = true;
         this.loadingService.hide();
       }
     });
@@ -78,6 +83,7 @@ export class VistaTecnicoComponent implements OnInit {
   }
 
   getTimeRange(agenda: any): string {
+    //console.log("agenda: ", agenda);
     if (!agenda) return 'Horario no definido';
     return `${agenda.horarioInicio || '--:--'} - ${agenda.horarioFin || '--:--'}`;
   }
@@ -94,20 +100,72 @@ export class VistaTecnicoComponent implements OnInit {
   }
 
   getPriorityClass(prioridad: string): string {
-    switch(prioridad?.toLowerCase()) {
-      case 'alta': return 'bg-danger';
-      case 'media': return 'bg-warning';
-      case 'baja': return 'bg-info';
+    switch (prioridad?.toLowerCase()) {
+      case 'alto': return 'bg-danger';
+      case 'medio': return 'bg-warning';
+      case 'bajo': return 'bg-info';
       default: return 'bg-secondary';
     }
   }
 
   getStatusClass(estado: string): string {
-    switch(estado?.toLowerCase()) {
-      case 'resuelto': return 'bg-success';
-      case 'en progreso': return 'bg-primary';
-      case 'pendiente': return 'bg-secondary';
+    switch (estado?.toLowerCase()) {
+      case 'solucionado': return 'bg-success';
+      case 'en curso': return 'bg-primary';
+      case 'nuevo': return 'bg-primary';
+      case 'Pendiente': return 'bg-secondary';
       default: return 'bg-light text-dark';
     }
   }
+  agendarIncidente(incidente: any): void {
+    const fechaHoy = new Date().toISOString().split('T')[0]; // o usar un datepicker
+    const horarioInicio = '09:00';
+    const horarioFin = '10:00';
+
+    const agendaData = {
+      idUsuario: this.idUsuarioActual,
+      idIncidente: incidente.idIncidente,
+      fechaAgenda: fechaHoy,
+      horarioInicio,
+      horarioFin
+    };
+
+    this.incidentesService.agendarIncidente(agendaData).subscribe({
+      next: () => {
+        // Actualizar los datos recargando o modificando el array
+        incidente.incidente_agenda = agendaData;
+        this.incidentesAgendados.push({ incidente });
+      },
+      error: (err) => {
+        console.error("Error al agendar incidente:", err);
+        alert("No se pudo agendar el incidente.");
+      }
+    });
+  }
+
+  quitarDeAgenda(incidenteId: number) {
+    // Confirmación antes de proceder a eliminar
+    if (confirm('¿Estás seguro de querer quitar este incidente de la agenda?')) {
+      this.loading = true;
+      this.dataReady = false;
+
+      // Llamar al servicio para eliminar el incidente de la agenda
+      this.incidentesService.quitarDeAgenda(incidenteId).subscribe(
+        response => {
+          this.loading = false;
+          this.dataReady = true;
+          // Actualizar la lista de incidentes agendados
+          this.incidentesAgendados = this.incidentesAgendados.filter(item => item.incidente.idIncidente !== incidenteId);
+          alert('Incidente quitado de la agenda.');
+        },
+        error => {
+          this.loading = false;
+          this.dataReady = true;
+          console.error('Error al quitar el incidente de la agenda:', error);
+          alert('Hubo un error al intentar quitar el incidente de la agenda.');
+        }
+      );
+    }
+  }
+
 }

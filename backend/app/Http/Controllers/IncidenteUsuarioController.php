@@ -56,23 +56,27 @@ class IncidenteUsuarioController extends Controller
     public function obtenerIncidentesDeUnUsuario($idUsuario)
     {
         $incidenteUsuarios = IncidenteUsuario::with([
-            'incidente' => function($query) {
+            'incidente' => function($query) use ($idUsuario) {
                 $query->with([
-                    'establecimientos', // Relación con establecimiento (nota la 's' final)
-                    'EstadoIncidente',  // Relación con estado (observa mayúscula)
-                    'PrioridadIncidente', // Relación con prioridad (mayúscula)
-                    'CategoriaIncidente', // Relación con categoría (mayúscula)
-                    'sector'            // Relación con sector (sin 's')
+                    'establecimientos',
+                    'EstadoIncidente',
+                    'PrioridadIncidente',
+                    'CategoriaIncidente',
+                    'sector',
+                    'agendas' => function($agendaQuery) use ($idUsuario) {
+                        $agendaQuery->where('idUsuario', $idUsuario);
+                    }
                 ]);
             }
         ])->where('idUsuario', $idUsuario)->get();
-    
+
         if ($incidenteUsuarios->isEmpty()) {
             return response()->json(['error' => 'Usuario no encontrado'], 404);
         }
-    
+
         return response()->json($incidenteUsuarios, 200);
     }
+
 
     public function crearOEditarIncidenteUsuario(Request $request)
     {

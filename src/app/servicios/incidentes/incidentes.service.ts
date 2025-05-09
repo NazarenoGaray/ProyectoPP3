@@ -84,7 +84,7 @@ export class IncidentesService {
 
 
   cargarIncidente(incidente: Incidente) {
-    console.log('Datos del incidente en el servicio:', incidente);
+    //console.log('Datos del incidente en el servicio:', incidente);
     return this.http.post(`${this.apiURL}/incidentes`, incidente).pipe(
       tap((data: any) => console.log(`incidente creado con ID ${data.idIncidente}`)),
       catchError(err => {
@@ -111,15 +111,23 @@ export class IncidentesService {
   }
 
   enviarComentario(comentario:any){
-    console.log('Datos del comentario:', comentario);
+    //console.log('Datos del comentario:', comentario);
     return this.http.post(`${this.apiURL}/comentariosIncidente`, comentario).pipe(
       tap((data: any) => console.log(`comentario creado con ID ${data.idIncidente}`)),
       catchError(err => {
-        console.log(`Error al cenviar el comentario: ${err.message}`);
+        console.error(`Error al cenviar el comentario: ${err.message}`);
         return throwError(err);
       })
     );
   }
 
+  agendarIncidente(agendaData: any): Observable<any> {
+    //console.log("agenda enviada: ", agendaData);
+    return this.http.post(`${this.apiURL}/incidentesAgenda/`, agendaData);
+  }
+
+  quitarDeAgenda(incidenteId: number) {
+    return this.http.delete(`/api/incidentes/agenda/${incidenteId}`);
+  }
 
 }

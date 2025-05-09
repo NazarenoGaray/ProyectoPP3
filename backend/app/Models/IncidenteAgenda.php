@@ -13,6 +13,7 @@ class IncidenteAgenda extends Model
 
     protected $fillable = [
         'idIncidente',
+        'idUsuario',
         'fechaAgenda',
         'horarioInicio',
         'horarioFin',
@@ -21,6 +22,10 @@ class IncidenteAgenda extends Model
     public function incidentes()
     {
         return $this->belongsTo(Incidente::class, 'idIncidente');
+    }
+    public function usuario()
+    {
+        return $this->belongsTo(Usuario::class, 'idUsuario');
     }
 
 }

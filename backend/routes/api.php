@@ -198,6 +198,8 @@ Route::get('/incidentesAgenda/{idIncidenteAgenda}', [IncidenteAgendaController::
 Route::post('/incidentesAgenda', [IncidenteAgendaController::class, 'crearincidenteAgenda']);
 // Actualizar incidentes Agenda existente
 Route::put('/incidentesAgenda/{idIncidenteAgenda}', [IncidenteAgendaController::class, 'editarIncidenteAgenda']);
+// borrar incidente en Agenda existente
+Route::delete('incidentes/agenda/{id}', [IncidenteAgendaController::class, 'quitarDeAgenda']);
 
 
 // Obtener todos los Roles

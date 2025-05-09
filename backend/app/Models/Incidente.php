@@ -55,4 +55,8 @@ class Incidente extends Model
     {
         return $this->belongsTo(Sector::class, 'idSector');
     }
+    public function agendas()
+    {
+        return $this->hasMany(IncidenteAgenda::class, 'idIncidente');
+    }
 }

@@ -47,14 +47,16 @@ class IncidenteAgendaController extends Controller
             // Valida los datos recibidos del formulario
             $request->validate([
                 'idIncidente' => 'required|exists:incidentes,idIncidente',
+                'idUsuario' => 'required|exists:usuarios,idUsuario',
                 'fechaAgenda' => 'required|date_format:Y-m-d',
-                'horarioInicio' => 'required|date_format:H:i:s',
-                'horarioFin' => 'required|date_format:H:i:s',
+                'horarioInicio' => 'required|date_format:H:i',
+                'horarioFin' => 'required|date_format:H:i',
             ]);
 
             // Crea nuevo IncidenteAgenda con los datos validados
             $incidenteAgenda = new IncidenteAgenda([
                 'idIncidente' => $request->idIncidente,
+                'idUsuario' => $request->idUsuario,
                 'fechaAgenda' => $request->fechaAgenda,
                 'horarioInicio' => $request->horarioInicio,
                 'horarioFin' => $request->horarioFin,
@@ -71,8 +73,36 @@ class IncidenteAgendaController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+    
+    public function quitarDeAgenda($id)
+    {
+        try {
+            $incidenteAgenda = IncidenteAgenda::where('idIncidente', $id)->first();
+
+            if (!$incidenteAgenda) {
+                return response()->json(['error' => 'Incidente no encontrado en la agenda'], 404);
+            }
+
+            // Eliminar el incidente de la agenda
+            $incidenteAgenda->delete();
+
+            return response()->json(['message' => 'Incidente eliminado de la agenda'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 
 
+    public function obtenerAgendaDeUsuario($idUsuario)
+    {
+        $agendas = IncidenteAgenda::with('incidente')->where('idUsuario', $idUsuario)->get();
+
+        if ($agendas->isEmpty()) {
+            return response()->json(['error' => 'Agenda vacía'], 404);
+        }
+
+        return response()->json($agendas, 200);
+    }
 
 
     public function obtenerIncidentesPorUsuarioYFecha($idUsuario, $fecha)

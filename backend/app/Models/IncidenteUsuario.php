@@ -33,4 +33,6 @@ class IncidenteUsuario extends Model
     {
         return $this->belongsTo(Usuario::class, 'idUsuario', 'idUsuario');
     }
+    
+
 }
